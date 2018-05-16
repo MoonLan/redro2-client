@@ -10,14 +10,48 @@ export default new Router({
     { path: '/', component: Home, alias: ['/home'] },
 
     {
-      path: '/admin/construct',
-      component: () => import('@/page/Admin/Construct'),
-      alias: ['/admin']
-    },
-
+      path: '/console',
+      component: () => import('@/page/Console'),
+      children: [
+        {
+          path: 'game/all',
+          component: () => import('@/page/Console/Game/All'),
+          alias: ['game']
+        },
+        {
+          path: 'game/create',
+          component: () => import('@/page/Console/Game/Create')
+        },
+        {
+          path: 'game/deleted',
+          component: () => import('@/page/Console/Game/Create')
+        },
+        {
+          path: 'game/playing',
+          component: () => import('@/page/Console/Game/Create')
+        },
+        {
+          path: 'game/ended',
+          component: () => import('@/page/Console/Game/Create')
+        },
+        {
+          path: 'game/:id',
+          component: () => import('@/page/Console/Game/Info')
+        },
+        {
+          path: 'status',
+          component: () => import('@/page/Console/Game/Create')
+        },
+        {
+          path: 'status/logs',
+          component: () => import('@/page/Console/Game/Create')
+        }
+      ]
+    }
+    /*
     {
       path: '/boardcast/scoreboard',
-      component: () => import('@/page/Boardcast/Scoreboard'),
+      component: () => import('@/page/Scoreboard'),
       alias: ['/boardcast']
     },
 
@@ -80,5 +114,6 @@ export default new Router({
     },
 
     { path: '/end', component: import('@/page/End') }
+    */
   ]
 })

@@ -23,4 +23,4 @@ new Vue({
   }
 })
 
-router.push('/')
+// router.push('/')

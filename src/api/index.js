@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { htmlEncode } from '@/lib/utils'
-import * as enter from './enter'
+import * as server from './server'
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
 export const ERR_MSG = {
@@ -20,10 +20,7 @@ export function legalRequest(apiPath, data) {
           let err = res.data
           if (err.id) {
             store.commit('ui/OPEN_DIALOG', {
-              title:
-                err.id in ERR_MSG
-                  ? ERR_MSG[err.id].title
-                  : '對不起，系統發生錯誤了！',
+              title: err.id in ERR_MSG ? ERR_MSG[err.id].title : '對不起，系統發生錯誤了！',
               text:
                 err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
                   ? ERR_MSG[err.id].text + '<br>'
@@ -49,5 +46,5 @@ export function legalRequest(apiPath, data) {
 }
 
 export default {
-  enter
+  server: server
 }
