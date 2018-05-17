@@ -6,6 +6,7 @@ import router from '@/router'
 import store from '@/store'
 import App from '@/App'
 import '@/lib/bus'
+import '@/lib/socket'
 
 Vue.use(Vuetify)
 

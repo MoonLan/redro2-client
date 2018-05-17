@@ -46,4 +46,13 @@ export default {}
 </script>
 
 <style lang="scss">
+.application {
+  .loading-icon {
+    margin-top: 6px;
+  }
+  .loading-text {
+    padding-top: 20px;
+    padding-left: 10px;
+  }
+}
 </style>

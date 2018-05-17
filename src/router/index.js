@@ -12,6 +12,7 @@ export default new Router({
     {
       path: '/console',
       component: () => import('@/page/Console'),
+      alias: ['/console/game'],
       children: [
         {
           path: 'game/all',
@@ -47,6 +48,11 @@ export default new Router({
           component: () => import('@/page/Console/Game/Create')
         }
       ]
+    },
+
+    {
+      path: '/player/login',
+      component: () => import('@/page/Player/Login')
     }
     /*
     {

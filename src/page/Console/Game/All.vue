@@ -12,7 +12,7 @@
             <v-list three-line>
               <v-divider></v-divider>
               <template v-for="(item, key) in list">
-                <v-list-tile :key="key" @click="" :to="'/console/game/' + item.id">
+                <v-list-tile :key="key" :to="'/console/game/' + item.id">
                   <v-list-tile-content>
                     <v-list-tile-title>
                       <span class="blue--text pr-1">{{item.stage}}</span>{{item.name}}</v-list-tile-title>
@@ -28,7 +28,7 @@
             </v-list>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="$router.push('/console/creategame')" flat>創建</v-btn>
+              <v-btn @click="$router.push('/console/game/create')" flat>創建</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
