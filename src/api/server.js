@@ -11,3 +11,9 @@ export function createGame(options) {
     return Promise.resolve(data.engine)
   })
 }
+
+export function userLogin(name, password) {
+  return legalRequest('/api/server/userLogin', { name: name, password: password }).then(data => {
+    return Promise.resolve(data.user)
+  })
+}

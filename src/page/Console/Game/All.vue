@@ -28,6 +28,7 @@
             </v-list>
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-btn @click="$socket.emit('room-join')" flat>創建</v-btn>
               <v-btn @click="$router.push('/console/game/create')" flat>創建</v-btn>
             </v-card-actions>
           </v-card>

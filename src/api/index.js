@@ -14,7 +14,10 @@ export const ERR_MSG = {
 export function legalRequest(apiPath, data) {
   return new Promise((resolve, reject) => {
     axios
-      .post(SERVER_BASE + apiPath, data)
+      .post(SERVER_BASE + apiPath, data, {
+        // https://div.io/topic/1825
+        withCredentials: true
+      })
       .then(res => {
         if (res.data.error || res.data.err) {
           let err = res.data
@@ -36,10 +39,7 @@ export function legalRequest(apiPath, data) {
         resolve(res.data)
       })
       .catch(function(err) {
-        store.commit('ui/OPEN_DIALOG', {
-          title: err.name,
-          text: err.message
-        })
+        store.commit('ui/OPEN_DIALOG', { title: err.name, text: err.message })
         reject(err)
       })
   })

@@ -1,6 +1,6 @@
 <template>
   <v-container class="player-login fill-height">
-    <v-layout wrap  justify-center align-center>
+    <v-layout wrap justify-center align-center>
       <v-flex xs12 sm6 md4 lg3 xl2>
         <v-form v-model="valid" ref="form">
           <v-card>
@@ -40,17 +40,12 @@ export default {
       this.$store.commit('ui/START_LOADING')
       if (this.valid) {
         api.server
-          .createGame({
-            name: this.name,
-            describe: this.describe,
-            gameDays: this.gameDays,
-            dayLength: this.dayLength,
-            nodes: JSON.parse(this.nodes),
-            teams: JSON.parse(this.teams)
-          })
-          .then(data => {
+          .userLogin(this.name, this.password)
+          .then(user => {
             this.$store.commit('ui/STOP_LOADING')
-            console.log(data)
+            if (user.level === 'ADMIN') {
+              this.$router.push('/console')
+            }
           })
           .catch(err => {
             this.$store.commit('ui/STOP_LOADING')
