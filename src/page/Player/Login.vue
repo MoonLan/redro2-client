@@ -47,6 +47,7 @@ export default {
             if (user.level === 'ADMIN') {
               this.$router.push('/console')
             }
+            reconnect()
           })
           .catch(err => {
             this.$store.commit('ui/STOP_LOADING')

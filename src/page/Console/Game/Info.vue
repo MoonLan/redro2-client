@@ -122,6 +122,7 @@ import api from '@/api'
 import { ROOM_EVENTS } from '@/lib/schema'
 import { TEAMS, NODES } from './engine.config'
 import NodeControlPanel from '@/page/Game/NodeControlPanel'
+import { reconnect } from '@/lib/socket'
 
 export default {
   components: {
@@ -162,7 +163,9 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id
-    this.$store.dispatch('engine/loadId', { id: this.id }).then(() => {
+
+    reconnect()
+    this.$store.dispatch('engine/load', { id: this.id }).then(() => {
       this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, { engineId: this.id, teamIndex: 0, role: 'Console' })
       console.log('socket:ROOM_JOIN')
     })
@@ -175,17 +178,4 @@ export default {
 </script>
 
 <style lang="scss">
-.labeled-list {
-  .flex {
-    padding-bottom: 5px;
-  }
-  font-size: 14px;
-  color: #000;
-
-  .label {
-    display: block;
-    font-size: 10px;
-    color: #666;
-  }
-}
 </style>

@@ -25,6 +25,19 @@ export default {
       let sec = time % 60
       let min = parseInt(time / 60)
       return `${min}:${sec > 9 ? sec : '0' + sec}`
+    },
+    toReadableGameTime(state, getters) {
+      return gameTime => {
+        return `第${gameTime.day}天 ${gameTime.isWorking ? getters.toReadableGameTimeTime(gameTime) : '下班'}`
+      }
+    },
+    toReadableGameTimeTime(state) {
+      return gameTime => {
+        let time = gameTime.time
+        let sec = time % 60
+        let min = parseInt(time / 60)
+        return `${min}:${sec > 9 ? sec : '0' + sec}`
+      }
     }
   },
   mutations: {
@@ -51,7 +64,7 @@ export default {
     },
     SOCKET_GAME_STAGE_CHANGE(state, engineEvent) {
       if (engineEvent.id !== state.id) {
-        console.warn('Different Engine id', engineEvent.id)
+        console.warn('Different Engine id,', state.id, engineEvent.id)
         return
       }
 
@@ -59,7 +72,7 @@ export default {
     },
     SOCKET_GAME_TIME_CHANGE(state, engineEvent) {
       if (engineEvent.id !== state.id) {
-        console.warn('Different Engine id', engineEvent.id)
+        console.warn('Different Engine id,', state.id, engineEvent.id)
         return
       }
 
@@ -67,7 +80,7 @@ export default {
     }
   },
   actions: {
-    loadId(context, payload) {
+    load(context, payload) {
       return new Promise((resolve, reject) => {
         context.commit('SET_ID', { id: payload.id })
         api.engine.getInfo(payload.id).then(data => {

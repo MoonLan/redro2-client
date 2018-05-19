@@ -54,5 +54,18 @@ export default {}
     padding-top: 20px;
     padding-left: 10px;
   }
+  .labeled-list {
+    .flex {
+      padding-bottom: 5px;
+    }
+    font-size: 14px;
+    color: #000;
+
+    .label {
+      display: block;
+      font-size: 10px;
+      color: #666;
+    }
+  }
 }
 </style>
