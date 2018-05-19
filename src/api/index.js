@@ -3,6 +3,7 @@ import store from '@/store'
 import { htmlEncode } from '@/lib/utils'
 import * as server from './server'
 import * as engine from './engine'
+import * as account from './account'
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
 export const ERR_MSG = {
@@ -47,5 +48,6 @@ export function legalRequest(apiPath, data) {
 
 export default {
   server: server,
-  engine: engine
+  engine: engine,
+  account: account
 }

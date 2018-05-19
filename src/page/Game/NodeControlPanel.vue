@@ -4,6 +4,7 @@
       <template v-for="component in node.components">
         <v-tab :key="component.type" ripple>{{component.type}}</v-tab>
         <v-tab-item :key="component.type + '-item'">
+          <account-panel v-if="component.type === 'Account'" :engineId="id" :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -12,8 +13,12 @@
 
 <script>
 import api from '@/api'
+import AccountPanel from './components/AccountPanel'
 
 export default {
+  components: {
+    AccountPanel
+  },
   data: () => ({
     active: null
   }),

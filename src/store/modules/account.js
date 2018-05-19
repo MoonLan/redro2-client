@@ -1,99 +1,135 @@
 import api from '@/api'
+import { ACCOUNT_LEDGER_SIDE } from '@/lib/schema'
 
 export default {
   namespaced: true,
   state: {
-    id: null,
-    index: null,
-    role: null
+    engineId: null,
+    nodeName: null,
+    isBankrupt: null,
+    journal: [],
+    ledger: [],
+    initialCash: null
   },
   getters: {
-    readableGameTime(state, getters) {
-      return `第${state.gameTime.day}天 ${
-        state.gameTime.isWorking ? getters.readableGameTimeTime : '下班'
-      }`
+    cashAmount(state) {
+      let ledger = state.ledger.find(ledger => ledger.classification === 'Cash')
+      if (ledger === undefined) {
+        return 0
+      }
+      return ledger.balance
     },
-    readableGameTimeTime(state) {
-      let time = state.gameTime.time
-      let sec = time % 60
-      let min = parseInt(time / 60)
-      return `${min}:${sec > 9 ? sec : '0' + sec}`
+    getBalance(state) {
+      return classification => {
+        let ledger = state.ledger.find(ledger => ledger.classification === classification)
+        if (ledger === undefined) {
+          return 0
+        }
+        return ledger.balance
+      }
     }
   },
   mutations: {
-    SET_ID(state, payload) {
-      state.id = payload.id
+    SET_ENGINE_ID(state, payload) {
+      state.engineId = payload.engineId
     },
-    SET_NAME(state, payload) {
-      state.name = payload.name
+    SET_NODE_NAME(state, payload) {
+      state.nodeName = payload.nodeName
     },
-    SET_DESCRIBE(state, payload) {
-      state.describe = payload.describe
+    SET_JOURNAL(state, payload) {
+      state.journal = payload.journal
     },
-    SET_NODES(state, payload) {
-      state.nodes = payload.nodes
+    SET_LEDGER(state, payload) {
+      state.ledger = payload.ledger
     },
-    SET_GAME_DAYS(state, payload) {
-      state.gameDays = payload.gameDays
+    SET_INITIAL_CASH(state, payload) {
+      state.initialCash = payload.initialCash
     },
-    SET_DAY_LENGTH(state, payload) {
-      state.dayLength = payload.dayLength
-    },
-    SET_PERMISSIONS(state, payload) {
-      state.permissions = payload.permissions
-    },
-    SOCKET_GAME_STAGE_CHANGE(state, engineEvent) {
-      if (engineEvent.id !== state.id) {
-        console.warn('Different Engine id', engineEvent.id)
+    SOCKET_ACCOUNT_ADD(state, accountEvent) {
+      if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
+        console.warn(
+          'Different Engine id or node name,',
+          state.engineId,
+          state.nodeName,
+          accountEvent.engineId,
+          accountEvent.nodeName
+        )
         return
       }
 
-      state.stage = engineEvent.stage
+      let transaction = accountEvent.transaction
+      state.journal.push(transaction)
+
+      for (let side of [ACCOUNT_LEDGER_SIDE.DEBIT, ACCOUNT_LEDGER_SIDE.CREDIT]) {
+        for (let item of transaction[side] || []) {
+          let ledgerItem = {
+            amount: item.amount,
+            classification: item.classification,
+            side: side,
+            counterObject: item.counterObject,
+            memo: transaction.memo,
+            time: transaction.time,
+            gameTime: transaction.gameTime
+          }
+
+          let ledger = state.ledger.find(
+            ledger => ledger.classification === ledgerItem.classification
+          )
+          if (ledger === undefined) {
+            state.ledger.push({
+              classification: ledgerItem.classification,
+              items: [],
+              balance: 0
+            })
+            ledger = state.ledger[state.ledger.length - 1]
+          }
+
+          ledger.items.push(ledgerItem)
+          ledger.balance +=
+            ledgerItem.side === ACCOUNT_LEDGER_SIDE.DEBIT
+              ? parseFloat(ledgerItem.amount)
+              : parseFloat(-ledgerItem.amount)
+        }
+      }
     },
-    SOCKET_GAME_TIME_CHANGE(state, engineEvent) {
-      if (engineEvent.id !== state.id) {
-        console.warn('Different Engine id', engineEvent.id)
+    SOCKET_ACCOUNT_BANKRUPT(state, accountEvent) {
+      if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
+        console.warn(
+          'Different Engine id or node name,',
+          state.engineId,
+          state.nodeName,
+          accountEvent.engineId,
+          accountEvent.nodeName
+        )
         return
       }
-
-      state.gameTime = engineEvent.gameTime
+      state.isBankrupt = accountEvent.isBankrupt
     }
   },
   actions: {
-    loadId(context, payload) {
+    load(context, payload) {
       return new Promise((resolve, reject) => {
-        context.commit('SET_ID', { id: payload.id })
-        api.engine.getInfo(payload.id).then(data => {
-          context.commit('SET_NAME', data)
-          context.commit('SET_DESCRIBE', data)
-          context.commit('SET_NODES', data)
-          context.commit('SET_GAME_DAYS', data)
-          context.commit('SET_DAY_LENGTH', data)
-          context.commit('SET_PERMISSIONS', data)
-          context.commit('SOCKET_GAME_STAGE_CHANGE', data)
-          context.commit('SOCKET_GAME_TIME_CHANGE', data)
-          resolve()
-        })
-      })
-    },
-    nextStage(context, payload) {
-      return new Promise((resolve, reject) => {
-        api.engine
-          .nextStage(context.state.id)
-          .then(data => {
-            resolve(data)
+        context.commit('SET_ENGINE_ID', payload)
+        context.commit('SET_NODE_NAME', payload)
+        api.account
+          .getInfo(payload.engineId, payload.nodeName)
+          .then(account => {
+            context.commit('SET_JOURNAL', account)
+            context.commit('SET_LEDGER', account)
+            context.commit('SOCKET_ACCOUNT_BANKRUPT', account)
+            resolve()
           })
           .catch(err => {
             reject(err)
           })
       })
     },
-    nextDay(context, payload) {
+    add(context, accountTransaction) {
       return new Promise((resolve, reject) => {
-        api.engine
-          .nextDay(context.state.id)
-          .then(data => {
-            resolve(data)
+        api.account
+          .add(context.state.engineId, context.state.nodeName, accountTransaction)
+          .then(account => {
+            resolve(account)
           })
           .catch(err => {
             reject(err)
