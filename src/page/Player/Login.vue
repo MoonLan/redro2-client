@@ -27,6 +27,7 @@
 
 <script>
 import api from '@/api'
+import { reconnect } from '@/lib/socket'
 
 export default {
   data: () => ({
@@ -39,8 +40,8 @@ export default {
     submit() {
       this.$store.commit('ui/START_LOADING')
       if (this.valid) {
-        api.server
-          .userLogin(this.name, this.password)
+        this.$store
+          .dispatch('user/userLogin', { name: this.name, password: this.password })
           .then(user => {
             this.$store.commit('ui/STOP_LOADING')
             if (user.level === 'ADMIN') {
