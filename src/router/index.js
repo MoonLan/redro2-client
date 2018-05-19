@@ -37,7 +37,13 @@ export default new Router({
         },
         {
           path: 'game/:id',
-          component: () => import('@/page/Console/Game/Info')
+          component: () => import('@/page/Console/Game/Info'),
+          children: [
+            {
+              path: ':index/:name',
+              component: () => import('@/page/Game/NodeControlPanel')
+            }
+          ]
         },
         {
           path: 'status',

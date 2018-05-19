@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { htmlEncode } from '@/lib/utils'
 import * as server from './server'
+import * as engine from './engine'
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
 export const ERR_MSG = {
@@ -29,8 +30,7 @@ export function legalRequest(apiPath, data) {
                   ? ERR_MSG[err.id].text + '<br>'
                   : '',
               more:
-                '如果你覺得這不應該發生，請試著向主辦方反映。' +
-                (err.more ? '<br>' + htmlEncode(err.more) : '')
+                '如果你覺得這不應該發生，請試著向主辦方反映。' + (err.more ? '<br>' + err.more : '')
             })
           }
           reject(res.data)
@@ -46,5 +46,6 @@ export function legalRequest(apiPath, data) {
 }
 
 export default {
-  server: server
+  server: server,
+  engine: engine
 }

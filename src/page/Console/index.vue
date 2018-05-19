@@ -54,6 +54,9 @@
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
+      <v-btn icon @click="$router.push('/player/login')">
+        <v-icon>account_circle</v-icon>
+      </v-btn>
     </v-toolbar>
     <router-view></router-view>
   </v-container>

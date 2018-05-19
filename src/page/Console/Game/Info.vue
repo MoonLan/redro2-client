@@ -6,7 +6,7 @@
           <v-card>
             <v-card-title primary-title>
               <div>
-                <h3 class="headline mb-0">遊戲資訊</h3>
+                <h3 class="headline mb-0">{{$store.state.engine.name}} 遊戲資訊</h3>
                 <h4>{{id}}</h4>
               </div>
             </v-card-title>
@@ -18,35 +18,71 @@
                     <v-layout wrap class="labeled-list">
                       <v-flex xs6 md4>
                         <span class="label">名稱</span>
-                        CONSTRUCTED
+                        {{$store.state.engine.name}}
                       </v-flex>
                       <v-flex xs12 md8>
                         <span class="label">ID</span>
-                        {{id}}
+                        {{$store.state.engine.id}}
                       </v-flex>
                       <v-flex xs12 md12>
                         <span class="label">簡介</span>
-                        {{id}}
+                        {{$store.state.engine.describe}}
                       </v-flex>
                       <v-flex xs6 md4>
                         <span class="label">階段</span>
-                        CONSTRUCTED
+                        {{$store.state.engine.stage}}
+                      </v-flex>
+                      <v-flex xs6 md4>
+                        <span class="label">遊戲天數</span>
+                        {{$store.state.engine.gameDays}}天
+                      </v-flex>
+                      <v-flex xs6 md4>
+                        <span class="label">每日長度</span>
+                        {{$store.state.engine.dayLength}}秒
+                      </v-flex>
+                      <v-flex xs6 md4>
+                        <span class="label">當前時間</span>
+                        {{$store.getters['engine/readableGameTime']}}
                       </v-flex>
                       <v-flex xs6 md4>
                         <span class="label">登入人數</span>
                         CONSTRUCTED
                       </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">遊戲時間</span>
-                        CONSTRUCTED
+                    </v-layout>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+              <v-tab key="engine" ripple>引擎</v-tab>
+              <v-tab-item key="engine">
+                <v-card flat>
+                  <v-card-text>
+                    <v-layout wrap class="labeled-list">
+                      <v-flex xs6 md3>
+                        <span class="label">階段</span>
+                        {{$store.state.engine.stage}}
                       </v-flex>
-                      <v-flex xs6 md4>
+                      <v-flex xs6 md3>
+                        <span class="label">當前時間</span>
+                        {{$store.getters['engine/readableGameTime']}}
+                      </v-flex>
+                      <v-flex xs6 md3>
                         <span class="label">遊戲天數</span>
-                        CONSTRUCTED
+                        {{$store.state.engine.gameDays}}天
                       </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">上下班</span>
-                        CONSTRUCTED
+                      <v-flex xs6 md3>
+                        <span class="label">每日長度</span>
+                        {{$store.state.engine.dayLength}}秒
+                      </v-flex>
+                    </v-layout>
+                  </v-card-text>
+                </v-card>
+                <v-divider></v-divider>
+                <v-card flat>
+                  <v-card-text>
+                    <v-layout wrap>
+                      <v-flex xs12>
+                        <v-btn @click="$store.dispatch('engine/nextStage')">下一階段</v-btn>
+                        <v-btn @click="$store.dispatch('engine/nextDay')">下一天</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-card-text>
@@ -56,26 +92,16 @@
               <v-tab-item key="control">
                 <v-card flat>
                   <v-card-text>
-                    <v-layout wrap class="labeled-list">
-                      <v-flex xs6 md4>
-                        <span class="label">階段</span>
-                        CONSTRUCTED
+                    <v-layout>
+                      <v-flex xs4>
+                        <v-list>
+                          <v-list-tile v-for="node in $store.state.engine.nodes" :key="node.name" :to="`/console/game/${id}/${0}/${node.name}`">
+                            {{node.name}}
+                          </v-list-tile>
+                        </v-list>
                       </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">登入人數</span>
-                        CONSTRUCTED
-                      </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">遊戲時間</span>
-                        CONSTRUCTED
-                      </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">遊戲天數</span>
-                        CONSTRUCTED
-                      </v-flex>
-                      <v-flex xs6 md4>
-                        <span class="label">上下班</span>
-                        CONSTRUCTED
+                      <v-flex xs8>
+                        <router-view />
                       </v-flex>
                     </v-layout>
                   </v-card-text>
@@ -83,9 +109,6 @@
               </v-tab-item>
             </v-tabs>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn flat>清除</v-btn>
-              <v-btn flat>創建</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -96,12 +119,19 @@
 
 <script>
 import api from '@/api'
+import { ROOM_EVENTS } from '@/lib/schema'
 import { TEAMS, NODES } from './engine.config'
+import NodeControlPanel from '@/page/Game/NodeControlPanel'
 
 export default {
+  components: {
+    NodeControlPanel
+  },
   data: () => ({
     id: null,
-    active: null
+    active: null,
+    teamIndex: null,
+    nodeName: null
   }),
   methods: {
     submit() {
@@ -132,8 +162,14 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id
-    this.$socket.emit('client_load_engine_id', { id: this.id })
-    this.$store.dispatch('engine/loadId', { id: this.id })
+    this.$store.dispatch('engine/loadId', { id: this.id }).then(() => {
+      this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, { engineId: this.id, teamIndex: 0, role: 'Console' })
+      console.log('socket:ROOM_JOIN')
+    })
+  },
+  beforeDestroy() {
+    this.$socket.emit(ROOM_EVENTS.ROOM_LEAVE, { engineId: this.id, teamIndex: 0, role: 'Console' })
+    console.log('socket:ROOM_LEAVE')
   }
 }
 </script>

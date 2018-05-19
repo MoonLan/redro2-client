@@ -16,8 +16,7 @@
                 <v-text-field v-model="gameDays" label="GameDays" type="number" required :rules="requiredRule"></v-text-field>
                 <v-text-field v-model="dayLength" label="DayLength" type="number" required :rules="requiredRule"></v-text-field>
                 <v-text-field v-model="nodes" label="Nodes" required :rules="requiredRule" multi-line></v-text-field>
-                <v-text-field v-model="teams" label="Teams" required :rules="requiredRule" multi-line></v-text-field>
-
+                <v-text-field v-model="permissions" label="Permissions" required :rules="requiredRule" multi-line></v-text-field>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -34,7 +33,7 @@
 
 <script>
 import api from '@/api'
-import { TEAMS, NODES } from './engine.config'
+import { PERMISSIONS, NODES } from './engine.config'
 
 export default {
   data: () => ({
@@ -44,7 +43,7 @@ export default {
     gameDays: 3,
     dayLength: 300,
     nodes: '',
-    teams: '',
+    permissions: '',
     requiredRule: [v => !!v || '必需項']
   }),
   methods: {
@@ -58,7 +57,7 @@ export default {
             gameDays: this.gameDays,
             dayLength: this.dayLength,
             nodes: JSON.parse(this.nodes),
-            teams: JSON.parse(this.teams)
+            permissions: JSON.parse(this.permissions)
           })
           .then(data => {
             this.$store.commit('ui/STOP_LOADING')
@@ -76,7 +75,7 @@ export default {
   },
   mounted() {
     this.nodes = JSON.stringify(NODES)
-    this.teams = JSON.stringify(TEAMS)
+    this.permissions = JSON.stringify(PERMISSIONS)
   }
 }
 </script>

@@ -3,16 +3,9 @@ import api from '@/api'
 export default {
   namespaced: true,
   state: {
-    id: '',
-    name: '',
-    describe: '',
-    nodes: [],
-    stage: '',
-    time: 0,
-    gameTime: { day: 0, time: 0, isWorking: false },
-    gameDays: 3,
-    dayLength: 3,
-    permissions: []
+    id: null,
+    index: null,
+    role: null
   },
   getters: {
     readableGameTime(state, getters) {
