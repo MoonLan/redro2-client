@@ -1,10 +1,11 @@
 <template>
   <v-container ma-0 pa-0 class="game-nodecontrolpanel">
     <v-tabs v-model="active">
-      <template v-for="component in node.components">
+      <template v-for="component in components">
         <v-tab :key="component.type" ripple>{{component.type}}</v-tab>
         <v-tab-item :key="component.type + '-item'">
           <account-panel v-if="component.type === 'Account'" :engineId="id" :nodeName="name" />
+          <inventory-panel v-else-if="component.type === 'Inventory'" :engineId="id" :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -14,10 +15,12 @@
 <script>
 import api from '@/api'
 import AccountPanel from './components/AccountPanel'
+import InventoryPanel from './components/InventoryPanel'
 
 export default {
   components: {
-    AccountPanel
+    AccountPanel,
+    InventoryPanel
   },
   data: () => ({
     active: null
@@ -34,6 +37,9 @@ export default {
     },
     name() {
       return this.$route.params.name
+    },
+    components() {
+      return this.node.components.filter(component => component.enable === true)
     }
   },
   methods: {},

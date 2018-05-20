@@ -1,5 +1,5 @@
 <template>
-  <v-container ma-0 pa-0 class="game-nodecontrolpanel">
+  <v-container ma-0 pa-0 class="game-accountpanel">
     <v-tabs v-model="active">
       <v-tab key="overview" ripple>概覽</v-tab>
       <v-tab-item key="overview">
@@ -23,6 +23,8 @@
                 {{$store.getters['account/getBalance']('Inventory')}}
               </v-flex>
             </v-layout>
+          </v-card-text>
+          <v-card-text v-if="['STAFF', 'ADMIN'].includes($store.state.user.level)">
             <v-btn @click="dialog = true">
               <v-icon>add</v-icon>
             </v-btn>
@@ -129,7 +131,7 @@
             <h3>借方項目</h3>
             <v-layout wrap grid-list-xs>
               <template v-for="(item, index) in debit">
-                <v-flex xs12 sm6 pr-3 :key="index + '-classification'">
+                <v-flex xs12 sm5 pr-3 :key="index + '-classification'">
                   <v-select :items="classifications" v-model="item.classification" label="科目" autocomplete required :rules="requiredRule" hide-details></v-select>
                 </v-flex>
                 <v-flex xs12 sm3 pr-3 :key="index + '-amount'">
@@ -137,6 +139,11 @@
                 </v-flex>
                 <v-flex xs12 sm3 :key="index + '-counterObject'">
                   <v-text-field v-model="item.counterObject" label="對象" hide-details></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm1 :key="index + '-close'">
+                  <v-btn class="mt-3" icon flat @click="removeItem('debit', index)">
+                    <v-icon>close</v-icon>
+                  </v-btn>
                 </v-flex>
               </template>
             </v-layout>
@@ -146,7 +153,7 @@
             <h3>貸方項目</h3>
             <v-layout wrap grid-list-xs>
               <template v-for="(item, index) in credit">
-                <v-flex xs12 sm6 pr-3 :key="index + '-classification'">
+                <v-flex xs12 sm5 pr-3 :key="index + '-classification'">
                   <v-select :items="classifications" v-model="item.classification" label="科目" autocomplete required :rules="requiredRule" hide-details></v-select>
                 </v-flex>
                 <v-flex xs12 sm3 pr-3 :key="index + '-amount'">
@@ -154,6 +161,11 @@
                 </v-flex>
                 <v-flex xs12 sm3 :key="index + '-counterObject'">
                   <v-text-field v-model="item.counterObject" label="對象" hide-details></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm1 :key="index + '-close'">
+                  <v-btn class="mt-3" icon flat @click="removeItem('credit', index)">
+                    <v-icon>close</v-icon>
+                  </v-btn>
                 </v-flex>
               </template>
             </v-layout>
@@ -194,7 +206,21 @@ export default {
   },
   data: () => ({
     active: null,
-    classifications: ['Cash', 'AccountsReceivable', 'AccountsPayable'],
+    classifications: [
+      'Cash',
+      'Inventory',
+      'AccountsReceivable',
+      'AccountsPayable',
+      'Sales',
+      'CostOfSales',
+      'CostOfTransportation',
+      'CostOfWarehousing',
+      'SalaryAndWages',
+      'NonOperatingIncome',
+      'NonOperatingExpenses',
+      'IncomeFromCounterPartyDefault',
+      'CounterPartyDefault'
+    ],
 
     dialog: false,
     memo: '',
@@ -256,9 +282,12 @@ export default {
     addItem(side) {
       this[side].push({
         classification: '',
-        amount: '',
+        amount: 0,
         counterObject: ''
       })
+    },
+    removeItem(side, index) {
+      this[side].splice(index, 1)
     },
     load() {
       this.$store.dispatch('account/load', {

@@ -5,6 +5,7 @@ import user from './modules/user'
 import game from './modules/game'
 import engine from './modules/engine'
 import account from './modules/account'
+import inventory from './modules/inventory'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     user,
     game,
     account,
+    inventory,
     engine
   }
 })

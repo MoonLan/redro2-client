@@ -4,6 +4,14 @@ import { htmlEncode } from '@/lib/utils'
 import * as server from './server'
 import * as engine from './engine'
 import * as account from './account'
+import * as inventory from './inventory'
+
+export default {
+  server: server,
+  engine: engine,
+  account: account,
+  inventory: inventory
+}
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
 export const ERR_MSG = {
@@ -44,10 +52,4 @@ export function legalRequest(apiPath, data) {
         reject(err)
       })
   })
-}
-
-export default {
-  server: server,
-  engine: engine,
-  account: account
 }
