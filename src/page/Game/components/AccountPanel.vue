@@ -6,28 +6,36 @@
         <v-card flat>
           <v-card-text>
             <v-layout wrap class="labeled-list">
-              <v-flex xs6 md3>
+              <v-flex xs6 sm3>
                 <span class="label">現金</span>
                 {{$store.getters['account/getBalance']('Cash')}}
               </v-flex>
-              <v-flex xs6 md3>
+              <v-flex xs6 sm3>
                 <span class="label">應收帳款</span>
                 {{-1 * $store.getters['account/getBalance']('AccountsReceivable')}}
               </v-flex>
-              <v-flex xs6 md3>
+              <v-flex xs6 sm3>
                 <span class="label">應付帳款</span>
                 {{$store.getters['account/getBalance']('AccountsPayable')}}
               </v-flex>
-              <v-flex xs6 md3>
-                <span class="label">存貨成本</span>
-                {{$store.getters['account/getBalance']('Inventory')}}
+              <v-flex xs6 sm3>
+                <span class="label">銷貨收入</span>
+                {{$store.getters['account/getBalance']('Sales')}}
               </v-flex>
             </v-layout>
           </v-card-text>
-          <v-card-text v-if="['STAFF', 'ADMIN'].includes($store.state.user.level)">
-            <v-btn @click="dialog = true">
-              <v-icon>add</v-icon>
-            </v-btn>
+          <v-divider v-if="$store.getters['user/isStaffOrAdmin']" />
+          <v-card-text v-if="$store.getters['user/isStaffOrAdmin']">
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-subheader>工作人員用控制項</v-subheader>
+              </v-flex>
+              <v-flex xs12>
+                <v-btn @click="dialog = true" outline>
+                  <v-icon>add</v-icon>增加會計項目
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -37,18 +45,18 @@
         <v-card flat>
           <v-card-text>
             <v-layout wrap>
-              <v-flex xs12 md2>時間</v-flex>
-              <v-flex xs12 md10>
+              <v-flex xs12 sm2>時間</v-flex>
+              <v-flex xs12 sm10>
                 <v-layout wrap>
                   <v-flex xs7>項目</v-flex>
                   <v-flex xs5>金額</v-flex>
                 </v-layout>
               </v-flex>
               <template v-for="transaction in $store.state.account.journal">
-                <v-flex xs12 md2 :key="transaction._id + '-gameTime'">
+                <v-flex xs12 sm2 :key="transaction._id + '-gameTime'">
                   {{$store.getters['engine/toReadableGameTime'](transaction.gameTime)}}
                 </v-flex>
-                <v-flex xs12 md10 :key="transaction._id + '-items'">
+                <v-flex xs12 sm10 :key="transaction._id + '-items'">
                   <v-layout wrap>
                     <template v-for="debit in transaction.debit">
                       <v-flex xs7 :key="debit._id + '-classification'">
@@ -79,18 +87,18 @@
         <v-card flat>
           <v-card-text>
             <v-layout wrap>
-              <v-flex xs12 md2>時間</v-flex>
-              <v-flex xs12 md10>
+              <v-flex xs12 sm2>時間</v-flex>
+              <v-flex xs12 sm10>
                 <v-layout wrap>
                   <v-flex xs7>項目</v-flex>
                   <v-flex xs5>金額</v-flex>
                 </v-layout>
               </v-flex>
               <template v-for="transaction in $store.state.account.journal">
-                <v-flex xs12 md2 :key="transaction._id + '-gameTime'">
+                <v-flex xs12 sm2 :key="transaction._id + '-gameTime'">
                   {{$store.getters['engine/toReadableGameTime'](transaction.gameTime)}}
                 </v-flex>
-                <v-flex xs12 md10 :key="transaction._id + '-items'">
+                <v-flex xs12 sm10 :key="transaction._id + '-items'">
                   <v-layout wrap>
                     <template v-for="debit in transaction.debit">
                       <v-flex xs7 :key="debit._id + '-classification'">
@@ -188,7 +196,7 @@
             <v-btn flat @click="clear(), dialog = false">關閉</v-btn>
             <v-spacer></v-spacer>
             <v-btn flat @click="clear">清除</v-btn>
-            <v-btn flat :disabled="debitAmount !== creditAmount && !unbalance || !valid" @click="submit">登記</v-btn>
+            <v-btn flat :disabled="debitAmount !== creditAmount && !unbalance || !valid || loading" @click="submit">登記</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -223,6 +231,7 @@ export default {
     ],
 
     dialog: false,
+    loading: false,
     memo: '',
     unbalance: false,
     debit: [],
@@ -263,14 +272,17 @@ export default {
         memo: this.memo,
         gameTime: this.$store.state.engine.gameTime
       }
+      this.loading = true
       this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch('account/add', accountTransaction)
         .then(account => {
+          this.loading = false
           this.dialog = false
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
+          this.loading = false
           this.dialog = false
           this.$store.commit('ui/STOP_LOADING')
           console.error(err)

@@ -41,9 +41,10 @@ export default {
         inventoryEvent.nodeName !== state.nodeName
       ) {
         console.warn(
-          'Different Engine id or node name,',
+          'Different Engine id or node name, this is',
           state.engineId,
           state.nodeName,
+          'but the incoming event is',
           inventoryEvent.engineId,
           inventoryEvent.nodeName
         )
@@ -74,9 +75,10 @@ export default {
         inventoryEvent.nodeName !== state.nodeName
       ) {
         console.warn(
-          'Different Engine id or node name,',
+          'Different Engine id or node name, this is',
           state.engineId,
           state.nodeName,
+          'but the incoming event is',
           inventoryEvent.engineId,
           inventoryEvent.nodeName
         )
@@ -112,9 +114,10 @@ export default {
         inventoryEvent.nodeName !== state.nodeName
       ) {
         console.warn(
-          'Different Engine id or node name,',
+          'Different Engine id or node name, this is',
           state.engineId,
           state.nodeName,
+          'but the incoming event is',
           inventoryEvent.engineId,
           inventoryEvent.nodeName
         )
@@ -135,7 +138,7 @@ export default {
             context.commit('SET_HAS_STORAGE_COST', inventory)
             context.commit('SET_BATCH_SIZE', inventory)
             context.commit('SET_MODE', inventory)
-            resolve()
+            resolve(inventory)
           })
           .catch(err => {
             reject(err)

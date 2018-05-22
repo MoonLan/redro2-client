@@ -117,7 +117,7 @@ export default {
             context.commit('SET_JOURNAL', account)
             context.commit('SET_LEDGER', account)
             context.commit('SOCKET_ACCOUNT_BANKRUPT', account)
-            resolve()
+            resolve(account)
           })
           .catch(err => {
             reject(err)

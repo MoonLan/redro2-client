@@ -47,6 +47,10 @@ export default {}
 
 <style lang="scss">
 .application {
+  input:-webkit-autofill {
+    background-color: unset !important;
+  }
+
   .loading-icon {
     margin-top: 6px;
   }

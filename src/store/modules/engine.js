@@ -28,7 +28,9 @@ export default {
     },
     toReadableGameTime(state, getters) {
       return gameTime => {
-        return `第${gameTime.day}天 ${gameTime.isWorking ? getters.toReadableGameTimeTime(gameTime) : '下班'}`
+        return `第${gameTime.day}天 ${
+          gameTime.isWorking ? getters.toReadableGameTimeTime(gameTime) : '下班'
+        }`
       }
     },
     toReadableGameTimeTime(state) {
@@ -37,6 +39,26 @@ export default {
         let sec = time % 60
         let min = parseInt(time / 60)
         return `${min}:${sec > 9 ? sec : '0' + sec}`
+      }
+    },
+    gameTimeAdd(state) {
+      return (gameTime, diff) => {
+        if (typeof gameTime === 'number') {
+          diff = gameTime
+          gameTime = state.gameTime
+        }
+
+        let gameDays = state.gameDays
+        let dayLength = state.dayLength
+
+        let day = gameTime.day + parseInt((gameTime.time + diff) / dayLength)
+        let time = (gameTime.time + diff) % dayLength
+
+        if (day > gameDays || time > dayLength) {
+          return { day: gameDays, time: dayLength, isWorking: false }
+        } else {
+          return { day: day, time: time, isWorking: true }
+        }
       }
     }
   },
@@ -83,16 +105,16 @@ export default {
     load(context, payload) {
       return new Promise((resolve, reject) => {
         context.commit('SET_ID', { id: payload.id })
-        api.engine.getInfo(payload.id).then(data => {
-          context.commit('SET_NAME', data)
-          context.commit('SET_DESCRIBE', data)
-          context.commit('SET_NODES', data)
-          context.commit('SET_GAME_DAYS', data)
-          context.commit('SET_DAY_LENGTH', data)
-          context.commit('SET_PERMISSIONS', data)
-          context.commit('SOCKET_GAME_STAGE_CHANGE', data)
-          context.commit('SOCKET_GAME_TIME_CHANGE', data)
-          resolve()
+        api.engine.getInfo(payload.id).then(engine => {
+          context.commit('SET_NAME', engine)
+          context.commit('SET_DESCRIBE', engine)
+          context.commit('SET_NODES', engine)
+          context.commit('SET_GAME_DAYS', engine)
+          context.commit('SET_DAY_LENGTH', engine)
+          context.commit('SET_PERMISSIONS', engine)
+          context.commit('SOCKET_GAME_STAGE_CHANGE', engine)
+          context.commit('SOCKET_GAME_TIME_CHANGE', engine)
+          resolve(engine)
         })
       })
     },

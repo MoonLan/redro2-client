@@ -16,7 +16,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn @click="clear" flat>清除</v-btn>
-              <v-btn @click="submit" flat>登入</v-btn>
+              <v-btn @click="submit" :disabled="!valid" flat>登入</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>

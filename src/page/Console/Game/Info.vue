@@ -5,10 +5,19 @@
         <v-flex xs12>
           <v-card>
             <v-card-title primary-title>
-              <div>
-                <h3 class="headline mb-0">{{$store.state.engine.name}} 遊戲資訊</h3>
-                <h4>{{id}}</h4>
-              </div>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <h3 class="headline mb-0">
+                    {{$store.state.engine.name}} 遊戲資訊
+                  </h3>
+                </v-flex>
+                <v-flex xs12 sm9>
+                  <h4>{{id}}</h4>
+                </v-flex>
+                <v-flex xs12 sm3 text-xs-right>
+                  {{$store.state.engine.stage}} {{$store.getters[ 'engine/readableGameTime']}}
+                </v-flex>
+              </v-layout>
             </v-card-title>
             <v-tabs v-model="active">
               <v-tab key="overview" ripple>總覽</v-tab>
@@ -81,8 +90,8 @@
                   <v-card-text>
                     <v-layout wrap>
                       <v-flex xs12>
-                        <v-btn @click="$store.dispatch('engine/nextStage')">下一階段</v-btn>
-                        <v-btn @click="$store.dispatch('engine/nextDay')">下一天</v-btn>
+                        <v-btn @click="$store.dispatch('engine/nextStage')" :disabled="$store.state.engine.gameTime.day !== $store.state.engine.dayLength && $store.state.engine.gameTime.isWorking === true" outline>下一階段</v-btn>
+                        <v-btn @click="$store.dispatch('engine/nextDay')" :disabled="$store.state.engine.stage !== 'START' || $store.state.engine.gameTime.isWorking === true" outline>下一天</v-btn>
                       </v-flex>
                     </v-layout>
                   </v-card-text>

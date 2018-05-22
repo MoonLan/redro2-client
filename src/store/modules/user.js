@@ -19,7 +19,11 @@ export default {
       state.level = payload.level
     }
   },
-  getters: {},
+  getters: {
+    isStaffOrAdmin(state) {
+      return [USER_LEVEL.STAFF, USER_LEVEL.ADMIN].includes(state.level)
+    }
+  },
   actions: {
     userLogin(context, payload) {
       return new Promise((resolve, reject) => {

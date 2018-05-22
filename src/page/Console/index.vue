@@ -55,7 +55,7 @@
         <v-icon>notifications</v-icon>
       </v-btn>
       <v-btn flat @click="$router.push('/player/login')">
-        {{$store.state.user.level}}
+        {{$store.state.user.level}} / {{$store.state.user.name}}
         <v-icon class="ml-2">account_circle</v-icon>
       </v-btn>
     </v-toolbar>

@@ -48,8 +48,8 @@ export default {
   }),
   methods: {
     submit() {
-      this.$store.commit('ui/START_LOADING')
       if (this.valid) {
+        this.$store.commit('ui/START_LOADING')
         api.server
           .createGame({
             name: this.name,
@@ -59,9 +59,9 @@ export default {
             nodes: JSON.parse(this.nodes),
             permissions: JSON.parse(this.permissions)
           })
-          .then(data => {
+          .then(engine => {
             this.$store.commit('ui/STOP_LOADING')
-            console.log(data)
+            this.$router.push(`/console/game/${engine.id}`)
           })
           .catch(err => {
             this.$store.commit('ui/STOP_LOADING')

@@ -5,12 +5,14 @@ import * as server from './server'
 import * as engine from './engine'
 import * as account from './account'
 import * as inventory from './inventory'
+import * as io from './io'
 
 export default {
   server: server,
   engine: engine,
   account: account,
-  inventory: inventory
+  inventory: inventory,
+  io: io
 }
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
