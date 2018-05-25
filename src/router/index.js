@@ -17,7 +17,7 @@ export default new Router({
         {
           path: 'game/all',
           component: () => import('@/page/Console/Game/All'),
-          alias: ['game']
+          alias: ['', 'game']
         },
         {
           path: 'game/create',

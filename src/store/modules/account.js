@@ -1,6 +1,21 @@
 import api from '@/api'
 import { ACCOUNT_LEDGER_SIDE } from '@/lib/schema'
 
+function checkIdentity(state, accountEvent) {
+  if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
+    console.warn(
+      '[Store:Account] Different Engine id or node name, current store is',
+      state.engineId,
+      state.nodeName,
+      'but the incoming event is',
+      accountEvent.engineId,
+      accountEvent.nodeName
+    )
+    return false
+  }
+  return true
+}
+
 export default {
   namespaced: true,
   state: {
@@ -46,17 +61,9 @@ export default {
       state.initialCash = payload.initialCash
     },
     SOCKET_ACCOUNT_ADD(state, accountEvent) {
-      if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name,',
-          state.engineId,
-          state.nodeName,
-          accountEvent.engineId,
-          accountEvent.nodeName
-        )
+      if (!checkIdentity(state, accountEvent)) {
         return
       }
-
       let transaction = accountEvent.transaction
       state.journal.push(transaction)
 
@@ -93,14 +100,7 @@ export default {
       }
     },
     SOCKET_ACCOUNT_BANKRUPT(state, accountEvent) {
-      if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name,',
-          state.engineId,
-          state.nodeName,
-          accountEvent.engineId,
-          accountEvent.nodeName
-        )
+      if (!checkIdentity(state, accountEvent)) {
         return
       }
       state.isBankrupt = accountEvent.isBankrupt

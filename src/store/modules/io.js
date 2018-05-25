@@ -1,6 +1,21 @@
 import api from '@/api'
 import { ACCOUNT_LEDGER_SIDE, INVENTORY_MODE, TRANSPORTATION_STATUS } from '@/lib/schema'
 
+function checkIdentity(state, ioEvent) {
+  if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
+    console.warn(
+      '[Store:IO] Different Engine id or node name, current store is',
+      state.engineId,
+      state.nodeName,
+      'but the incoming event is',
+      ioEvent.engineId,
+      ioEvent.nodeName
+    )
+    return false
+  }
+  return true
+}
+
 export default {
   namespaced: true,
   state: {
@@ -71,45 +86,21 @@ export default {
     },
 
     SOCKET_IO_IMPORT(state, ioEvent) {
-      if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          ioEvent.engineId,
-          ioEvent.nodeName
-        )
+      if (!checkIdentity(state, ioEvent)) {
         return
       }
       let ioJournalItem = ioEvent.ioJournalItem
       state.importJournal.push(ioJournalItem)
     },
     SOCKET_IO_EXPORT(state, ioEvent) {
-      if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          ioEvent.engineId,
-          ioEvent.nodeName
-        )
+      if (!checkIdentity(state, ioEvent)) {
         return
       }
       let ioJournalItem = ioEvent.ioJournalItem
       state.exportJournal.push(ioJournalItem)
     },
     SOCKET_IO_IMPORT_COMPLETE(state, ioEvent) {
-      if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          ioEvent.engineId,
-          ioEvent.nodeName
-        )
+      if (!checkIdentity(state, ioEvent)) {
         return
       }
       let id = ioEvent.ioJournalItem._id
@@ -117,15 +108,7 @@ export default {
       iji.transportationStatus = TRANSPORTATION_STATUS.COMPLETED
     },
     SOCKET_IO_EXPORT_COMPLETE(state, ioEvent) {
-      if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          ioEvent.engineId,
-          ioEvent.nodeName
-        )
+      if (!checkIdentity(state, ioEvent)) {
         return
       }
       let id = ioEvent.ioJournalItem._id

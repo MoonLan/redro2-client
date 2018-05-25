@@ -5,12 +5,16 @@
         <v-flex xs12>
           <v-card>
             <v-card-title primary-title>
+              <v-btn icon @click="$router.go(-1)">
+                <v-icon>arrow_back</v-icon>
+              </v-btn>
+              <h3 class="headline mb-0">
+                {{$store.state.engine.name}} 遊戲資訊
+              </h3>
+            </v-card-title>
+            <v-card-text>
+
               <v-layout wrap>
-                <v-flex xs12>
-                  <h3 class="headline mb-0">
-                    {{$store.state.engine.name}} 遊戲資訊
-                  </h3>
-                </v-flex>
                 <v-flex xs12 sm9>
                   <h4>{{id}}</h4>
                 </v-flex>
@@ -18,7 +22,7 @@
                   {{$store.state.engine.stage}} {{$store.getters[ 'engine/readableGameTime']}}
                 </v-flex>
               </v-layout>
-            </v-card-title>
+            </v-card-text>
             <v-tabs v-model="active">
               <v-tab key="overview" ripple>總覽</v-tab>
               <v-tab-item key="overview">

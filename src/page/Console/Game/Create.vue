@@ -6,9 +6,10 @@
           <v-form v-model="valid" ref="form">
             <v-card>
               <v-card-title primary-title>
-                <div>
-                  <h3 class="headline mb-0">創建新遊戲</h3>
-                </div>
+                <v-btn icon @click="$router.go(-1)">
+                  <v-icon>arrow_back</v-icon>
+                </v-btn>
+                <h3 class="headline mb-0">創建新遊戲</h3>
               </v-card-title>
               <v-card-text>
                 <v-text-field v-model="name" label="Name" required :rules="requiredRule"></v-text-field>

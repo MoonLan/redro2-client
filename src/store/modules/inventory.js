@@ -1,6 +1,21 @@
 import api from '@/api'
 import { ACCOUNT_LEDGER_SIDE, INVENTORY_MODE } from '@/lib/schema'
 
+function checkIdentity(state, inventoryEvent) {
+  if (inventoryEvent.engineId !== state.engineId || inventoryEvent.nodeName !== state.nodeName) {
+    console.warn(
+      '[Store:Inventory] Different Engine id or node name, current store is',
+      state.engineId,
+      state.nodeName,
+      'but the incoming event is',
+      inventoryEvent.engineId,
+      inventoryEvent.nodeName
+    )
+    return false
+  }
+  return true
+}
+
 export default {
   namespaced: true,
   state: {
@@ -36,20 +51,6 @@ export default {
       state.mode = payload.mode
     },
     SOCKET_INVENTORY_IMPORT(state, inventoryEvent) {
-      if (
-        inventoryEvent.engineId !== state.engineId ||
-        inventoryEvent.nodeName !== state.nodeName
-      ) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          inventoryEvent.engineId,
-          inventoryEvent.nodeName
-        )
-        return
-      }
       let stocksItemList = inventoryEvent.ioJournalItem.list
       for (let stocksItem of stocksItemList) {
         let good = stocksItem.good
@@ -70,18 +71,7 @@ export default {
       }
     },
     SOCKET_INVENTORY_EXPORT(state, inventoryEvent) {
-      if (
-        inventoryEvent.engineId !== state.engineId ||
-        inventoryEvent.nodeName !== state.nodeName
-      ) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          inventoryEvent.engineId,
-          inventoryEvent.nodeName
-        )
+      if (!checkIdentity(state, inventoryEvent)) {
         return
       }
       let stocksItemList = inventoryEvent.ioJournalItem.list
@@ -109,18 +99,7 @@ export default {
       }
     },
     SOCKET_INVENTORY_COUNT_STORAGE_COST(state, inventoryEvent) {
-      if (
-        inventoryEvent.engineId !== state.engineId ||
-        inventoryEvent.nodeName !== state.nodeName
-      ) {
-        console.warn(
-          'Different Engine id or node name, this is',
-          state.engineId,
-          state.nodeName,
-          'but the incoming event is',
-          inventoryEvent.engineId,
-          inventoryEvent.nodeName
-        )
+      if (!checkIdentity(state, inventoryEvent)) {
         return
       }
     }

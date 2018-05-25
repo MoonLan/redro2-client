@@ -6,6 +6,7 @@ import engine from './modules/engine'
 import account from './modules/account'
 import inventory from './modules/inventory'
 import io from './modules/io'
+import biddingmarketreceiver from './modules/biddingmarketreceiver'
 
 Vue.use(Vuex)
 
@@ -13,9 +14,10 @@ export default new Vuex.Store({
   modules: {
     ui,
     user,
+    engine,
     account,
     inventory,
     io,
-    engine
+    biddingmarketreceiver
   }
 })

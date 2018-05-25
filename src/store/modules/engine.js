@@ -1,5 +1,18 @@
 import api from '@/api'
 
+function checkIdentity(state, engineEvent) {
+  if (engineEvent.id !== state.id) {
+    console.warn(
+      '[Store:Engine] Different Engine id,',
+      state.id,
+      'but the incoming event is',
+      engineEvent.id
+    )
+    return false
+  }
+  return true
+}
+
 export default {
   namespaced: true,
   state: {

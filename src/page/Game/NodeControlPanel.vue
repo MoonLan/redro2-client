@@ -7,6 +7,7 @@
           <account-panel v-if="component.type === 'Account'" :engineId="id" :nodeName="name" />
           <inventory-panel v-else-if="component.type === 'Inventory'" :engineId="id" :nodeName="name" />
           <IOPanel v-else-if="component.type === 'IO'" :engineId="id" :nodeName="name" />
+          <BiddingMarketReceiverPanel v-else-if="component.type === 'BiddingMarketReceiver'" :engineId="id" :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -18,12 +19,14 @@ import api from '@/api'
 import AccountPanel from './components/AccountPanel'
 import InventoryPanel from './components/InventoryPanel'
 import IOPanel from './components/IOPanel'
+import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
 
 export default {
   components: {
     AccountPanel,
     InventoryPanel,
-    IOPanel
+    IOPanel,
+    BiddingMarketReceiverPanel
   },
   data: () => ({
     active: null

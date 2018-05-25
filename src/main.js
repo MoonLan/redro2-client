@@ -7,6 +7,7 @@ import store from '@/store'
 import App from '@/App'
 import '@/lib/bus'
 import '@/lib/socket'
+import '@/lib/notification'
 
 Vue.use(Vuetify)
 
