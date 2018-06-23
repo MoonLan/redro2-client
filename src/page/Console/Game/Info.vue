@@ -5,7 +5,7 @@
         <v-flex xs12>
           <v-card>
             <v-card-title primary-title>
-              <v-btn icon @click="$router.go(-1)">
+              <v-btn icon @click="$router.push('/console/game')">
                 <v-icon>arrow_back</v-icon>
               </v-btn>
               <h3 class="headline mb-0">

@@ -40,9 +40,11 @@ export default {
   state: {
     engineId: null,
     nodeName: null,
+
     upstream: {
       enable: false,
       provider: null,
+      name: null,
       biddings: [],
       breakoffPaneltyRatio: 1.2,
       breakoffCompensationRatio: 0.5,
@@ -53,6 +55,7 @@ export default {
     downstream: {
       enable: false,
       provider: null,
+      name: null,
       biddings: [],
       breakoffPaneltyRatio: 1.2,
       breakoffCompensationRatio: 0.5,
@@ -70,31 +73,43 @@ export default {
     },
 
     SET_ENABLE_UPSTREAM(state, payload) {
-      state.upstream.enable = payload.enableUpstream
+      state.upstream.enable = payload.enable
     },
     SET_UPSTREAM_PROVIDER(state, payload) {
-      state.upstream.provider = payload.upstreamProvider
+      state.upstream.provider = payload.provider
+    },
+    SET_UPSTREAM_NAME(state, payload) {
+      state.upstream.name = payload.name
     },
     SET_UPSTREAM(state, payload) {
-      state.upstream.biddings = payload.biddings
-      state.upstream.breakoffPaneltyRatio = payload.breakoffPaneltyRatio
-      state.upstream.breakoffCompensationRatio = payload.breakoffCompensationRatio
-      state.upstream.transportationTime = payload.transportationTime
-      state.upstream.transportationStatus = payload.transportationStatus
+      state.upstream.enable = payload.upstream.enable
+      state.upstream.provider = payload.upstream.provider
+      state.upstream.name = payload.upstream.name
+      state.upstream.biddings = payload.upstream.biddings
+      state.upstream.breakoffPaneltyRatio = payload.upstream.breakoffPaneltyRatio
+      state.upstream.breakoffCompensationRatio = payload.upstream.breakoffCompensationRatio
+      state.upstream.transportationTime = payload.upstream.transportationTime
+      state.upstream.transportationStatus = payload.upstream.transportationStatus
     },
 
     SET_ENABLE_DOWNSTREAM(state, payload) {
-      state.downstream.enable = payload.enableDownstream
+      state.downstream.enable = payload.enable
     },
     SET_DOWNSTREAM_PROVIDER(state, payload) {
-      state.downstream.provider = payload.downstreamProvider
+      state.downstream.provider = payload.provider
+    },
+    SET_DOWNSTREAM_NAME(state, payload) {
+      state.downstream.name = payload.name
     },
     SET_DOWNSTREAM(state, payload) {
-      state.downstream.biddings = payload.biddings
-      state.downstream.breakoffPaneltyRatio = payload.breakoffPaneltyRatio
-      state.downstream.breakoffCompensationRatio = payload.breakoffCompensationRatio
-      state.downstream.transportationTime = payload.transportationTime
-      state.downstream.transportationStatus = payload.transportationStatus
+      state.downstream.enable = payload.downstream.enable
+      state.downstream.provider = payload.downstream.provider
+      state.downstream.name = payload.downstream.name
+      state.downstream.biddings = payload.downstream.biddings
+      state.downstream.breakoffPaneltyRatio = payload.downstream.breakoffPaneltyRatio
+      state.downstream.breakoffCompensationRatio = payload.downstream.breakoffCompensationRatio
+      state.downstream.transportationTime = payload.downstream.transportationTime
+      state.downstream.transportationStatus = payload.downstream.transportationStatus
     },
 
     SOCKET_BIDDING_RELEASED(state, biddingMarketEvent) {
@@ -155,28 +170,38 @@ export default {
       return new Promise((resolve, reject) => {
         context.commit('SET_ENGINE_ID', payload)
         context.commit('SET_NODE_NAME', payload)
-        api.biddingmarketreciver
+        api.biddingmarketreceiver
           .getInfo(payload.engineId, payload.nodeName)
-          .then(io => {
-            context.commit('SET_ENABLE_IMPORT', io)
-            context.commit('SET_IMPORT_JOURNAL', io)
-            context.commit('SET_AVAILABLE_IMPORT_GOODS', io)
-            context.commit('SET_HAS_IMPORT_LIMIT', io)
-            context.commit('SET_REJECT_NOT_AVAILABLE_IMPORT_GOODS', io)
-            context.commit('SET_ENABLE_EXPORT', io)
-            context.commit('SET_EXPORT_JOURNAL', io)
-            context.commit('SET_AVAILABLE_EXPORT_GOODS', io)
-            context.commit('SET_HAS_EXPORT_LIMIT', io)
-            context.commit('SET_REJECT_NOT_AVAILABLE_EXPORT_GOODS', io)
-            context.commit('SET_TRANSPORTATION_COST', io)
-            context.commit('SET_BATCH_SIZE', io)
-            resolve(io)
+          .then(biddingMarketReciver => {
+            if (biddingMarketReciver.upstream.enable) {
+              context.commit('SET_UPSTREAM', biddingMarketReciver)
+            } else {
+              context.commit('SET_ENABLE_UPSTREAM', { enable: false })
+            }
+
+            if (biddingMarketReciver.downstream.enable) {
+              context.commit('SET_DOWNSTREAM', biddingMarketReciver)
+            } else {
+              context.commit('SET_ENABLE_DOWNSTREAM', { enable: false })
+            }
+            resolve(biddingMarketReciver)
           })
           .catch(err => {
             reject(err)
           })
       })
     },
-    realease(context, payload) {}
+    release(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.biddingmarketreceiver.releaseToUpstream
+          .add(context.state.engineId, context.state.nodeName, accountTransaction)
+          .then(account => {
+            resolve(account)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    }
   }
 }

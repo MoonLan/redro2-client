@@ -6,13 +6,15 @@ import * as engine from './engine'
 import * as account from './account'
 import * as inventory from './inventory'
 import * as io from './io'
+import * as biddingmarketreceiver from './biddingmarketreceiver'
 
 export default {
   server: server,
   engine: engine,
   account: account,
   inventory: inventory,
-  io: io
+  io: io,
+  biddingmarketreceiver: biddingmarketreceiver
 }
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'

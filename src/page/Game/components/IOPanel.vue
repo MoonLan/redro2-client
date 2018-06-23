@@ -24,19 +24,20 @@
               </v-flex>
             </v-layout>
           </v-card-text>
-          <v-divider v-if="$store.getters['user/isStaffOrAdmin']" />
-          <v-card-text v-if="$store.getters['user/isStaffOrAdmin']">
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-subheader>工作人員用控制項</v-subheader>
-              </v-flex>
-              <v-flex xs12>
-                <v-btn @click="dialog = true" outline>
-                  <v-icon>import_export</v-icon>輸入輸出
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
+          
+          <template v-if="$store.getters['user/isStaffOrAdmin']">
+            <v-divider />
+            <v-subheader>工作人員用控制項</v-subheader>
+            <v-card-text>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-btn @click="dialog = true" outline>
+                    <v-icon>import_export</v-icon>輸入輸出
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </template>
         </v-card>
       </v-tab-item>
 
