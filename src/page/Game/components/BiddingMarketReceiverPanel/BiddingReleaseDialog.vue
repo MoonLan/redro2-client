@@ -1,17 +1,36 @@
 <template>
-  <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" max-width="500px" :value="value" @input="value = $event.target.value">
-    <v-form v-model="valid" ref="form">
+  <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly"
+            persistent
+            max-width="500px"
+            :value="value"
+            @input="(val) => {$emit('input', val)}">
+    <v-form v-model="valid"
+            ref="form">
       <v-card>
         <v-card-title>
           <h3 class="headline">釋出競標</h3>
         </v-card-title>
         <v-card-text>
           <v-layout wrap>
-            <v-flex xs12 sm6 :pr-2="!$vuetify.breakpoint.xsOnly">
-              <v-select :items="nodesNameList" v-model="publisher" label="釋出者" autocomplete required :rules="requiredRule"></v-select>
+            <v-flex xs12
+                    sm6
+                    :pr-2="!$vuetify.breakpoint.xsOnly">
+              <v-select :items="nodesNameList"
+                        v-model="publisher"
+                        label="釋出者"
+                        autocomplete
+                        required
+                        :rules="requiredRule"></v-select>
             </v-flex>
-            <v-flex xs12 sm6 :pl-2="!$vuetify.breakpoint.xsOnly">
-              <v-select :items="nodesNameList" :disabled="!!chain" v-model="market" label="釋出市場" required :rules="requiredRule"></v-select>
+            <v-flex xs12
+                    sm6
+                    :pl-2="!$vuetify.breakpoint.xsOnly">
+              <v-select :items="nodesNameList"
+                        :disabled="!!chain"
+                        v-model="market"
+                        label="釋出市場"
+                        required
+                        :rules="requiredRule"></v-select>
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -19,23 +38,52 @@
           <h3>項目</h3>
           <v-layout wrap>
             <template v-for="(item, index) in list">
-              <v-flex xs4 sm5 :key="index + '-good'">
-                <v-select :items="goods" v-model="item.good" label="種類" autocomplete required :rules="requiredRule" hide-details></v-select>
+              <v-flex xs4
+                      sm5
+                      :key="index + '-good'">
+                <v-select :items="goods"
+                          v-model="item.good"
+                          label="種類"
+                          autocomplete
+                          required
+                          :rules="requiredRule"
+                          hide-details></v-select>
               </v-flex>
-              <v-flex xs3 sm3 :key="index + '-unit'">
-                <v-text-field v-model="item.unit" label="數量" type="number" required :rules="requiredRule" hide-details></v-text-field>
+              <v-flex xs3
+                      sm3
+                      :key="index + '-unit'">
+                <v-text-field v-model="item.unit"
+                              label="數量"
+                              type="number"
+                              required
+                              :rules="requiredRule"
+                              hide-details></v-text-field>
               </v-flex>
-              <v-flex xs3 sm3 :key="index + '-unitPirce'">
-                <v-text-field v-model="item.unitPrice" label="單價" type="number" required :rules="requiredRule" hide-details></v-text-field>
+              <v-flex xs3
+                      sm3
+                      :key="index + '-unitPirce'">
+                <v-text-field v-model="item.unitPrice"
+                              label="單價"
+                              type="number"
+                              required
+                              :rules="requiredRule"
+                              hide-details></v-text-field>
               </v-flex>
-              <v-flex xs2 sm1 :key="index + '-close'">
-                <v-btn class="my-3" icon flat @click="removeItem(index)">
+              <v-flex xs2
+                      sm1
+                      :key="index + '-close'">
+                <v-btn class="my-3"
+                       icon
+                       flat
+                       @click="removeItem(index)">
                   <v-icon>close</v-icon>
                 </v-btn>
               </v-flex>
             </template>
           </v-layout>
-          <v-btn @click="addItem('debit')" block outline>增加項目</v-btn>
+          <v-btn @click="addItem('debit')"
+                 block
+                 outline>增加項目</v-btn>
         </v-card-text>
         <v-card-text>
           <v-layout class="labeled-list">
@@ -50,10 +98,14 @@
           </v-layout>
         </v-card-text>
         <v-card-actions>
-          <v-btn flat @click="clear(), $emit('input', false)">關閉</v-btn>
+          <v-btn flat
+                 @click="clear(), $emit('input', false)">關閉</v-btn>
           <v-spacer></v-spacer>
-          <v-btn flat @click="clear">清除</v-btn>
-          <v-btn flat :disabled="!valid || loading" @click="submit">登記</v-btn>
+          <v-btn flat
+                 @click="clear">清除</v-btn>
+          <v-btn flat
+                 :disabled="!valid || loading"
+                 @click="submit">登記</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -88,12 +140,18 @@ export default {
   },
   computed: {
     node() {
-      return this.$store.state.engine.nodes.find(node => node.name === this.nodeName) || {}
+      return (
+        this.$store.state.engine.nodes.find(
+          node => node.name === this.nodeName
+        ) || {}
+      )
     },
     price() {
       let sum = 0
       for (let item of this.list) {
-        sum += parseInt(item.unit ? item.unit : 0) * parseFloat(item.unitPrice ? item.unitPrice : 0)
+        sum +=
+          parseInt(item.unit ? item.unit : 0) *
+          parseFloat(item.unitPrice ? item.unitPrice : 0)
       }
       return sum
     },
@@ -109,29 +167,36 @@ export default {
   watch: {
     chain(newVal) {
       console.log(newVal)
-      this.market = newVal ? this.$store.state.biddingmarketreceiver[newVal].name : null
+      this.market = newVal
+        ? this.$store.state.biddingmarketreceiver[newVal].name
+        : null
     }
   },
   methods: {
     submit() {
-      let ioJournalItem = {
+      let biddingMarketItem = {
+        goods: this.list,
+        stage: 'BIDDING',
+        publishedFromChain:
+          this.chain === 'upstream' ? 'downstream' : 'upstream',
         publisher: this.publisher,
-        to: this.to,
-        list: this.list,
         price: this.price,
-        transportationCost: this.transportationCost,
-        transportationTime: this.transportationTime,
-        transportationStatus: this.hasTransportationDelay
-          ? TRANSPORTATION_STATUS.DELIVERING
-          : TRANSPORTATION_STATUS.COMPLETED,
+        timeLimit: this.timeLimit,
         memo: this.memo,
         gameTime: this.$store.state.engine.gameTime
       }
       this.loading = true
       this.$store.commit('ui/START_LOADING')
       this.$store
-        .dispatch(`io/${this.way === '0' ? 'import' : 'export'}`, ioJournalItem)
-        .then(io => {
+        .dispatch(
+          `biddingmarketreceiver/${
+            this.chain === 'upstream'
+              ? 'releaseToUpstream'
+              : 'releaseToDownstream'
+          }`,
+          biddingMarketItem
+        )
+        .then(() => {
           this.loading = false
           this.$emit('input', false)
           this.$store.commit('ui/STOP_LOADING')
@@ -158,7 +223,9 @@ export default {
     }
   },
   mounted() {
-    this.market = this.chain ? this.$store.state.biddingmarketreceiver[this.chain].name : null
+    this.market = this.chain
+      ? this.$store.state.biddingmarketreceiver[this.chain].name
+      : null
   }
 }
 </script>

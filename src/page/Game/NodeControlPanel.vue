@@ -1,13 +1,27 @@
 <template>
-  <v-container ma-0 pa-0 class="game-nodecontrolpanel">
+  <v-container ma-0
+               pa-0
+               class="game-nodecontrolpanel">
     <v-tabs v-model="active">
       <template v-for="component in components">
-        <v-tab :key="component.type" ripple>{{component.type}}</v-tab>
+        <v-tab :key="component.type"
+               ripple>{{component.type}}</v-tab>
         <v-tab-item :key="component.type + '-item'">
-          <account-panel v-if="component.type === 'Account'" :engineId="id" :nodeName="name" />
-          <inventory-panel v-else-if="component.type === 'Inventory'" :engineId="id" :nodeName="name" />
-          <IOPanel v-else-if="component.type === 'IO'" :engineId="id" :nodeName="name" />
-          <BiddingMarketReceiverPanel v-else-if="component.type === 'BiddingMarketReceiver'" :engineId="id" :nodeName="name" />
+          <account-panel v-if="component.type === 'Account'"
+                         :engineId="id"
+                         :nodeName="name" />
+          <inventory-panel v-else-if="component.type === 'Inventory'"
+                           :engineId="id"
+                           :nodeName="name" />
+          <IOPanel v-else-if="component.type === 'IO'"
+                   :engineId="id"
+                   :nodeName="name" />
+          <BiddingMarketPanel v-else-if="component.type === 'BiddingMarket'"
+                              :engineId="id"
+                              :nodeName="name" />
+          <BiddingMarketReceiverPanel v-else-if="component.type === 'BiddingMarketReceiver'"
+                                      :engineId="id"
+                                      :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -19,6 +33,7 @@ import api from '@/api'
 import AccountPanel from './components/AccountPanel'
 import InventoryPanel from './components/InventoryPanel'
 import IOPanel from './components/IOPanel'
+import BiddingMarketPanel from './components/BiddingMarketPanel'
 import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
 
 export default {
@@ -26,6 +41,7 @@ export default {
     AccountPanel,
     InventoryPanel,
     IOPanel,
+    BiddingMarketPanel,
     BiddingMarketReceiverPanel
   },
   data: () => ({
@@ -33,7 +49,10 @@ export default {
   }),
   computed: {
     node() {
-      return this.$store.state.engine.nodes.find(node => node.name === this.name) || {}
+      return (
+        this.$store.state.engine.nodes.find(node => node.name === this.name) ||
+        {}
+      )
     },
     id() {
       return this.$route.params.id

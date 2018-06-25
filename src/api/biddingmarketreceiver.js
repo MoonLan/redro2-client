@@ -9,11 +9,11 @@ export function getInfo(engineId, nodeName) {
   })
 }
 
-export function releaseToUpstream(engineId, nodeName, biddingMarketItem) {
+export function releaseToUpstream(engineId, nodeName, biddingItem) {
   return legalRequest('/api/biddingmarketreceiver/releaseToUpstream', {
     engineId: engineId,
     nodeName: nodeName,
-    biddingMarketItem: biddingMarketItem
+    biddingItem: biddingItem
   }).then(data => {
     return Promise.resolve(data.biddingmarketreceiver)
   })
@@ -49,12 +49,11 @@ export function breakoffToUpstream(engineId, nodeName, biddingStageChange) {
   })
 }
 
-
-export function releaseToDownstream(engineId, nodeName, biddingMarketItem) {
+export function releaseToDownstream(engineId, nodeName, biddingItem) {
   return legalRequest('/api/biddingmarketreceiver/releaseToDownstream', {
     engineId: engineId,
     nodeName: nodeName,
-    biddingMarketItem: biddingMarketItem
+    biddingItem: biddingItem
   }).then(data => {
     return Promise.resolve(data.biddingmarketreceiver)
   })

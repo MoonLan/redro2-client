@@ -6,7 +6,12 @@ import * as engine from './engine'
 import * as account from './account'
 import * as inventory from './inventory'
 import * as io from './io'
+import * as biddingmarket from './biddingmarket'
 import * as biddingmarketreceiver from './biddingmarketreceiver'
+import * as assemblydepartment from './assemblydepartment'
+import * as inventoryregister from './inventoryregister'
+import * as market from './market'
+import * as marketreceiver from './marketreceiver'
 
 export default {
   server: server,
@@ -14,7 +19,12 @@ export default {
   account: account,
   inventory: inventory,
   io: io,
-  biddingmarketreceiver: biddingmarketreceiver
+  biddingmarket: biddingmarket,
+  biddingmarketreceiver: biddingmarketreceiver,
+  assemblydepartment: assemblydepartment,
+  inventoryregister: inventoryregister,
+  market: market,
+  marketreceiver: marketreceiver
 }
 
 export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
@@ -37,13 +47,17 @@ export function legalRequest(apiPath, data) {
           let err = res.data
           if (err.id) {
             store.commit('ui/OPEN_DIALOG', {
-              title: err.id in ERR_MSG ? ERR_MSG[err.id].title : '對不起，系統發生錯誤了！',
+              title:
+                err.id in ERR_MSG
+                  ? ERR_MSG[err.id].title
+                  : '對不起，系統發生錯誤了！',
               text:
                 err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
                   ? ERR_MSG[err.id].text + '<br>'
                   : '',
               more:
-                '如果你覺得這不應該發生，請試著向主辦方反映。' + (err.more ? '<br>' + err.more : '')
+                '如果你覺得這不應該發生，請試著向主辦方反映。' +
+                (err.more ? '<br>' + err.more : '')
             })
           }
           reject(res.data)

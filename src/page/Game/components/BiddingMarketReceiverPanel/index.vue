@@ -71,110 +71,17 @@ export default {
   },
   data: () => ({
     active: null,
-    way: '1',
-    goods: ['Car', 'Engine', 'Body', 'Wheel'],
-    headers: [
-      {
-        text: '時間',
-        align: 'left',
-        sortable: false,
-        value: 'gameTime'
-      },
-      {
-        text: '商品',
-        align: 'left',
-        sortable: false,
-        value: 'list'
-      },
-      { text: '價格', value: 'price', sortable: false },
-      { text: '狀態', value: 'transportationStatus', sortable: false }
-    ],
-
     dialog: null
   }),
   watch: {
     nodeName(newVal) {
       this.load()
-    },
-    way(newVal) {
-      switch (newVal) {
-        case '0':
-          this.to = this.nodeName
-          break
-
-        default:
-        case '1':
-          this.from = this.nodeName
-          break
-      }
     }
   },
   computed: {
-    node() {
-      return this.$store.state.engine.nodes.find(node => node.name === this.nodeName) || {}
-    },
-    price() {
-      let sum = 0
-      for (let item of this.list) {
-        sum += parseInt(item.unit ? item.unit : 0) * parseFloat(item.unitPrice ? item.unitPrice : 0)
-      }
-      return sum
-    },
-    nodesNameList() {
-      let list = []
-      for (let node of this.$store.state.engine.nodes) {
-        list.push(node.name)
-      }
-      return list
-    },
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime'])
   },
   methods: {
-    submit() {
-      let a // TODO:
-      let ioJournalItem = {
-        from: this.from,
-        to: this.to,
-        list: this.list,
-        price: this.price,
-        transportationCost: this.transportationCost,
-        transportationTime: this.transportationTime,
-        transportationStatus: this.hasTransportationDelay
-          ? TRANSPORTATION_STATUS.DELIVERING
-          : TRANSPORTATION_STATUS.COMPLETED,
-        memo: this.memo,
-        gameTime: this.$store.state.engine.gameTime
-      }
-      this.loading = true
-      this.$store.commit('ui/START_LOADING')
-      this.$store
-        .dispatch(`io/${this.way === '0' ? 'import' : 'export'}`, ioJournalItem)
-        .then(io => {
-          this.loading = false
-          this.dialog = false
-          this.$store.commit('ui/STOP_LOADING')
-        })
-        .catch(err => {
-          this.loading = false
-          this.dialog = false
-          this.$store.commit('ui/STOP_LOADING')
-          console.error(err)
-        })
-      asd
-    },
-    clear() {
-      this.$refs.form.reset()
-    },
-    addItem() {
-      this.list.push({
-        good: '',
-        unit: 0,
-        unitPrice: 0
-      })
-    },
-    removeItem(index) {
-      this.list.splice(index, 1)
-    },
     load() {
       this.$store.dispatch('biddingmarketreceiver/load', {
         engineId: this.engineId,
