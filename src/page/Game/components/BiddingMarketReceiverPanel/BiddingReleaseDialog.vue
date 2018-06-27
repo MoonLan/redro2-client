@@ -1,12 +1,13 @@
 <template>
   <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly"
             persistent
+            scrollable
             max-width="500px"
             :value="value"
             @input="(val) => {$emit('input', val)}">
-    <v-form v-model="valid"
-            ref="form">
-      <v-card>
+    <v-card>
+      <v-form v-model="valid"
+              ref="form">
         <v-card-title>
           <h3 class="headline">釋出競標</h3>
         </v-card-title>
@@ -27,7 +28,7 @@
             <v-flex xs12
                     sm6
                     :pl-2="!$vuetify.breakpoint.xsOnly">
-              {{chain === 'upstream' ? upstream.name : downstream.name}}
+              {{$t('BiddingMarketReceiver.' + (chain === 'upstream' ? upstream.name : downstream.name))}}
               <!--
               <v-select :items="nodesNameList"
                         :disabled="!!chain"
@@ -111,8 +112,10 @@
                  :disabled="!valid || loading"
                  @click="submit">登記</v-btn>
         </v-card-actions>
-      </v-card>
-    </v-form>
+
+        <div style="flex: 1 1 auto;"></div>
+      </v-form>
+    </v-card>
   </v-dialog>
 </template>
 

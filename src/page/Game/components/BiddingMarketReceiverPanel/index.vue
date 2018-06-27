@@ -1,39 +1,35 @@
 <template>
-  <v-container ma-0 pa-0 class="game-biddingmarketreceiverpanel">
-    <v-tabs v-model="active">
-      <v-tab key="overview" ripple>概覽</v-tab>
+  <v-container ma-0
+               pa-0
+               fluid
+               class="game-biddingmarketreceiverpanel">
+    <v-tabs v-model="active"
+            centered>
+      <v-tab key="overview"
+             ripple>概覽</v-tab>
       <v-tab-item key="overview">
         <v-card flat>
-          <template v-for="chain in ['upstream', 'downstream']" v-if="$store.state.biddingmarketreceiver[chain].enable">
+          <template v-for="chain in ['upstream', 'downstream']"
+                    v-if="$store.state.biddingmarketreceiver[chain].enable">
             <v-subheader :key="chain">{{chain}} {{$store.state.biddingmarketreceiver[chain].name}}</v-subheader>
 
             <v-card-text :key="chain + '-card-text'">
-              <v-layout wrap class="labeled-list">
-                <v-flex xs6 md3>
+              <v-layout wrap
+                        class="labeled-list">
+                <v-flex xs6
+                        md3>
                   <span class="label">物流時間</span>
                   {{$store.state.biddingmarketreceiver[chain].transportationTime}}秒
                 </v-flex>
-                <v-flex xs6 md3>
+                <v-flex xs6
+                        md3>
                   <span class="label">解約罰金比例</span>
                   {{$store.state.biddingmarketreceiver[chain].breakoffPaneltyRatio}}倍訂單價格
                 </v-flex>
-                <v-flex xs6 md3>
+                <v-flex xs6
+                        md3>
                   <span class="label">解約賠償比例</span>
                   {{$store.state.biddingmarketreceiver[chain].breakoffCompensationRatio}}倍訂單價格
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-          </template>
-
-          <template v-if="$store.getters['user/isStaffOrAdmin']">
-            <v-divider />
-            <v-subheader>工作人員用控制項</v-subheader>
-            <v-card-text>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-btn @click="dialog = true" outline>
-                    <v-icon>launch</v-icon>釋出競標
-                  </v-btn>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -41,15 +37,43 @@
         </v-card>
       </v-tab-item>
 
-      <template v-for="chain in ['upstream', 'downstream']" v-if="$store.state.biddingmarketreceiver[chain].enable">
-        <v-tab :key="chain" ripple>{{$store.state.biddingmarketreceiver[chain].name}}</v-tab>
+      <template v-for="chain in ['upstream', 'downstream']"
+                v-if="$store.state.biddingmarketreceiver[chain].enable">
+        <v-tab :key="chain"
+               ripple>{{$t('BiddingMarketReceiver.' + ($store.state.biddingmarketreceiver[chain].name))}}</v-tab>
         <v-tab-item :key="chain">
           <bidding-tabs :chain="chain" />
         </v-tab-item>
       </template>
     </v-tabs>
 
-    <bidding-release-dialog v-model="dialog" />
+    <v-btn v-if="$store.state.biddingmarketreceiver.upstream.enable"
+           @click="dialog.upstream = true"
+           fixed
+           fab
+           bottom
+           right
+           :key="'upstream-btn'">
+      <v-icon>launch</v-icon>
+    </v-btn>
+    <bidding-release-dialog v-if="$store.state.biddingmarketreceiver.upstream.enable"
+                            v-model="dialog.upstream"
+                            :chain="'upstream'"
+                            :key="'upstream-dialog'" />
+
+    <v-btn v-if="$store.state.biddingmarketreceiver.downstream.enable"
+           @click="dialog.downstream = true"
+           fixed
+           fab
+           bottom
+           right
+           :key="'downstream-btn'">
+      <v-icon>launch</v-icon>
+    </v-btn>
+    <bidding-release-dialog v-if="$store.state.biddingmarketreceiver.downstream.enable"
+                            v-model="dialog.downstream"
+                            :chain="'downstream'"
+                            :key="'downstream-dialog'" />
   </v-container>
 </template>
 
@@ -71,7 +95,10 @@ export default {
   },
   data: () => ({
     active: null,
-    dialog: null
+    dialog: {
+      upstream: null,
+      downstream: null
+    }
   }),
   watch: {
     nodeName(newVal) {

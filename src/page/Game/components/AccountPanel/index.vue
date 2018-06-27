@@ -1,8 +1,10 @@
 <template>
   <v-container ma-0
                pa-0
+               fluid
                class="game-accountpanel">
-    <v-tabs v-model="active">
+    <v-tabs v-model="active"
+            centered>
       <v-tab key="overview"
              ripple>概覽</v-tab>
       <v-tab-item key="overview">
@@ -29,6 +31,26 @@
                       sm3>
                 <span class="label">銷貨收入</span>
                 {{$store.getters['account/getBalance']('Sales')}}
+              </v-flex>
+              <v-flex xs6
+                      sm3>
+                <span class="label">存貨成本</span>
+                {{$store.getters['account/getBalance']('Inventory')}}
+              </v-flex>
+              <v-flex xs6
+                      sm3>
+                <span class="label">倉儲成本</span>
+                {{$store.getters['account/getBalance']('CostOfWarehousing')}}
+              </v-flex>
+              <v-flex xs6
+                      sm3>
+                <span class="label">銷貨成本</span>
+                {{$store.getters['account/getBalance']('CostOfSales')}}
+              </v-flex>
+              <v-flex xs6
+                      sm3>
+                <span class="label">運輸成本</span>
+                {{$store.getters['account/getBalance']('CostOfTranportation')}}
               </v-flex>
             </v-layout>
           </v-card-text>

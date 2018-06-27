@@ -6,18 +6,18 @@ import {
   BIDDING_ITEM_STAGE
 } from '@/lib/schema'
 
-function checkIdentity(state, marketReceiverEvent) {
+function checkIdentity(state, marketEvent) {
   if (
-    marketReceiverEvent.engineId !== state.engineId ||
-    marketReceiverEvent.provider !== state.provider
+    marketEvent.engineId !== state.engineId ||
+    marketEvent.nodeName !== state.nodeName
   ) {
     console.warn(
-      '[Store:MarketReceiver] Different Engine id or node name, current store is',
+      '[Store:Market] Different Engine id or node name, current store is',
       state.engineId,
-      state.provider,
+      state.nodeName,
       'but the incoming event is',
-      marketReceiverEvent.engineId,
-      marketReceiverEvent.provider
+      marketEvent.engineId,
+      marketEvent.nodeName
     )
     return false
   }
@@ -30,8 +30,9 @@ export default {
     engineId: null,
     nodeName: null,
 
-    provider: null,
-    news: null
+    upstreams: null,
+    news: null,
+    needs: null
   },
   getters: {
     currentMarketCarPrice(state) {
@@ -45,6 +46,12 @@ export default {
         return 0
       }
       return state.news[state.news.length - 1].marketNeeds[0].unit
+    },
+    currentMarketCarLeftDemand(state) {
+      if (!state.needs || state.needs.length === 0) {
+        return 0
+      }
+      return state.needs[0].unit
     }
   },
   mutations: {
@@ -55,11 +62,14 @@ export default {
       state.nodeName = payload.nodeName
     },
 
-    SET_PROVIDER(state, payload) {
-      state.provider = payload.provider
+    SET_UPSTREAMS(state, payload) {
+      state.upstreams = payload.upstreams
     },
     SET_NEWS(state, payload) {
       state.news = payload.news
+    },
+    SET_NEEDS(state, payload) {
+      state.needs = payload.needs
     },
 
     SOCKET_MARKET_NEWS_PUBLISHED(state, marketEvent) {
@@ -67,6 +77,13 @@ export default {
         return
       }
       state.news = marketEvent.news
+      state.needs = marketEvent.needs
+    },
+    SOCKET_MARKET_NEEDS_CHANGE(state, marketEvent) {
+      if (!checkIdentity(state, marketEvent)) {
+        return
+      }
+      state.needs = marketEvent.needs
     }
   },
   actions: {
@@ -74,13 +91,30 @@ export default {
       return new Promise((resolve, reject) => {
         context.commit('SET_ENGINE_ID', payload)
         context.commit('SET_NODE_NAME', payload)
-        api.marketreceiver
+        api.market
           .getInfo(payload.engineId, payload.nodeName)
-          .then(marketreceiver => {
-            context.commit('SET_PROVIDER', marketreceiver)
-            context.commit('SET_NEWS', marketreceiver)
+          .then(market => {
+            context.commit('SET_UPSTREAMS', market)
+            context.commit('SET_NEWS', market)
+            context.commit('SET_NEEDS', market)
 
-            resolve(marketreceiver)
+            resolve(market)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    buy(context, marketJournalItem) {
+      return new Promise((resolve, reject) => {
+        api.market
+          .buy(
+            context.state.engineId,
+            context.state.nodeName,
+            marketJournalItem
+          )
+          .then(market => {
+            resolve(market)
           })
           .catch(err => {
             reject(err)

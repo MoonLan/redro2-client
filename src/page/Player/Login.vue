@@ -1,25 +1,47 @@
 <template>
   <v-container class="player-login fill-height">
-    <v-layout wrap justify-center align-center>
-      <v-flex xs12 sm6 md4 lg3 xl2>
-        <v-form v-model="valid" ref="form">
-          <v-card>
+    <v-layout wrap
+              justify-center
+              align-center>
+      <v-flex xs12
+              sm6
+              md4
+              lg3
+              xl2>
+        <v-card>
+          <v-form v-model="valid"
+                  ref="form">
             <v-card-title primary-title>
+              <v-btn @click="$router.go(-1)"
+                     icon
+                     flat>
+                <v-icon>arrow_back</v-icon>
+              </v-btn>
               <div>
                 <h3 class="headline mb-0">登入</h3>
               </div>
             </v-card-title>
             <v-card-text>
-              <v-text-field v-model="name" label="Name" required :rules="requiredRule"></v-text-field>
-              <v-text-field v-model="password" label="Password" type="password" required :rules="requiredRule"></v-text-field>
+              <v-text-field v-model="name"
+                            label="Name"
+                            required
+                            :rules="requiredRule"></v-text-field>
+              <v-text-field v-model="password"
+                            label="Password"
+                            type="password"
+                            required
+                            :rules="requiredRule"></v-text-field>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="clear" flat>清除</v-btn>
-              <v-btn @click="submit" :disabled="!valid" flat>登入</v-btn>
+              <v-btn @click="clear"
+                     flat>清除</v-btn>
+              <v-btn @click="submit"
+                     :disabled="!valid"
+                     flat>登入</v-btn>
             </v-card-actions>
-          </v-card>
-        </v-form>
+          </v-form>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -41,7 +63,10 @@ export default {
       this.$store.commit('ui/START_LOADING')
       if (this.valid) {
         this.$store
-          .dispatch('user/userLogin', { name: this.name, password: this.password })
+          .dispatch('user/userLogin', {
+            name: this.name,
+            password: this.password
+          })
           .then(user => {
             this.$store.commit('ui/STOP_LOADING')
             if (user.level === 'ADMIN') {

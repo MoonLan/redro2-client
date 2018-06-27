@@ -9,6 +9,8 @@ import io from './modules/io'
 import biddingmarket from './modules/biddingmarket'
 import biddingmarketreceiver from './modules/biddingmarketreceiver'
 import assemblydepartment from './modules/assemblydepartment'
+import market from './modules/market'
+import marketreceiver from './modules/marketreceiver'
 
 Vue.use(Vuex)
 
@@ -22,6 +24,8 @@ export default new Vuex.Store({
     io,
     biddingmarket,
     biddingmarketreceiver,
-    assemblydepartment
+    assemblydepartment,
+    market,
+    marketreceiver
   }
 })

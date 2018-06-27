@@ -67,7 +67,7 @@
                    @click="biddingItemDialogBiddingItem = item; biddingItemDialog = true"
                    flat
                    color="primary">準備運輸</v-btn>
-            <span v-else-if="item.publisher === nodeName && item.stage === 'BIDDING'">您上架的</span>
+            <span v-else-if="item.publisher === nodeName && item.stage === 'BIDDING'">你上架的</span>
             <span v-else-if="item.publisher === nodeName && item.stage === 'SIGNED'">製造中</span>
             <span v-else-if="item.stage === 'COMPLETED'">已送出</span>
           </v-card-actions>

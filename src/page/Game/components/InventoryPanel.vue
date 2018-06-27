@@ -1,20 +1,29 @@
 <template>
-  <v-container ma-0 pa-0 class="game-inventorypanel">
-    <v-tabs v-model="active">
-      <v-tab key="overview" ripple>概覽</v-tab>
+  <v-container ma-0
+               pa-0
+               fluid
+               class="game-inventorypanel">
+    <v-tabs v-model="active"
+            centered>
+      <v-tab key="overview"
+             ripple>概覽</v-tab>
       <v-tab-item key="overview">
         <v-card flat>
           <v-card-text>
-            <v-layout wrap class="labeled-list">
-              <v-flex xs6 md3>
+            <v-layout wrap
+                      class="labeled-list">
+              <v-flex xs6
+                      md3>
                 <span class="label">模式</span>
                 {{$store.state.inventory.mode}}
               </v-flex>
-              <v-flex xs6 md3>
+              <v-flex xs6
+                      md3>
                 <span class="label">存貨成本</span>
                 {{$store.getters['account/getBalance']('Inventory')}}
               </v-flex>
-              <v-flex xs6 md3>
+              <v-flex xs6
+                      md3>
                 <span class="label">倉儲成本</span>
                 {{$store.getters['account/getBalance']('CostOfWarehousing')}}
               </v-flex>
@@ -27,7 +36,8 @@
             <v-card-text>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-btn @click="dialog = true" outline>
+                  <v-btn @click="dialog = true"
+                         outline>
                     <v-icon>import_export</v-icon>輸入輸出倉儲
                   </v-btn>
                 </v-flex>
@@ -37,23 +47,28 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab key="storage" ripple>倉儲</v-tab>
+      <v-tab key="storage"
+             ripple>倉儲</v-tab>
       <v-tab-item key="storage">
         <v-card flat>
-          <v-card-text>
-            <v-data-table :headers="headers" :items="$store.state.inventory.storage" hide-actions>
-              <template slot="items" slot-scope="props">
-                <td>{{ props.item.good }}</td>
-                <td class="text-xs-right">{{ props.item.unit }}</td>
-              </template>
-            </v-data-table>
-          </v-card-text>
+          <v-data-table :headers="headers"
+                        :items="$store.state.inventory.storage"
+                        hide-actions>
+            <template slot="items"
+                      slot-scope="props">
+              <td>{{ props.item.good }}</td>
+              <td class="text-xs-right">{{ props.item.unit }}</td>
+            </template>
+          </v-data-table>
         </v-card>
       </v-tab-item>
     </v-tabs>
 
-    <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" max-width="500px" v-model="dialog">
-      <v-form v-model="valid" ref="form">
+    <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly"
+              max-width="500px"
+              v-model="dialog">
+      <v-form v-model="valid"
+              ref="form">
         <v-card>
           <v-card-title>
             <h3 class="headline">輸入輸出倉儲</h3>
@@ -67,37 +82,86 @@
                 </v-tabs>
               </v-flex>
               <v-flex xs12>
-                <v-text-field v-model="memo" label="備註"></v-text-field>
+                <v-text-field v-model="memo"
+                              label="備註"></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 :pr-2="!$vuetify.breakpoint.xsOnly">
-                <v-select :items="nodesNameList" v-model="from" label="輸出方" :disabled="way === '1'" autocomplete required :rules="requiredRule" hide-details></v-select>
+              <v-flex xs12
+                      sm6
+                      :pr-2="!$vuetify.breakpoint.xsOnly">
+                <v-select :items="nodesNameList"
+                          v-model="from"
+                          label="輸出方"
+                          :disabled="way === '1'"
+                          autocomplete
+                          required
+                          :rules="requiredRule"
+                          hide-details></v-select>
               </v-flex>
-              <v-flex xs12 sm6 :pl-2="!$vuetify.breakpoint.xsOnly">
-                <v-select :items="nodesNameList" v-model="to" label="輸入方" :disabled="way === '0'" autocomplete required :rules="requiredRule" hide-details></v-select>
+              <v-flex xs12
+                      sm6
+                      :pl-2="!$vuetify.breakpoint.xsOnly">
+                <v-select :items="nodesNameList"
+                          v-model="to"
+                          label="輸入方"
+                          :disabled="way === '0'"
+                          autocomplete
+                          required
+                          :rules="requiredRule"
+                          hide-details></v-select>
               </v-flex>
             </v-layout>
           </v-card-text>
           <v-card-text>
             <h3>項目</h3>
-            <v-layout wrap grid-list-xs>
+            <v-layout wrap
+                      grid-list-xs>
               <template v-for="(item, index) in list">
-                <v-flex xs12 sm5 pr-3 :key="index + '-good'">
-                  <v-select :items="goods" v-model="item.good" label="種類" autocomplete required :rules="requiredRule" hide-details></v-select>
+                <v-flex xs12
+                        sm5
+                        pr-3
+                        :key="index + '-good'">
+                  <v-select :items="goods"
+                            v-model="item.good"
+                            label="種類"
+                            autocomplete
+                            required
+                            :rules="requiredRule"
+                            hide-details></v-select>
                 </v-flex>
-                <v-flex xs12 sm3 pr-3 :key="index + '-unit'">
-                  <v-text-field v-model="item.unit" label="數量" type="number" required :rules="requiredRule" hide-details></v-text-field>
+                <v-flex xs12
+                        sm3
+                        pr-3
+                        :key="index + '-unit'">
+                  <v-text-field v-model="item.unit"
+                                label="數量"
+                                type="number"
+                                required
+                                :rules="requiredRule"
+                                hide-details></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm3 :key="index + '-unitPirce'">
-                  <v-text-field v-model="item.unitPrice" label="單價" type="number" hide-details></v-text-field>
+                <v-flex xs12
+                        sm3
+                        :key="index + '-unitPirce'">
+                  <v-text-field v-model="item.unitPrice"
+                                label="單價"
+                                type="number"
+                                hide-details></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm1 :key="index + '-close'">
-                  <v-btn class="mt-3" icon flat @click="removeItem(index)">
+                <v-flex xs12
+                        sm1
+                        :key="index + '-close'">
+                  <v-btn class="mt-3"
+                         icon
+                         flat
+                         @click="removeItem(index)">
                     <v-icon>close</v-icon>
                   </v-btn>
                 </v-flex>
               </template>
             </v-layout>
-            <v-btn @click="addItem('debit')" block outline>增加項目</v-btn>
+            <v-btn @click="addItem('debit')"
+                   block
+                   outline>增加項目</v-btn>
           </v-card-text>
           <v-card-text>
             <v-layout class="labeled-list">
@@ -108,10 +172,14 @@
             </v-layout>
           </v-card-text>
           <v-card-actions>
-            <v-btn flat @click="clear(), dialog = false">關閉</v-btn>
+            <v-btn flat
+                   @click="clear(), dialog = false">關閉</v-btn>
             <v-spacer></v-spacer>
-            <v-btn flat @click="clear">清除</v-btn>
-            <v-btn flat :disabled="!valid || loading" @click="submit">登記</v-btn>
+            <v-btn flat
+                   @click="clear">清除</v-btn>
+            <v-btn flat
+                   :disabled="!valid || loading"
+                   @click="submit">登記</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -170,12 +238,18 @@ export default {
   },
   computed: {
     node() {
-      return this.$store.state.engine.nodes.find(node => node.name === this.nodeName) || {}
+      return (
+        this.$store.state.engine.nodes.find(
+          node => node.name === this.nodeName
+        ) || {}
+      )
     },
     price() {
       let sum = 0
       for (let item of this.list) {
-        sum += parseInt(item.unit ? item.unit : 0) * parseFloat(item.unitPrice ? item.unitPrice : 0)
+        sum +=
+          parseInt(item.unit ? item.unit : 0) *
+          parseFloat(item.unitPrice ? item.unitPrice : 0)
       }
       return sum
     },
@@ -200,7 +274,10 @@ export default {
       this.loading = true
       this.$store.commit('ui/START_LOADING')
       this.$store
-        .dispatch(`inventory/${this.way === '0' ? 'import' : 'export'}`, ioJournalItem)
+        .dispatch(
+          `inventory/${this.way === '0' ? 'import' : 'export'}`,
+          ioJournalItem
+        )
         .then(inventory => {
           this.loading = false
           this.dialog = false

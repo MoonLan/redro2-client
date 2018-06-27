@@ -40,7 +40,7 @@ export default new Router({
           component: () => import('@/page/Console/Game/Info'),
           children: [
             {
-              path: ':index/:name',
+              path: ':teamIndex/:role',
               component: () => import('@/page/Game/NodeControlPanel')
             }
           ]
@@ -57,8 +57,21 @@ export default new Router({
     },
 
     {
-      path: '/player/login',
+      path: '/player',
+      component: () => import('@/page/Player/')
+    },
+    {
+      path: '/player/login/:id?',
       component: () => import('@/page/Player/Login')
+    },
+    {
+      path: '/player/ready/:id/:teamIndex/:role',
+      component: () => import('@/page/Player/Ready')
+    },
+
+    {
+      path: '/game/:id/:teamIndex/:role',
+      component: () => import('@/page/Game')
     }
     /*
     {

@@ -1,11 +1,15 @@
 <template>
   <v-container ma-0
                pa-0
+               fluid
                class="game-nodecontrolpanel">
-    <v-tabs v-model="active">
-      <template v-for="component in components">
+    <v-tabs v-model="active"
+            centered
+            show-arrows>
+      <template v-if="components"
+                v-for="component in components">
         <v-tab :key="component.type"
-               ripple>{{component.type}}</v-tab>
+               ripple>{{$t(`${component.type}.title`)}}</v-tab>
         <v-tab-item :key="component.type + '-item'">
           <account-panel v-if="component.type === 'Account'"
                          :engineId="id"
@@ -25,6 +29,12 @@
           <AssemblyDepartmentPanel v-else-if="component.type === 'AssemblyDepartment'"
                                    :engineId="id"
                                    :nodeName="name" />
+          <MarketPanel v-else-if="component.type === 'Market'"
+                       :engineId="id"
+                       :nodeName="name" />
+          <MarketReceiverPanel v-else-if="component.type === 'MarketReceiver'"
+                               :engineId="id"
+                               :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -32,6 +42,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
 import AccountPanel from './components/AccountPanel'
 import InventoryPanel from './components/InventoryPanel'
@@ -39,6 +50,8 @@ import IOPanel from './components/IOPanel'
 import BiddingMarketPanel from './components/BiddingMarketPanel'
 import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
 import AssemblyDepartmentPanel from './components/AssemblyDepartmentPanel'
+import MarketPanel from './components/MarketPanel'
+import MarketReceiverPanel from './components/MarketReceiverPanel'
 
 export default {
   components: {
@@ -47,28 +60,39 @@ export default {
     IOPanel,
     BiddingMarketPanel,
     BiddingMarketReceiverPanel,
-    AssemblyDepartmentPanel
+    AssemblyDepartmentPanel,
+    MarketPanel,
+    MarketReceiverPanel
   },
   data: () => ({
-    active: null
+    active: '0'
   }),
   computed: {
+    ...mapState('engine', ['stage', 'nodes']),
+    ...mapGetters('engine', [
+      'gameTimeAdd',
+      'toReadableGameTime',
+      'readableGameTime'
+    ]),
     node() {
-      return (
-        this.$store.state.engine.nodes.find(node => node.name === this.name) ||
-        {}
-      )
+      if (!this.nodes) {
+        return
+      }
+      return this.nodes.find(node => node.name === this.name)
     },
     id() {
       return this.$route.params.id
     },
     index() {
-      return this.$route.params.index
+      return this.$route.params.teamIndex
     },
     name() {
-      return this.$route.params.name
+      return this.$route.params.role
     },
     components() {
+      if (!this.node) {
+        return
+      }
       return this.node.components.filter(component => component.enable === true)
     }
   },

@@ -14,12 +14,56 @@
     "userpass": "密碼",
     "auth_img": "驗證碼",
     "login": "登入",
-    "directLogin": "您還保持登入，直接進入",
+    "directLogin": "你還保持登入，直接進入",
     "logout": "登出"
   },
   "error": {},
+  "role": {
+    "ComponentsFactory": "零件廠",
+    "AssemblyFactory": "組裝廠",
+    "Retailer": "銷售商",
+    "ComponentsBiddingMarket": "零件競標市場",
+    "CarsBiddingMarket": "汽車競標市場",
+    "AssemblyDepartment": "組裝部門",
+    "Market": "市場",
+    "GM": "GM",
+    "Scoreboard": "記分板"
+  },
   "common": {
     "nowLoading": "載入中...",
     "search": "搜尋：{0}"
+  },
+  "Account": {
+    "title": "會計",
+    "journal": "日記簿",
+    "ledger": "分類簿"
+  },
+  "AssemblyDepartment": {
+    "title": "組裝部門"
+  },
+  "Inventory": {
+    "title": "倉庫"
+  },
+  "IO": {
+    "title": "輸出入"
+  },
+  "BiddingMarketReceiver": {
+    "title": "競標市場",
+    "ComponentsBiddingMarket": "零件競標市場",
+    "CarsBiddingMarket": "汽車競標市場"
+  },
+  "BiddingMarket": {
+    "title": "競標市場",
+    "ComponentsBiddingMarket": "零件競標市場",
+    "CarsBiddingMarket": "汽車競標市場"
+  },
+  "InventoryRegister": {
+    "title": "庫存登記"
+  },
+  "MarketReceiver": {
+    "title": "市場"
+  },
+  "Market": {
+    "title": "市場"
   }
 }

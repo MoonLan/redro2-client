@@ -1,8 +1,10 @@
 <template>
   <v-container ma-0
                pa-0
+               fluid
                class="game-biddingmarketpanel">
-    <v-tabs v-model="active">
+    <v-tabs v-model="active"
+            centered>
       <v-tab key="overview"
              ripple>概覽</v-tab>
       <v-tab-item key="overview">
