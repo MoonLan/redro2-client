@@ -72,14 +72,19 @@
         </v-tab-item>
       </template>
     </v-tabs>
+    <bidding-deliver-dialog v-model="dialog" />
   </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
+import BiddingDeliverDialog from './BiddingDeliverDialog'
 
 export default {
+  components: {
+    BiddingDeliverDialog
+  },
   props: {
     engineId: String,
     nodeName: String
@@ -92,7 +97,8 @@ export default {
       { header: '已完成', key: 'completed' },
       { header: '已取消', key: 'canceled' },
       { header: '已解約', key: 'breakoff' }
-    ]
+    ],
+    dialog: false
   }),
   watch: {
     nodeName(newVal) {

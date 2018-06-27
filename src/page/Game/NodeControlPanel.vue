@@ -22,6 +22,9 @@
           <BiddingMarketReceiverPanel v-else-if="component.type === 'BiddingMarketReceiver'"
                                       :engineId="id"
                                       :nodeName="name" />
+          <AssemblyDepartmentPanel v-else-if="component.type === 'AssemblyDepartment'"
+                                   :engineId="id"
+                                   :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -35,6 +38,7 @@ import InventoryPanel from './components/InventoryPanel'
 import IOPanel from './components/IOPanel'
 import BiddingMarketPanel from './components/BiddingMarketPanel'
 import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
+import AssemblyDepartmentPanel from './components/AssemblyDepartmentPanel'
 
 export default {
   components: {
@@ -42,7 +46,8 @@ export default {
     InventoryPanel,
     IOPanel,
     BiddingMarketPanel,
-    BiddingMarketReceiverPanel
+    BiddingMarketReceiverPanel,
+    AssemblyDepartmentPanel
   },
   data: () => ({
     active: null

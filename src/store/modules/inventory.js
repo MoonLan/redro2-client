@@ -2,7 +2,10 @@ import api from '@/api'
 import { ACCOUNT_LEDGER_SIDE, INVENTORY_MODE } from '@/lib/schema'
 
 function checkIdentity(state, inventoryEvent) {
-  if (inventoryEvent.engineId !== state.engineId || inventoryEvent.nodeName !== state.nodeName) {
+  if (
+    inventoryEvent.engineId !== state.engineId ||
+    inventoryEvent.nodeName !== state.nodeName
+  ) {
     console.warn(
       '[Store:Inventory] Different Engine id or node name, current store is',
       state.engineId,
@@ -91,7 +94,7 @@ export default {
             left -= parseInt(lit.left)
             lit.left = 0
           } else {
-            lit.left -= parseInr(left)
+            lit.left -= parseInt(left)
             left = 0
             break
           }
@@ -127,7 +130,11 @@ export default {
     import(context, ioJournalItem) {
       return new Promise((resolve, reject) => {
         api.inventory
-          .importInventory(context.state.engineId, context.state.nodeName, ioJournalItem)
+          .importInventory(
+            context.state.engineId,
+            context.state.nodeName,
+            ioJournalItem
+          )
           .then(inventory => {
             resolve(inventory)
           })
@@ -139,7 +146,11 @@ export default {
     export(context, ioJournalItem) {
       return new Promise((resolve, reject) => {
         api.inventory
-          .exportInventory(context.state.engineId, context.state.nodeName, ioJournalItem)
+          .exportInventory(
+            context.state.engineId,
+            context.state.nodeName,
+            ioJournalItem
+          )
           .then(inventory => {
             resolve(inventory)
           })
@@ -151,7 +162,11 @@ export default {
     regist(context, stocksItemList) {
       return new Promise((resolve, reject) => {
         api.inventory
-          .regist(context.state.engineId, context.state.nodeName, stocksItemList)
+          .regist(
+            context.state.engineId,
+            context.state.nodeName,
+            stocksItemList
+          )
           .then(inventory => {
             resolve(inventory)
           })

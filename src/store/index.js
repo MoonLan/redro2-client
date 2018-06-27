@@ -8,6 +8,7 @@ import inventory from './modules/inventory'
 import io from './modules/io'
 import biddingmarket from './modules/biddingmarket'
 import biddingmarketreceiver from './modules/biddingmarketreceiver'
+import assemblydepartment from './modules/assemblydepartment'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     inventory,
     io,
     biddingmarket,
-    biddingmarketreceiver
+    biddingmarketreceiver,
+    assemblydepartment
   }
 })

@@ -15,22 +15,26 @@
             <v-flex xs12
                     sm6
                     :pr-2="!$vuetify.breakpoint.xsOnly">
-              <v-select :items="nodesNameList"
+              <!-- <v-select :items="nodesNameList"
                         v-model="publisher"
                         label="釋出者"
                         autocomplete
                         required
-                        :rules="requiredRule"></v-select>
+                        :rules="requiredRule"></v-select> -->
+
+              {{nodeName}}
             </v-flex>
             <v-flex xs12
                     sm6
                     :pl-2="!$vuetify.breakpoint.xsOnly">
+              {{chain === 'upstream' ? upstream.name : downstream.name}}
+              <!--
               <v-select :items="nodesNameList"
                         :disabled="!!chain"
                         v-model="market"
                         label="釋出市場"
                         required
-                        :rules="requiredRule"></v-select>
+                        :rules="requiredRule"></v-select> -->
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -113,7 +117,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import api from '@/api'
 import { TRANSPORTATION_STATUS } from '@/lib/schema'
 
@@ -162,15 +166,13 @@ export default {
       }
       return list
     },
-    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime'])
-  },
-  watch: {
-    chain(newVal) {
-      console.log(newVal)
-      this.market = newVal
-        ? this.$store.state.biddingmarketreceiver[newVal].name
-        : null
-    }
+    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
+    ...mapState('biddingmarketreceiver', [
+      'upstream',
+      'downstream',
+      'nodeName',
+      'engineId'
+    ])
   },
   methods: {
     submit() {
@@ -179,7 +181,7 @@ export default {
         stage: 'BIDDING',
         publishedFromChain:
           this.chain === 'upstream' ? 'downstream' : 'upstream',
-        publisher: this.publisher,
+        publisher: this.nodeName,
         price: this.price,
         timeLimit: this.timeLimit,
         memo: this.memo,
@@ -189,10 +191,8 @@ export default {
       this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch(
-          `biddingmarketreceiver/${
-            this.chain === 'upstream'
-              ? 'releaseToUpstream'
-              : 'releaseToDownstream'
+          `biddingmarketreceiver/releaseTo${
+            this.chain === 'upstream' ? 'Upstream' : 'Downstream'
           }`,
           biddingMarketItem
         )
@@ -222,11 +222,7 @@ export default {
       this.list.splice(index, 1)
     }
   },
-  mounted() {
-    this.market = this.chain
-      ? this.$store.state.biddingmarketreceiver[this.chain].name
-      : null
-  }
+  mounted() {}
 }
 </script>
 

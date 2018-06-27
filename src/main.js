@@ -8,6 +8,9 @@ import App from '@/App'
 import '@/lib/bus'
 import '@/lib/socket'
 import '@/lib/notification'
+import VueQrcodeReader from 'vue-qrcode-reader'
+
+Vue.use(VueQrcodeReader)
 
 Vue.use(Vuetify)
 

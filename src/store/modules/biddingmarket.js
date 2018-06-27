@@ -7,12 +7,17 @@ import {
 } from '@/lib/schema'
 
 function checkIdentity(state, biddingMarketEvent) {
-  if (biddingMarketEvent.engineId !== state.engineId) {
+  if (
+    biddingMarketEvent.engineId !== state.engineId ||
+    biddingMarketEvent.nodeName !== state.nodeName
+  ) {
     console.warn(
-      '[Store:BiddingMarket] Different Engine id, this is',
+      '[Store:BiddingMarket] Different Engine id or node name, current store is',
       state.engineId,
+      state.nodeName,
       'but the incoming event is',
-      biddingMarketEvent.engineId
+      biddingMarketEvent.engineId,
+      biddingMarketEvent.nodeName
     )
     return false
   }
@@ -31,7 +36,9 @@ export default {
     breakoffPaneltyRatio: 1.2,
     breakoffCompensationRatio: 0.5,
     transportationTime: 300,
-    transportationStatus: TRANSPORTATION_STATUS.DELIVERING
+    transportationStatus: TRANSPORTATION_STATUS.DELIVERING,
+
+    hasNoCamera: false
   },
   getters: {
     released(state) {
@@ -82,23 +89,31 @@ export default {
       state.transportationStatus = payload.transportationStatus
     },
 
+    SET_HAS_NO_CAMERA(state, payload) {
+      state.hasNoCamera = payload.hasNoCamera
+    },
+
     SOCKET_BIDDING_RELEASED(state, biddingMarketEvent) {
       if (!checkIdentity(state, biddingMarketEvent)) {
         return
       }
       if (
-        this.biddings.find(item => item._id === biddingMarketEvent.item._id)
+        state.biddings &&
+        state.biddings.find(item => item._id === biddingMarketEvent.item._id)
       ) {
         return
       }
-      this.biddings.push(biddingMarketEvent.item)
+      if (!state.biddings) {
+        state.biddings = []
+      }
+      state.biddings.push(biddingMarketEvent.item)
     },
     SOCKET_BIDDING_CANCELED(state, biddingMarketEvent) {
       if (!checkIdentity(state, biddingMarketEvent)) {
         return
       }
       let id = biddingMarketEvent.item._id
-      let iji = this.biddings.find(item => item._id === id)
+      let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.CANCELED
     },
     SOCKET_BIDDING_SIGNED(state, biddingMarketEvent) {
@@ -107,7 +122,7 @@ export default {
       }
       let id = biddingMarketEvent.item._id
       let signer = biddingMarketEvent.item.signer
-      let iji = this.biddings.find(item => item._id === id)
+      let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.SIGNED
       iji.signer = signer
     },
@@ -116,7 +131,7 @@ export default {
         return
       }
       let id = biddingMarketEvent.item._id
-      let iji = this.biddings.find(item => item._id === id)
+      let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.BREAKOFF
     },
     SOCKET_BIDDING_COMPLETED(state, biddingMarketEvent) {
@@ -124,7 +139,7 @@ export default {
         return
       }
       let id = biddingMarketEvent.item._id
-      let iji = this.biddings.find(item => item._id === id)
+      let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.COMPLETED
     }
   },
