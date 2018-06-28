@@ -16,8 +16,8 @@
       </v-card-title>
       <v-card-text class="text-xs-center pt-5">
         <div>
-          <qr-code class="qr-code"
-                   :text="biddingItem._id"></qr-code>
+          <qrcode class="qrcode"
+                  :text="biddingItem._id"></qrcode>
         </div>
         <div class="pt-3">
           想要運送這張訂單，請準備正確數量的貨品，並把這一頁打開給物流士掃描。掃描QR Code時，請將螢幕亮度調到最大。
@@ -50,7 +50,7 @@ import VueQRCodeComponent from 'vue-qrcode-component'
 
 export default {
   components: {
-    'qr-code': VueQRCodeComponent
+    qrcode: VueQRCodeComponent
   },
   props: {
     value: Boolean,
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss">
-.qr-code {
+.qrcode {
   display: inline-block;
 }
 </style>

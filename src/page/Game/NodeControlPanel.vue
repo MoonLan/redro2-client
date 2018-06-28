@@ -36,8 +36,8 @@
                                :engineId="id"
                                :nodeName="name" />
           <InventoryRegisterPanel v-else-if="component.type === 'InventoryRegister'"
-                                :engineId="id"
-                                :nodeName="name" />
+                                  :engineId="id"
+                                  :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -50,24 +50,20 @@ import api from '@/api'
 import AccountPanel from './components/AccountPanel'
 import InventoryPanel from './components/InventoryPanel'
 import IOPanel from './components/IOPanel'
-import BiddingMarketPanel from './components/BiddingMarketPanel'
-import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
-import AssemblyDepartmentPanel from './components/AssemblyDepartmentPanel'
-import MarketPanel from './components/MarketPanel'
-import MarketReceiverPanel from './components/MarketReceiverPanel'
-import InventoryRegisterPanel from './components/InventoryRegisterPanel'
 
 export default {
   components: {
     AccountPanel,
     InventoryPanel,
     IOPanel,
-    BiddingMarketPanel,
-    BiddingMarketReceiverPanel,
-    AssemblyDepartmentPanel,
-    MarketPanel,
-    MarketReceiverPanel,
-    InventoryRegisterPanel
+    BiddingMarketReceiverPanel: () =>
+      import('./components/BiddingMarketReceiverPanel'),
+    MarketReceiverPanel: () => import('./components/MarketReceiverPanel'),
+    BiddingMarketPanel: () => import('./components/BiddingMarketPanel'),
+    AssemblyDepartmentPanel: () =>
+      import('./components/AssemblyDepartmentPanel'),
+    MarketPanel: () => import('./components/MarketPanel'),
+    InventoryRegisterPanel: () => import('./components/InventoryRegisterPanel')
   },
   data: () => ({
     active: '0'

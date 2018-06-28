@@ -97,13 +97,13 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
-// import { QrcodeReader } from 'vue-qrcode-reader/src'
+import VueQrcodeReader from 'vue-qrcode-reader'
+
+Vue.use(VueQrcodeReader)
 
 export default {
-  components: {
-    // 'qrcode-reader': QrcodeReader
-  },
   props: {
     value: Boolean
   },
@@ -174,7 +174,7 @@ export default {
 </script>
 
 <style lang="scss">
-.qr-code {
+.qrcode {
   display: inline-block;
 }
 </style>

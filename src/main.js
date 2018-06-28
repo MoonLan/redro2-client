@@ -10,8 +10,6 @@ import '@/lib/socket'
 import '@/lib/notification'
 import VueQrcodeReader from 'vue-qrcode-reader'
 
-Vue.use(VueQrcodeReader)
-
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
