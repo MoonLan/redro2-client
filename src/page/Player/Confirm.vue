@@ -29,8 +29,9 @@
             </v-card>
             <v-card-text>
               <v-btn :to="'/player/login'"
+                     @click="notMe"
                      flat>不是</v-btn>
-              <v-btn @click=""
+              <v-btn @click="$router.push('/')"
                      flat
                      outline>是的</v-btn>
             </v-card-text>
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
 import { reconnect } from '@/lib/socket'
 
@@ -49,38 +51,24 @@ export default {
   data: () => ({
     engineId: null,
     teamIndex: null,
-    role: null,
-
-    name: 'pp253',
-    password: null
+    role: null
   }),
+  computed: {
+    ...mapState('user', ['name', 'userId']),
+    ...mapGetters('user', ['hasLogin'])
+  },
   methods: {
-    submit() {
-      this.$store.commit('ui/START_LOADING')
-      if (this.valid) {
-        this.$store
-          .dispatch('user/userLogin', {
-            name: this.name,
-            password: this.password
-          })
-          .then(user => {
-            this.$store.commit('ui/STOP_LOADING')
-            if (user.level === 'ADMIN') {
-              this.$router.push('/console')
-            }
-            reconnect()
-          })
-          .catch(err => {
-            this.$store.commit('ui/STOP_LOADING')
-            console.error(err)
-          })
-      }
-    },
-    clear() {
-      this.$refs.form.reset()
+    notMe() {
+      this.$store.commit('user/SET_ID', {})
+      this.$store.commit('user/SET_NAME', {})
+      this.$store.commit('user/SET_LEVEL', {})
     }
   },
-  mounted() {}
+  mounted() {
+    if (!this.hasLogin) {
+      this.$router.push('/player/login')
+    }
+  }
 }
 </script>
 

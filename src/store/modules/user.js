@@ -10,7 +10,7 @@ export default {
   },
   mutations: {
     SET_ID(state, payload) {
-      state.id = payload.id
+      state.id = payload._id
     },
     SET_NAME(state, payload) {
       state.name = payload.name
@@ -22,17 +22,69 @@ export default {
   getters: {
     isStaffOrAdmin(state) {
       return [USER_LEVEL.STAFF, USER_LEVEL.ADMIN].includes(state.level)
+    },
+    hasLogin(state) {
+      return !!state.name
     }
   },
   actions: {
-    userLogin(context, payload) {
+    userRegist(context, payload) {
       return new Promise((resolve, reject) => {
-        api.server.userLogin(payload.name, payload.password).then(user => {
-          context.commit('SET_ID', user)
-          context.commit('SET_NAME', user)
-          context.commit('SET_LEVEL', user)
-          resolve(user)
-        })
+        api.server
+          .userRegist(payload.name)
+          .then(user => {
+            resolve(user)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    userLoginByMagicCode(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.server
+          .userLoginByMagicCode(payload.magiccode)
+          .then(user => {
+            context.commit('SET_ID', user)
+            context.commit('SET_NAME', user)
+            context.commit('SET_LEVEL', user)
+            resolve(user)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    addUserRole(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.server
+          .addUserRole(
+            context.state.id,
+            payload.engineId,
+            payload.teamIndex,
+            payload.role
+          )
+          .then(user => {
+            resolve(user)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    userLogout(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.server
+          .userLogout()
+          .then(() => {
+            context.commit('SET_ID', {})
+            context.commit('SET_NAME', {})
+            context.commit('SET_LEVEL', {})
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
       })
     }
   }

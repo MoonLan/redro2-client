@@ -37,7 +37,7 @@
                   <v-card-text>
                     <v-btn @click="$router.go(-1)"
                            flat>取消</v-btn>
-                    <v-btn @click="active = 'magiccode'"
+                    <v-btn @click="submit"
                            :disabled="!valid"
                            flat
                            outline>創建</v-btn>
@@ -55,7 +55,7 @@
                 </v-card-text>
                 <v-card>
                   <v-card-text>
-                    <v-text-field v-model="password"
+                    <v-text-field v-model="magiccode"
                                   label="MagicCode"
                                   readonly></v-text-field>
                     <div>MagicCode 將會用來驗證你的身分，建議將 MagicCode 保存在你的手機裡。</div>
@@ -89,32 +89,37 @@ export default {
     role: null,
 
     name: null,
-    password: null,
+    magiccode: null,
 
     requiredRule: v => !!v || '必需項',
     lessThanTenWordRule: v => (!!v && v.length <= 10) || '名字要少於10個字'
   }),
   methods: {
     submit() {
-      this.$store.commit('ui/START_LOADING')
-      if (this.valid) {
-        this.$store
-          .dispatch('user/userLogin', {
-            name: this.name,
-            password: this.password
-          })
-          .then(user => {
-            this.$store.commit('ui/STOP_LOADING')
-            if (user.level === 'ADMIN') {
-              this.$router.push('/console')
-            }
-            reconnect()
-          })
-          .catch(err => {
-            this.$store.commit('ui/STOP_LOADING')
-            console.error(err)
-          })
+      if (!this.valid) {
+        return
       }
+      this.$store.commit('ui/START_LOADING')
+      this.$store
+        .dispatch('user/userRegist', {
+          name: this.name
+        })
+        .then(user => {
+          this.magiccode = user.password
+
+          return this.$store.dispatch('user/userLoginByMagicCode', {
+            magiccode: this.magiccode
+          })
+        })
+        .then(user => {
+          this.active = 'magiccode'
+          this.$store.commit('ui/STOP_LOADING')
+          reconnect()
+        })
+        .catch(err => {
+          this.$store.commit('ui/STOP_LOADING')
+          console.error(err)
+        })
     },
     clear() {
       this.$refs.form.reset()

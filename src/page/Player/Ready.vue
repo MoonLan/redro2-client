@@ -45,7 +45,8 @@ export default {
       'gameDays',
       'dayLength',
       'stage'
-    ])
+    ]),
+    ...mapState('user',[])
   },
   watch: {
     stage(newVal) {
