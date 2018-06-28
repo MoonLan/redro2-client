@@ -37,9 +37,12 @@
                       persistent-hint></v-text-field>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="$emit('input', false)">取消</v-btn>
+        <v-btn @click="$emit('input', false)"
+               flat>取消</v-btn>
         <v-spacer />
-        <v-btn @click="buy">購買</v-btn>
+        <v-btn @click="buy"
+               flat
+               outline>購買</v-btn>
       </v-card-actions>
 
     </v-card>

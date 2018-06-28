@@ -36,9 +36,7 @@ export default {
     breakoffPaneltyRatio: 1.2,
     breakoffCompensationRatio: 0.5,
     transportationTime: 300,
-    transportationStatus: TRANSPORTATION_STATUS.DELIVERING,
-
-    hasNoCamera: false
+    transportationStatus: TRANSPORTATION_STATUS.DELIVERING
   },
   getters: {
     released(state) {
@@ -87,10 +85,6 @@ export default {
     },
     SET_TRANSPORTATION_STATUS(state, payload) {
       state.transportationStatus = payload.transportationStatus
-    },
-
-    SET_HAS_NO_CAMERA(state, payload) {
-      state.hasNoCamera = payload.hasNoCamera
     },
 
     SOCKET_BIDDING_RELEASED(state, biddingMarketEvent) {

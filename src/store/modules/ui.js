@@ -78,6 +78,21 @@ export default {
     CLOSE_DIALOG(state) {
       state.dialog = false
     },
+    OPEN_ERROR_DIALOG(state, err) {
+      state.dialog = true
+
+      if (err.id || err.error === 1) {
+        state.dialogTitle = `Error ${err.id}: ${err.title}`
+        state.dialogText = err.message
+        state.dialogMore = err.more || err.raw
+        state.dialogMode = 'info'
+      }
+
+      console.error(err)
+    },
+    CLOSE_ERROR_DIALOG(state) {
+      state.dialog = false
+    },
     OPEN_SNACKBAR(state, options) {
       state.snackbar = true
       state.snackbarText = options.snackbarText

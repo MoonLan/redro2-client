@@ -61,8 +61,20 @@ export default new Router({
       component: () => import('@/page/Player/')
     },
     {
-      path: '/player/login/:id?',
+      path: '/player/regist/:id?/:teamIndex?/:role?',
+      component: () => import('@/page/Player/Regist')
+    },
+    {
+      path: '/player/login/:id?/:teamIndex?/:role?',
       component: () => import('@/page/Player/Login')
+    },
+    {
+      path: '/player/oldlogin',
+      component: () => import('@/page/Player/OldLogin')
+    },
+    {
+      path: '/player/confirm/:id?/:teamIndex?/:role?',
+      component: () => import('@/page/Player/Confirm')
     },
     {
       path: '/player/ready/:id/:teamIndex/:role',

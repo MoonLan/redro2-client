@@ -15,7 +15,11 @@
                 </div>
               </v-card-title>
               <v-container pa-2>
-                <v-card>
+                <v-card v-if="list">
+                  <v-card-text v-if="list.length === 0"
+                               class="text-xs-center">
+                    現在沒有開放的遊戲場次
+                  </v-card-text>
                   <v-list three-line>
                     <template v-for="(item, key) in list">
                       <v-list-tile :key="key"

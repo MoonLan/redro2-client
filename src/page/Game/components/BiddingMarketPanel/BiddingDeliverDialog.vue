@@ -21,7 +21,8 @@
         </v-btn>
       </v-card-title>
 
-      <v-tabs v-model="active">
+      <v-tabs v-model="active"
+              centered>
         <v-tab disabled
                key="reader">1. 掃描</v-tab>
         <v-tab disabled
@@ -29,7 +30,7 @@
 
         <v-tab-item key="reader">
           <v-card-text class="text-xs-center pt-5">
-            <div v-if="!$store.state.biddingmarket.hasNoCamera">
+            <div>
               <qrcode-reader @decode="onDecode"
                              @init="onInit"></qrcode-reader>
             </div>
@@ -40,7 +41,8 @@
               <v-text-field name="biddingId"
                             label="訂單ID"
                             v-model="biddingId"></v-text-field>
-              <v-btn @click="getBidding(biddingId)">查詢訂單</v-btn>
+              <v-btn @click="getBidding(biddingId)"
+                     :disabled="!biddingId">查詢訂單</v-btn>
             </div>
             <div class="pt-3">
               想要運送這張訂單，請準備正確數量的貨品，並把這一頁打開給物流士掃描。掃描QR Code時，請將螢幕亮度調到最大。
@@ -80,9 +82,13 @@
             </div>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="active = '0', biddingId = null">取消</v-btn>
+            <v-btn @click="active = '0', biddingId = null"
+                   flat>取消</v-btn>
             <v-spacer />
-            <v-btn @click="deliver(biddingId, bidding.signer)">運輸</v-btn>
+            <v-btn @click="deliver(biddingId, bidding.signer)"
+                   :disabled="!bidding"
+                   flat
+                   outline>運輸</v-btn>
           </v-card-actions>
         </v-tab-item>
       </v-tabs>
@@ -125,9 +131,6 @@ export default {
         })
         .catch(error => {
           console.log(error)
-          this.$store.commit('biddingmarket/SET_HAS_NO_CAMERA', {
-            hasNoCamera: true
-          })
           this.error = error
           if (error.name === 'NotAllowedError') {
             // user denied camera access permisson
@@ -144,19 +147,19 @@ export default {
           }
         })
     },
-    onDecode(decodedString) {
-      console.log(decodedString)
+    onDecode(biddingId) {
+      console.log(biddingId)
+      this.getBidding(biddingId)
     },
     getBidding(id) {
       this.active = '1'
       this.bidding = this.biddings.find(item => item._id === id)
     },
-    deliver(id, operator) {
+    deliver(id) {
       this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch('biddingmarket/deliver', {
-          id: id,
-          operator: operator
+          id: id
         })
         .then(() => {
           this.$store.commit('ui/STOP_LOADING')

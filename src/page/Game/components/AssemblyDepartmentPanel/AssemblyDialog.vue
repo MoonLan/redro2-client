@@ -51,9 +51,12 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="$emit('input', false)">取消</v-btn>
+        <v-btn @click="$emit('input', false)"
+               flat>取消</v-btn>
         <v-spacer />
-        <v-btn @click="assemble">組裝</v-btn>
+        <v-btn @click="assemble"
+               flat
+               outline>組裝</v-btn>
       </v-card-actions>
 
     </v-card>

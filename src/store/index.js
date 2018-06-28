@@ -11,6 +11,7 @@ import biddingmarketreceiver from './modules/biddingmarketreceiver'
 import assemblydepartment from './modules/assemblydepartment'
 import market from './modules/market'
 import marketreceiver from './modules/marketreceiver'
+import inventoryregister from './modules/inventoryregister'
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     biddingmarketreceiver,
     assemblydepartment,
     market,
-    marketreceiver
+    marketreceiver,
+    inventoryregister
   }
 })

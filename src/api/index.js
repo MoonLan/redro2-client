@@ -27,7 +27,7 @@ export default {
   marketreceiver: marketreceiver
 }
 
-export const SERVER_BASE = 'http://localhost' // 'http://localhost/'
+export const SERVER_BASE = 'http://140.114.208.6' // 'http://localhost'
 export const ERR_MSG = {
   20: {
     title: 'entry.UserInfoNotCorrectTitle',
@@ -44,29 +44,14 @@ export function legalRequest(apiPath, data) {
       })
       .then(res => {
         if (res.data.error || res.data.err) {
-          let err = res.data
-          if (err.id) {
-            store.commit('ui/OPEN_DIALOG', {
-              title:
-                err.id in ERR_MSG
-                  ? ERR_MSG[err.id].title
-                  : '對不起，系統發生錯誤了！',
-              text:
-                err.id in ERR_MSG && ERR_MSG[err.id].text.length !== 0
-                  ? ERR_MSG[err.id].text + '<br>'
-                  : '',
-              more:
-                '如果你覺得這不應該發生，請試著向主辦方反映。' +
-                (err.more ? '<br>' + err.more : '')
-            })
-          }
+          store.commit('ui/OPEN_ERROR_DIALOG', res.data)
           reject(res.data)
           return
         }
         resolve(res.data)
       })
       .catch(function(err) {
-        store.commit('ui/OPEN_DIALOG', { title: err.name, text: err.message })
+        store.commit('ui/OPEN_ERROR_DIALOG', err)
         reject(err)
       })
   })

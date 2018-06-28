@@ -18,7 +18,7 @@
     <v-content class="fill-height">
       <v-container fluid
                    class="bg-wrapper">
-        Some Background IMG!!
+        <marquee>Some Beautiful Background Image!!</marquee>
       </v-container>
       <node-control-panel />
     </v-content>

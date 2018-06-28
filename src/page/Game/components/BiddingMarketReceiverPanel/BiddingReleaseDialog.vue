@@ -86,7 +86,7 @@
               </v-flex>
             </template>
           </v-layout>
-          <v-btn @click="addItem('debit')"
+          <v-btn @click="addItem()"
                  block
                  outline>增加項目</v-btn>
         </v-card-text>
@@ -109,6 +109,7 @@
           <v-btn flat
                  @click="clear">清除</v-btn>
           <v-btn flat
+                 outline
                  :disabled="!valid || loading"
                  @click="submit">登記</v-btn>
         </v-card-actions>

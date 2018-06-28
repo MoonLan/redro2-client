@@ -195,8 +195,8 @@ export default {
       }
       let biddings =
         identity === 'upstream'
-          ? state.downstream.biddings
-          : state.upstream.biddings
+          ? state.upstream.biddings
+          : state.downstream.biddings
       let id = biddingMarketEvent.item._id
       let iji = biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.CANCELED

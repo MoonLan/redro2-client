@@ -35,6 +35,9 @@
           <MarketReceiverPanel v-else-if="component.type === 'MarketReceiver'"
                                :engineId="id"
                                :nodeName="name" />
+          <InventoryRegisterPanel v-else-if="component.type === 'InventoryRegister'"
+                                :engineId="id"
+                                :nodeName="name" />
         </v-tab-item>
       </template>
     </v-tabs>
@@ -52,6 +55,7 @@ import BiddingMarketReceiverPanel from './components/BiddingMarketReceiverPanel'
 import AssemblyDepartmentPanel from './components/AssemblyDepartmentPanel'
 import MarketPanel from './components/MarketPanel'
 import MarketReceiverPanel from './components/MarketReceiverPanel'
+import InventoryRegisterPanel from './components/InventoryRegisterPanel'
 
 export default {
   components: {
@@ -62,7 +66,8 @@ export default {
     BiddingMarketReceiverPanel,
     AssemblyDepartmentPanel,
     MarketPanel,
-    MarketReceiverPanel
+    MarketReceiverPanel,
+    InventoryRegisterPanel
   },
   data: () => ({
     active: '0'
