@@ -53,7 +53,7 @@ export default {
     stage(newVal) {
       if (newVal === 'START' || newVal === 'FINAL') {
         console.log('go to game page!')
-        this.$router.push(
+        this.$router.replace(
           `/game/${this.engineId}/${this.teamIndex}/${this.role}`
         )
       } else if (newVal === 'END') {
@@ -90,7 +90,7 @@ export default {
 
       if (this.stage === 'START' || this.stage === 'FINAL') {
         console.log('go to game page!')
-        this.$router.push(
+        this.$router.replace(
           `/game/${this.engineId}/${this.teamIndex}/${this.role}`
         )
       } else if (this.stage === 'END') {

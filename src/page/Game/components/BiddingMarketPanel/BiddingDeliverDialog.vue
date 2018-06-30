@@ -148,6 +148,9 @@ export default {
         })
     },
     onDecode(biddingId) {
+      if (this.biddingId) {
+        return
+      }
       console.log(biddingId)
       this.getBidding(biddingId)
     },

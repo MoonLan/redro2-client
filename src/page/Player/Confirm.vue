@@ -63,13 +63,13 @@ export default {
       this.$store.commit('user/SET_NAME', {})
       this.$store.commit('user/SET_LEVEL', {})
 
-      this.$router.push('/player/login')
+      this.$router.replace('/player/login')
     },
     isMe() {
       if (this.level === USER_LEVEL.ADMIN) {
         this.$router.push('/console')
       } else if (this.engineId) {
-        this.$router.push(
+        this.$router.replace(
           `/player/ready/${this.engineId}/${this.teamIndex}/${this.role}`
         )
       } else {
@@ -83,7 +83,7 @@ export default {
     this.role = this.$route.params.role
 
     if (!this.hasLogin) {
-      this.$router.push(
+      this.$router.replace(
         this.engineId
           ? `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
           : '/player/login'

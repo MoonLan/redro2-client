@@ -103,7 +103,7 @@ export default {
     this.role = this.$route.params.role
 
     if (this.hasLogin) {
-      this.$router.push(
+      this.$router.replace(
         this.engineId
           ? `/player/confirm/${this.engineId}/${this.teamIndex}/${this.role}`
           : '/player/confirm'

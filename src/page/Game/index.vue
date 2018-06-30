@@ -109,6 +109,22 @@ export default {
       role: this.role
     })
     console.log('socket:ROOM_LEAVE')
+
+    this.$store.commit('ui/SET_DARK', { dark: false })
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store
+      .dispatch('ui/openRequestDialog', {
+        title: '你確定要離開這場遊戲嗎？',
+        text: '以防你按錯，所以問一下'
+      })
+      .then(answer => {
+        if (answer) {
+          next()
+        } else {
+          next(false)
+        }
+      })
   }
 }
 </script>
