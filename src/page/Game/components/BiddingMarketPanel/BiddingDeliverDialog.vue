@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
         <v-btn icon
                flat
-               @click="$emit('input', false)">
+               @click="clear(), $emit('input', false)">
           <v-icon>close</v-icon>
         </v-btn>
       </v-card-title>
@@ -82,7 +82,7 @@
             </div>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="active = '0', biddingId = null"
+            <v-btn @click="clear"
                    flat>取消</v-btn>
             <v-spacer />
             <v-btn @click="deliver(biddingId)"
@@ -159,6 +159,10 @@ export default {
       this.biddingId = id
       this.bidding = this.biddings.find(item => item._id === id)
     },
+    clear() {
+      this.active = '0'
+      this.biddingId = null
+    },
     deliver(id) {
       this.$store.commit('ui/START_LOADING')
       this.$store
@@ -167,6 +171,7 @@ export default {
         })
         .then(() => {
           this.$emit('input', false)
+          this.clear()
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功運輸',
             text: ''

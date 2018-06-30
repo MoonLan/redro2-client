@@ -27,12 +27,13 @@
                 </v-card-text>
               </v-card>
               <v-card-text>
-                <router-link :to="engineId ? `/player/regist/${engineId}/${teamIndex}/${role}` : '/player/regist'">
+                <router-link :to="engineId ? `/player/regist/${engineId}/${teamIndex}/${role}` : '/player/regist'"
+                             replace>
                   <a>我還沒有 MagicCode。</a>
                 </router-link>
               </v-card-text>
               <v-card-text>
-                <v-btn @click="$router.go(-1)"
+                <v-btn @click="$router.push('/')"
                        flat>取消</v-btn>
                 <v-btn type="submit"
                        :disabled="!valid"

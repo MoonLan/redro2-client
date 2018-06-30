@@ -149,6 +149,10 @@ export default {
           }
         )
         .then(data => {
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功簽約',
+            text: '簽約後請在時限內運送出您的貨物'
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
@@ -169,6 +173,10 @@ export default {
           }
         )
         .then(data => {
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功取消上架',
+            text: '取消上架不需要手續費'
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {
@@ -189,6 +197,10 @@ export default {
           }
         )
         .then(data => {
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功解約',
+            text: '你將會要付出到一些解約罰金。'
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

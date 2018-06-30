@@ -30,12 +30,13 @@
                     </v-card-text>
                   </v-card>
                   <v-card-text>
-                    <router-link :to="'/player/login'">
+                    <router-link :to="'/player/login'"
+                                 replace>
                       <a>我是工作人員，或我已經有 MagicCode 了。</a>
                     </router-link>
                   </v-card-text>
                   <v-card-text>
-                    <v-btn @click="$router.go(-1)"
+                    <v-btn @click="$router.push('/')"
                            flat>取消</v-btn>
                     <v-btn type="submit"
                            :disabled="!valid"

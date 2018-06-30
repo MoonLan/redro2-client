@@ -43,6 +43,9 @@
                   </v-list>
                 </v-card>
               </v-container>
+              <v-card-text class="text-xs-center">
+                <router-link to="/">回首頁</router-link>
+              </v-card-text>
             </v-card>
           </v-flex>
         </v-layout>

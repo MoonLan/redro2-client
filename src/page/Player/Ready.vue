@@ -73,7 +73,7 @@ export default {
     let after = () => {
       if (!this.hasLogin || (this.teamIndex === 0 && !this.isStaffOrAdmin)) {
         this.$router.push(
-          `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
+          `/player/regist/${this.engineId}/${this.teamIndex}/${this.role}`
         )
         return
       }
