@@ -73,6 +73,9 @@ export default {
           return { day: day, time: time, isWorking: true }
         }
       }
+    },
+    isWorking(state) {
+      return state.gameTime.isWorking
     }
   },
   mutations: {

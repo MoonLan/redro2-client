@@ -119,6 +119,7 @@
               max-width="500px"
               v-model="dialog">
       <v-form v-model="valid"
+              @submit.prevent="submit"
               ref="form">
         <v-card>
           <v-card-title>
@@ -254,9 +255,10 @@
             <v-spacer></v-spacer>
             <v-btn flat
                    @click="clear">清除</v-btn>
-            <v-btn flat
+            <v-btn type="submit"
                    :disabled="!valid || loading"
-                   @click="submit">登記</v-btn>
+                   flat
+                   outline>登記</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -353,6 +355,9 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.valid) {
+        return
+      }
       let ioJournalItem = {
         from: this.from,
         to: this.to,

@@ -22,6 +22,12 @@ export function userLoginByMagicCode(magiccode) {
   })
 }
 
+export function checkUser() {
+  return legalRequest('/api/server/checkUser', {}).then(data => {
+    return Promise.resolve(data.user)
+  })
+}
+
 export function userLogout() {
   return legalRequest('/api/server/userLogout', {}).then(data => {
     return Promise.resolve()

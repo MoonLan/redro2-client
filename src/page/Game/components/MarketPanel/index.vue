@@ -23,12 +23,15 @@
             {{currentMarketCarPrice}}元
           </v-flex>
         </v-layout>
-        <template v-if="news">
-          <v-subheader>新聞</v-subheader>
-          <v-layout>
-            <v-flex xs12
-                    v-for="item in news.slice().reverse()"
-                    :key="item._id">
+      </v-card-text>
+      <v-divider />
+      <template v-if="news">
+        <v-subheader>新聞</v-subheader>
+        <v-layout wrap>
+          <v-flex xs12
+                  v-for="item in news.slice().reverse()"
+                  :key="item._id">
+            <v-container>
               <v-card>
                 <v-card-media src="https://vuetifyjs.com/static/doc-images/cards/desert.jpg"
                               height="100px">
@@ -49,10 +52,10 @@
                   {{item.content}}
                 </v-card-text>
               </v-card>
-            </v-flex>
-          </v-layout>
-        </template>
-      </v-card-text>
+            </v-container>
+          </v-flex>
+        </v-layout>
+      </template>
     </v-card>
     <v-btn @click="dialog = true"
            fab

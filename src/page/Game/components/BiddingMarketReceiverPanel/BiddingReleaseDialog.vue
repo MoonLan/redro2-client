@@ -7,35 +7,20 @@
             @input="(val) => {$emit('input', val)}">
     <v-card>
       <v-form v-model="valid"
+              @submit.prevent="submit"
               ref="form">
         <v-card-title>
           <h3 class="headline">釋出競標</h3>
         </v-card-title>
         <v-card-text>
-          <v-layout wrap>
-            <v-flex xs12
-                    sm6
-                    :pr-2="!$vuetify.breakpoint.xsOnly">
-              <!-- <v-select :items="nodesNameList"
-                        v-model="publisher"
-                        label="釋出者"
-                        autocomplete
-                        required
-                        :rules="requiredRule"></v-select> -->
-
+          <v-layout class="labeled-list">
+            <v-flex xs6>
+              <span class="label">釋出者</span>
               {{nodeName}}
             </v-flex>
-            <v-flex xs12
-                    sm6
-                    :pl-2="!$vuetify.breakpoint.xsOnly">
-              {{$t('BiddingMarketReceiver.' + (chain === 'upstream' ? upstream.name : downstream.name))}}
-              <!--
-              <v-select :items="nodesNameList"
-                        :disabled="!!chain"
-                        v-model="market"
-                        label="釋出市場"
-                        required
-                        :rules="requiredRule"></v-select> -->
+            <v-flex xs6>
+              <span class="label">釋出市場</span>
+              {{$t(`BiddingMarketReceiver.${$store.state.biddingmarketreceiver[chain].name}`)}}
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -111,7 +96,7 @@
           <v-btn flat
                  outline
                  :disabled="!valid || loading"
-                 @click="submit">登記</v-btn>
+                 type="submit">登記</v-btn>
         </v-card-actions>
 
         <div style="flex: 1 1 auto;"></div>
@@ -132,6 +117,7 @@ export default {
   },
   data() {
     return {
+      valid: null,
       loading: false,
       goods: ['Car', 'Engine', 'Body', 'Wheel'],
       hasTransportationDelay: true,
@@ -142,7 +128,6 @@ export default {
       memo: '',
       timeLimit: 300,
       list: [],
-      valid: null,
       requiredRule: [v => !!v || '必需項']
     }
   },
@@ -180,6 +165,9 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.valid) {
+        return
+      }
       let biddingMarketItem = {
         goods: this.list,
         stage: 'BIDDING',
@@ -203,6 +191,10 @@ export default {
         .then(() => {
           this.loading = false
           this.$emit('input', false)
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功上架',
+            text: ''
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

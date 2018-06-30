@@ -3,71 +3,61 @@
                pa-0
                fluid
                class="game-inventorypanel">
-    <v-tabs v-model="active"
-            centered>
-      <v-tab key="overview"
-             ripple>概覽</v-tab>
-      <v-tab-item key="overview">
-        <v-card flat>
-          <v-card-text>
-            <v-layout wrap
-                      class="labeled-list">
-              <v-flex xs6
-                      md3>
-                <span class="label">模式</span>
-                {{$store.state.inventory.mode}}
-              </v-flex>
-              <v-flex xs6
-                      md3>
-                <span class="label">存貨成本</span>
-                {{$store.getters['account/getBalance']('Inventory')}}
-              </v-flex>
-              <v-flex xs6
-                      md3>
-                <span class="label">倉儲成本</span>
-                {{$store.getters['account/getBalance']('CostOfWarehousing')}}
-              </v-flex>
-            </v-layout>
-          </v-card-text>
+    <v-card flat>
+      <template v-if="$store.getters['user/isStaffOrAdmin']">
+        <v-subheader>工作人員用控制項</v-subheader>
+        <v-card-text>
+          <v-layout wrap>
+            <v-flex xs12>
+              <v-btn @click="dialog = true"
+                     outline>
+                <v-icon>import_export</v-icon>輸入輸出倉儲
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+        <v-divider />
 
-          <template v-if="$store.getters['user/isStaffOrAdmin']">
-            <v-divider />
-            <v-subheader>工作人員用控制項</v-subheader>
-            <v-card-text>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-btn @click="dialog = true"
-                         outline>
-                    <v-icon>import_export</v-icon>輸入輸出倉儲
-                  </v-btn>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-          </template>
-        </v-card>
-      </v-tab-item>
+        <v-card-text>
+          <v-layout wrap
+                    class="labeled-list">
+            <v-flex xs6
+                    md3>
+              <span class="label">模式</span>
+              {{$store.state.inventory.mode}}
+            </v-flex>
+            <v-flex xs6
+                    md3>
+              <span class="label">存貨成本</span>
+              {{$store.getters['account/getBalance']('Inventory')}}
+            </v-flex>
+            <v-flex xs6
+                    md3>
+              <span class="label">倉儲成本</span>
+              {{$store.getters['account/getBalance']('CostOfWarehousing')}}
+            </v-flex>
+          </v-layout>
+        </v-card-text>
 
-      <v-tab key="storage"
-             ripple>倉儲</v-tab>
-      <v-tab-item key="storage">
-        <v-card flat>
-          <v-data-table :headers="headers"
-                        :items="$store.state.inventory.storage"
-                        hide-actions>
-            <template slot="items"
-                      slot-scope="props">
-              <td>{{ props.item.good }}</td>
-              <td class="text-xs-right">{{ props.item.unit }}</td>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
+        <v-divider />
+      </template>
+
+      <v-data-table :headers="headers"
+                    :items="$store.state.inventory.storage"
+                    hide-actions>
+        <template slot="items"
+                  slot-scope="props">
+          <td>{{ props.item.good }}</td>
+          <td class="text-xs-right">{{ props.item.unit }}</td>
+        </template>
+      </v-data-table>
+    </v-card>
 
     <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly"
               max-width="500px"
               v-model="dialog">
       <v-form v-model="valid"
+              @submit.prevent="submit"
               ref="form">
         <v-card>
           <v-card-title>
@@ -177,9 +167,10 @@
             <v-spacer></v-spacer>
             <v-btn flat
                    @click="clear">清除</v-btn>
-            <v-btn flat
+            <v-btn type="submit"
                    :disabled="!valid || loading"
-                   @click="submit">登記</v-btn>
+                   flat
+                   outline>登記</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -263,6 +254,9 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.valid) {
+        return
+      }
       let ioJournalItem = {
         from: this.from,
         to: this.to,

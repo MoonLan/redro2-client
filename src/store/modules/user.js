@@ -86,6 +86,21 @@ export default {
             reject(err)
           })
       })
+    },
+    checkUser(context) {
+      return new Promise((resolve, reject) => {
+        api.server
+          .checkUser()
+          .then(user => {
+            context.commit('SET_ID', user || {})
+            context.commit('SET_NAME', user || {})
+            context.commit('SET_LEVEL', user || {})
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
     }
   }
 }

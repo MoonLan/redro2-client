@@ -57,7 +57,12 @@ export default {
      * Content of the snackbar.
      * Note that `snackbarText` will **not** be parsed by i18n.
      */
-    snackbarText: ''
+    snackbarText: '',
+
+    /**
+     * Dark mode for vuetify.
+     */
+    dark: false
   },
   getters: {
     isNotMobile(state) {
@@ -105,6 +110,15 @@ export default {
     },
     STOP_LOADING(state) {
       state.loading = false
+    },
+    SET_DARK(state, payload) {
+      state.dark = payload.dark
+    },
+    SET_DARK_ON(state) {
+      state.dark = true
+    },
+    SET_DARK_OFF(state) {
+      state.dark = false
     }
   },
   actions: {

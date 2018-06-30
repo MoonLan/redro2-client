@@ -3,37 +3,40 @@
                pa-0
                fluid
                class="game-assemblydepartmentpanel">
-    <v-tabs v-model="active"
-            centered>
-      <v-tab key="overview"
-             ripple>概覽</v-tab>
-      <v-tab-item key="overview">
-        <v-card flat>
+    <v-card flat>
+      <v-card-text>
+        <template v-if="$store.getters['user/isStaffOrAdmin']">
+          <v-subheader>工作人員用控制項</v-subheader>
           <v-card-text>
-            <v-subheader>receivers</v-subheader>
-            <v-list>
-              <v-list-tile v-for="node in receivers"
-                           :key="node">{{node}}</v-list-tile>
-            </v-list>
-
-            <template v-if="$store.getters['user/isStaffOrAdmin']">
-              <v-divider />
-              <v-subheader>工作人員用控制項</v-subheader>
-              <v-card-text>
-                <v-layout wrap>
-                  <v-flex xs12>
-                    <v-btn @click="dialog = true"
-                           outline>
-                      <v-icon>extension</v-icon>組裝
-                    </v-btn>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-            </template>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-btn @click="dialog = true"
+                       outline>
+                  <v-icon>extension</v-icon>組裝
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
+          <v-divider />
+        </template>
+
+        <v-subheader>receivers</v-subheader>
+        <v-list>
+          <v-list-tile v-for="node in receivers"
+                       :key="node">{{node}}</v-list-tile>
+        </v-list>
+      </v-card-text>
+    </v-card>
+
+    <v-fab-transition>
+      <v-btn @click="dialog = true"
+             fixed
+             fab
+             bottom
+             right>
+        <v-icon>extension</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <assembly-dialog v-model="dialog" />
   </v-container>
 </template>

@@ -9,6 +9,25 @@
              ripple>概覽</v-tab>
       <v-tab-item key="overview">
         <v-card flat>
+          <template v-if="$store.getters['user/isStaffOrAdmin']">
+            <v-subheader>工作人員用控制項</v-subheader>
+            <v-card-text>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-btn @click="dialog = true"
+                         outline>
+                    <v-icon>photo_camera</v-icon>掃描QR CODE
+                  </v-btn>
+                  <v-btn @click="dialog = true"
+                         outline>
+                    <v-icon>import_export</v-icon>輸入ID
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+            <v-divider />
+          </template>
+
           <v-card-text>
             <v-layout wrap
                       class="labeled-list">
@@ -30,6 +49,7 @@
             </v-layout>
           </v-card-text>
 
+          <v-divider />
           <v-subheader>upstream</v-subheader>
           <v-list>
             <v-list-tile v-for="node in upstreams"
@@ -41,25 +61,6 @@
             <v-list-tile v-for="node in downstreams"
                          :key="node">{{node}}</v-list-tile>
           </v-list>
-
-          <template v-if="$store.getters['user/isStaffOrAdmin']">
-            <v-divider />
-            <v-subheader>工作人員用控制項</v-subheader>
-            <v-card-text>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-btn @click="dialog = true"
-                         outline>
-                    <v-icon>photo_camera</v-icon>掃描QR CODE
-                  </v-btn>
-                  <v-btn @click="dialog = true"
-                         outline>
-                    <v-icon>import_export</v-icon>輸入ID
-                  </v-btn>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-          </template>
         </v-card>
       </v-tab-item>
 
@@ -74,6 +75,16 @@
         </v-tab-item>
       </template>
     </v-tabs>
+
+    <v-fab-transition>
+      <v-btn @click="dialog = true"
+             fixed
+             fab
+             bottom
+             right>
+        <v-icon>photo_camera</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <bidding-deliver-dialog v-model="dialog" />
   </v-container>
 </template>

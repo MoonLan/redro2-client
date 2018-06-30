@@ -4,10 +4,11 @@
                fluid
                class="game-biddingmarketreceiverpanel">
     <v-tabs v-model="active"
-            centered>
-      <v-tab key="overview"
+            centered
+            show-arrows>
+      <v-tab href="#tab-overview"
              ripple>概覽</v-tab>
-      <v-tab-item key="overview">
+      <v-tab-item id="tab-overview">
         <v-card flat>
           <template v-for="chain in ['upstream', 'downstream']"
                     v-if="$store.state.biddingmarketreceiver[chain].enable">
@@ -40,28 +41,34 @@
       <template v-for="chain in ['upstream', 'downstream']"
                 v-if="$store.state.biddingmarketreceiver[chain].enable">
         <v-tab :key="chain"
+               :href="`#tab-${chain}`"
                ripple>{{$t('BiddingMarketReceiver.' + ($store.state.biddingmarketreceiver[chain].name))}}</v-tab>
-        <v-tab-item :key="chain">
+        <v-tab-item :key="chain"
+                    :id="`tab-${chain}`">
           <bidding-tabs :chain="chain" />
         </v-tab-item>
       </template>
     </v-tabs>
-
-    <v-btn v-if="$store.state.biddingmarketreceiver.upstream.enable"
-           @click="dialog.upstream = true"
-           fixed
-           fab
-           bottom
-           right
-           :key="'upstream-btn'">
-      <v-icon>launch</v-icon>
-    </v-btn>
+    <v-fab-transition>
+      <v-btn v-if="$store.state.biddingmarketreceiver.upstream.enable"
+             v-show="active === 'tab-upstream'"
+             @click="dialog.upstream = true"
+             fixed
+             fab
+             bottom
+             right
+             :key="'upstream-btn'">
+        <v-icon>launch</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <bidding-release-dialog v-if="$store.state.biddingmarketreceiver.upstream.enable"
                             v-model="dialog.upstream"
                             :chain="'upstream'"
                             :key="'upstream-dialog'" />
 
+    <!--
     <v-btn v-if="$store.state.biddingmarketreceiver.downstream.enable"
+           :hidden="active === 'downstream'"
            @click="dialog.downstream = true"
            fixed
            fab
@@ -74,6 +81,7 @@
                             v-model="dialog.downstream"
                             :chain="'downstream'"
                             :key="'downstream-dialog'" />
+    -->
   </v-container>
 </template>
 
@@ -156,14 +164,29 @@ export default {
     .order-media-item.car {
       background-color: #a5f9e1;
       .box {
-        background-image: url('/static/img/car64x64.png');
+        background-image: url('/static/img/goods/car64x64.png');
+      }
+    }
+
+    .order-media-item.engine {
+      background-color: #b7c284;
+      .box {
+        background-image: url('/static/img/goods/engine64x64.png');
+      }
+    }
+
+    .order-media-item.body {
+      background-color: #9de3ff;
+      .box {
+        background-image: url('/static/img/goods/body64x64.png');
       }
     }
 
     .order-media-item.wheel {
-      background-color: #c9c3ff;
+      background-color: #8a8a8a;
+      color: #fff;
       .box {
-        background-image: url('/static/img/wheel.png');
+        background-image: url('/static/img/goods/wheel64x64.png');
       }
     }
   }

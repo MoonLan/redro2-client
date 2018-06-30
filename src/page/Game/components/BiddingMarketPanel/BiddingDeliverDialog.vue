@@ -24,9 +24,9 @@
       <v-tabs v-model="active"
               centered>
         <v-tab disabled
-               key="reader">1. 掃描</v-tab>
+               key="reader">1. 掃描QR Code</v-tab>
         <v-tab disabled
-               key="info">2. 確認</v-tab>
+               key="info">2. 確認運輸</v-tab>
 
         <v-tab-item key="reader">
           <v-card-text class="text-xs-center pt-5">
@@ -85,7 +85,7 @@
             <v-btn @click="active = '0', biddingId = null"
                    flat>取消</v-btn>
             <v-spacer />
-            <v-btn @click="deliver(biddingId, bidding.signer)"
+            <v-btn @click="deliver(biddingId)"
                    :disabled="!bidding"
                    flat
                    outline>運輸</v-btn>
@@ -153,6 +153,7 @@ export default {
     },
     getBidding(id) {
       this.active = '1'
+      this.biddingId = id
       this.bidding = this.biddings.find(item => item._id === id)
     },
     deliver(id) {
@@ -162,6 +163,11 @@ export default {
           id: id
         })
         .then(() => {
+          this.$emit('input', false)
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功運輸',
+            text: ''
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

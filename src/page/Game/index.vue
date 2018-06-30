@@ -12,13 +12,14 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="mr-3">
+        <span v-if="!$store.getters['user/isStaffOrAdmin']">${{$store.getters['account/getBalance']('Cash')}}</span>
         {{readableGameTime}}
       </div>
     </v-toolbar>
     <v-content class="fill-height">
       <v-container fluid
                    class="bg-wrapper">
-        <marquee>Some Beautiful Background Image!!</marquee>
+        Some Beautiful Background Image Here!!
       </v-container>
       <node-control-panel />
     </v-content>
@@ -28,7 +29,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
-import { ROOM_EVENTS } from '@/lib/schema'
+import { ROOM_EVENTS, USER_LEVEL } from '@/lib/schema'
 import { reconnect } from '@/lib/socket'
 import NodeControlPanel from './NodeControlPanel'
 
@@ -52,14 +53,20 @@ export default {
     ...mapGetters('engine', [
       'gameTimeAdd',
       'toReadableGameTime',
-      'readableGameTime'
-    ])
+      'readableGameTime',
+      'isWorking'
+    ]),
+    ...mapGetters('user', ['hasLogin', 'isStaffOrAdmin']),
+    ...mapState('user', ['level'])
   },
   watch: {
     stage(newVal) {
       if (newVal === 'END') {
         console.log('go to end page!')
       }
+    },
+    isWorking(newVal) {
+      this.$store.commit('ui/SET_DARK', { dark: !newVal })
     }
   },
   mounted() {
@@ -67,15 +74,33 @@ export default {
     this.teamIndex = this.$route.params.teamIndex
     this.role = this.$route.params.role
 
-    reconnect()
-    this.$store.dispatch('engine/load', { id: this.engineId }).then(() => {
-      this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
-        engineId: this.engineId,
-        teamIndex: this.teamIndex,
-        role: this.role
+    let after = () => {
+      if (!this.hasLogin || (this.teamIndex === 0 && !this.isStaffOrAdmin)) {
+        this.$router.push(
+          `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
+        )
+        return
+      }
+
+      reconnect()
+      this.$store.dispatch('engine/load', { id: this.engineId }).then(() => {
+        this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+          engineId: this.engineId,
+          teamIndex: this.teamIndex,
+          role: this.role
+        })
+        console.log('socket:ROOM_JOIN')
+        this.$store.commit('ui/SET_DARK', { dark: !this.isWorking })
       })
-      console.log('socket:ROOM_JOIN')
-    })
+    }
+
+    if (!this.hasLogin) {
+      this.$store.dispatch('user/checkUser').then(() => {
+        after()
+      })
+    } else {
+      after()
+    }
   },
   beforeDestroy() {
     this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {

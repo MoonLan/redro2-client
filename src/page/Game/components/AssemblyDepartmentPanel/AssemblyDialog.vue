@@ -98,6 +98,11 @@ export default {
       this.$store
         .dispatch('assemblydepartment/assemble', ioJournalItem)
         .then(() => {
+          this.$emit('input', false)
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功組裝',
+            text: ''
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

@@ -24,7 +24,7 @@
                   <v-flex xs12>
                     <v-btn @click="dialog = true"
                            outline>
-                      <v-icon>extension</v-icon>登記
+                      <v-icon>add</v-icon>登記
                     </v-btn>
                   </v-flex>
                 </v-layout>
@@ -34,6 +34,16 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+
+    <v-fab-transition>
+      <v-btn @click="dialog = true"
+             fixed
+             fab
+             bottom
+             right>
+        <v-icon>add</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <inventory-regist-dialog v-model="dialog" />
   </v-container>
 </template>

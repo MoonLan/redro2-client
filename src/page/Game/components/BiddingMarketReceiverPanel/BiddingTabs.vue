@@ -1,5 +1,6 @@
 <template>
-  <v-tabs centered>
+  <v-tabs centered
+          show-arrows>
     <template v-for="tab in tabs">
       <v-tab :key="tab.key">{{tab.header}}</v-tab>
       <v-tab-item :key="tab.key">

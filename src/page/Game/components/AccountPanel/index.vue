@@ -4,11 +4,28 @@
                fluid
                class="game-accountpanel">
     <v-tabs v-model="active"
-            centered>
+            centered
+            show-arrows>
       <v-tab key="overview"
              ripple>概覽</v-tab>
       <v-tab-item key="overview">
         <v-card flat>
+
+          <template v-if="$store.getters['user/isStaffOrAdmin']">
+            <v-subheader>工作人員用控制項</v-subheader>
+            <v-card-text>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-btn @click="dialog = true"
+                         outline>
+                    <v-icon>add</v-icon>增加會計項目
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+            <v-divider />
+            <account-add-dialog v-model="dialog" />
+          </template>
           <v-card-text>
             <v-layout wrap
                       class="labeled-list">
@@ -54,23 +71,6 @@
               </v-flex>
             </v-layout>
           </v-card-text>
-
-          <template v-if="$store.getters['user/isStaffOrAdmin']">
-            <v-divider />
-            <v-subheader>工作人員用控制項</v-subheader>
-            <v-card-text>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-btn @click="dialog = true"
-                         outline>
-                    <v-icon>add</v-icon>增加會計項目
-                  </v-btn>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-
-            <account-add-dialog v-model="dialog" />
-          </template>
         </v-card>
       </v-tab-item>
 

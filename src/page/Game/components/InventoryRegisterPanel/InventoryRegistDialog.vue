@@ -6,6 +6,7 @@
             @input="(val) => {$emit('input', val)}">
     <v-card v-if="receivers">
       <v-form v-model="valid"
+              @submit.prevent="submit"
               ref="form">
         <v-card-title>
           <span class="headline">組裝</span>
@@ -20,7 +21,9 @@
           <v-select v-model="receiver"
                     :items="receivers"
                     label="被登記者"
-                    hide-details></v-select>
+                    hide-details
+                    required
+                    :rules="[requiredRule]"></v-select>
         </v-card-text>
         <v-card-text>
           <h3>項目</h3>
@@ -66,10 +69,15 @@
                  outline>增加項目</v-btn>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="$emit('input', false)">取消</v-btn>
+          <v-btn @click="$emit('input', false)"
+                 flat>取消</v-btn>
           <v-spacer />
-          <v-btn @click="regist"
-                 :disabled="!valid">登記</v-btn>
+          <v-btn @click="clear"
+                 flat>清除</v-btn>
+          <v-btn type="submit"
+                 :disabled="!valid"
+                 flat
+                 outline>登記</v-btn>
         </v-card-actions>
       </v-form>
     </v-card>
@@ -96,7 +104,10 @@ export default {
     ...mapState('inventoryregister', ['nodeName', 'receivers'])
   },
   methods: {
-    regist(id, operator) {
+    submit(id, operator) {
+      if (!this.valid) {
+        return
+      }
       let ioJournalItem = {
         from: this.nodeName,
         to: this.receiver,
@@ -107,6 +118,11 @@ export default {
       this.$store
         .dispatch('inventoryregister/regist', ioJournalItem)
         .then(() => {
+          this.$emit('input', false)
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功登記',
+            text: ''
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

@@ -14,13 +14,13 @@
             <v-container>
               <v-card class="transparent elevation-0 text-xs-center">
                 <v-form v-model="valid"
+                        @submit.prevent="submit"
                         ref="form">
                   <v-card-text>
                     <h3 class="headline mb-0">輸入你的名字</h3>
                   </v-card-text>
                   <v-card>
                     <v-card-text>
-
                       <v-text-field v-model="name"
                                     label="名字"
                                     required
@@ -37,7 +37,7 @@
                   <v-card-text>
                     <v-btn @click="$router.go(-1)"
                            flat>取消</v-btn>
-                    <v-btn @click="submit"
+                    <v-btn type="submit"
                            :disabled="!valid"
                            flat
                            outline>創建</v-btn>
@@ -62,7 +62,7 @@
                   </v-card-text>
                 </v-card>
                 <v-card-text>
-                  <v-btn @click=""
+                  <v-btn @click="$router.go(-1)"
                          flat
                          outline>我已經記住了</v-btn>
                 </v-card-text>
@@ -78,6 +78,7 @@
 <script>
 import api from '@/api'
 import { reconnect } from '@/lib/socket'
+import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
@@ -94,6 +95,9 @@ export default {
     requiredRule: v => !!v || '必需項',
     lessThanTenWordRule: v => (!!v && v.length <= 10) || '名字要少於10個字'
   }),
+  computed: {
+    ...mapGetters('user', ['hasLogin'])
+  },
   methods: {
     submit() {
       if (!this.valid) {
@@ -129,6 +133,14 @@ export default {
     this.engineId = this.$route.params.id
     this.teamIndex = this.$route.params.teamIndex
     this.role = this.$route.params.role
+
+    if (this.hasLogin) {
+      this.$router.push(
+        this.engineId
+          ? `/player/confirm/${this.engineId}/${this.teamIndex}/${this.role}`
+          : '/player/confirm'
+      )
+    }
   }
 }
 </script>

@@ -28,10 +28,9 @@
               </v-card-text>
             </v-card>
             <v-card-text>
-              <v-btn :to="'/player/login'"
-                     @click="notMe"
+              <v-btn @click="notMe"
                      flat>不是</v-btn>
-              <v-btn @click="$router.push('/')"
+              <v-btn @click="isMe"
                      flat
                      outline>是的</v-btn>
             </v-card-text>
@@ -46,6 +45,7 @@
 import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
 import { reconnect } from '@/lib/socket'
+import { USER_LEVEL } from '@/lib/schema'
 
 export default {
   data: () => ({
@@ -54,7 +54,7 @@ export default {
     role: null
   }),
   computed: {
-    ...mapState('user', ['name', 'userId']),
+    ...mapState('user', ['name', 'userId', 'level']),
     ...mapGetters('user', ['hasLogin'])
   },
   methods: {
@@ -62,11 +62,32 @@ export default {
       this.$store.commit('user/SET_ID', {})
       this.$store.commit('user/SET_NAME', {})
       this.$store.commit('user/SET_LEVEL', {})
+
+      this.$router.push('/player/login')
+    },
+    isMe() {
+      if (this.level === USER_LEVEL.ADMIN) {
+        this.$router.push('/console')
+      } else if (this.engineId) {
+        this.$router.push(
+          `/player/ready/${this.engineId}/${this.teamIndex}/${this.role}`
+        )
+      } else {
+        this.$router.push('/')
+      }
     }
   },
   mounted() {
+    this.engineId = this.$route.params.id
+    this.teamIndex = this.$route.params.teamIndex
+    this.role = this.$route.params.role
+
     if (!this.hasLogin) {
-      this.$router.push('/player/login')
+      this.$router.push(
+        this.engineId
+          ? `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
+          : '/player/login'
+      )
     }
   }
 }

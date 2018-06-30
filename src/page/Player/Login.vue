@@ -12,6 +12,7 @@
         <v-container>
           <v-card class="transparent elevation-0 text-xs-center">
             <v-form v-model="valid"
+                    @submit.prevent="submit"
                     ref="form">
               <v-card-text>
                 <h3 class="headline mb-0">輸入 MagicCode</h3>
@@ -26,14 +27,14 @@
                 </v-card-text>
               </v-card>
               <v-card-text>
-                <router-link :to="'/player/regist'">
+                <router-link :to="engineId ? `/player/regist/${engineId}/${teamIndex}/${role}` : '/player/regist'">
                   <a>我還沒有 MagicCode。</a>
                 </router-link>
               </v-card-text>
               <v-card-text>
                 <v-btn @click="$router.go(-1)"
                        flat>取消</v-btn>
-                <v-btn @click="submit"
+                <v-btn type="submit"
                        :disabled="!valid"
                        flat
                        outline>登入</v-btn>
@@ -97,8 +98,16 @@ export default {
     }
   },
   mounted() {
+    this.engineId = this.$route.params.id
+    this.teamIndex = this.$route.params.teamIndex
+    this.role = this.$route.params.role
+
     if (this.hasLogin) {
-      this.$router.push('/player/confirm')
+      this.$router.push(
+        this.engineId
+          ? `/player/confirm/${this.engineId}/${this.teamIndex}/${this.role}`
+          : '/player/confirm'
+      )
     }
   }
 }

@@ -46,7 +46,8 @@ export default {
       'dayLength',
       'stage'
     ]),
-    ...mapState('user',[])
+    ...mapGetters('user', ['hasLogin', 'isStaffOrAdmin']),
+    ...mapState('user', [])
   },
   watch: {
     stage(newVal) {
@@ -65,21 +66,44 @@ export default {
     this.teamIndex = this.$route.params.teamIndex
     this.role = this.$route.params.role
 
-    reconnect()
-    this.$store.dispatch('engine/load', { id: this.engineId }).then(() => {
-      this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
-        engineId: this.engineId,
-        teamIndex: this.teamIndex,
-        role: this.role
-      })
-      console.log('socket:ROOM_JOIN')
-    })
+    if (!this.engineId) {
+      this.$router.push('/player')
+    }
 
-    if (this.stage === 'START' || this.stage === 'FINAL') {
-      console.log('go to game page!')
-      this.$router.push(`/game/${this.engineId}/${this.teamIndex}/${this.role}`)
-    } else if (this.stage === 'END') {
-      console.log('go to end page!')
+    let after = () => {
+      if (!this.hasLogin || (this.teamIndex === 0 && !this.isStaffOrAdmin)) {
+        this.$router.push(
+          `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
+        )
+        return
+      }
+
+      reconnect()
+      this.$store.dispatch('engine/load', { id: this.engineId }).then(() => {
+        this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+          engineId: this.engineId,
+          teamIndex: this.teamIndex,
+          role: this.role
+        })
+        console.log('socket:ROOM_JOIN')
+      })
+
+      if (this.stage === 'START' || this.stage === 'FINAL') {
+        console.log('go to game page!')
+        this.$router.push(
+          `/game/${this.engineId}/${this.teamIndex}/${this.role}`
+        )
+      } else if (this.stage === 'END') {
+        console.log('go to end page!')
+      }
+    }
+
+    if (!this.hasLogin) {
+      this.$store.dispatch('user/checkUser').then(() => {
+        after()
+      })
+    } else {
+      after()
     }
   },
   beforeDestroy() {

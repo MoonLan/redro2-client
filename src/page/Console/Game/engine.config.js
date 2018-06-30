@@ -36,8 +36,16 @@ const COMPONENTS_FACTORY_COMPONENTS = [
       transportationTime: 5,
       transportationCost: 100,
       batchSize: 4,
-      availableImportGoods: [{ good: 'Wheel' }, { good: 'Body' }, { good: 'Engine' }],
-      availableExportGoods: [{ good: 'Wheel' }, { good: 'Body' }, { good: 'Engine' }]
+      availableImportGoods: [
+        { good: 'Wheel' },
+        { good: 'Body' },
+        { good: 'Engine' }
+      ],
+      availableExportGoods: [
+        { good: 'Wheel' },
+        { good: 'Body' },
+        { good: 'Engine' }
+      ]
     }
   },
   {
@@ -90,7 +98,11 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
       transportationTime: 5,
       transportationCost: 150,
       batchSize: 4,
-      availableImportGoods: [{ good: 'Wheel' }, { good: 'Body' }, { good: 'Engine' }],
+      availableImportGoods: [
+        { good: 'Wheel' },
+        { good: 'Body' },
+        { good: 'Engine' }
+      ],
       availableExportGoods: [{ good: 'Car' }]
     }
   },
@@ -311,6 +323,70 @@ export const NODES = [
                   good: 'Car',
                   unit: 30,
                   unitPrice: 100
+                }
+              ]
+            },
+            {
+              title: 'Sample News Day2',
+              content: 'Haha... Day 2 is coming',
+              releasedGameTime: {
+                day: 2,
+                time: 0,
+                isWorking: true
+              },
+              marketNeeds: [
+                {
+                  good: 'Car',
+                  unit: 40,
+                  unitPrice: 110
+                }
+              ]
+            },
+            {
+              title: 'Sample News Day3',
+              content: 'Haha... Day 3 is coming',
+              releasedGameTime: {
+                day: 3,
+                time: 0,
+                isWorking: true
+              },
+              marketNeeds: [
+                {
+                  good: 'Car',
+                  unit: 50,
+                  unitPrice: 120
+                }
+              ]
+            },
+            {
+              title: 'Sample News Day4',
+              content: 'Haha... Day 4 is coming',
+              releasedGameTime: {
+                day: 4,
+                time: 0,
+                isWorking: true
+              },
+              marketNeeds: [
+                {
+                  good: 'Car',
+                  unit: 60,
+                  unitPrice: 130
+                }
+              ]
+            },
+            {
+              title: 'Sample News Day5',
+              content: 'Haha... Day 5 is coming',
+              releasedGameTime: {
+                day: 5,
+                time: 0,
+                isWorking: true
+              },
+              marketNeeds: [
+                {
+                  good: 'Car',
+                  unit: 100,
+                  unitPrice: 140
                 }
               ]
             }

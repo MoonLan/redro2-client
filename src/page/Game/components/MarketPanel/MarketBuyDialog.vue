@@ -44,7 +44,6 @@
                flat
                outline>購買</v-btn>
       </v-card-actions>
-
     </v-card>
   </v-dialog>
 </template>
@@ -83,6 +82,11 @@ export default {
       this.$store
         .dispatch('market/buy', marketJournalItem)
         .then(() => {
+          this.$emit('input', false)
+          this.$store.commit('ui/OPEN_DIALOG', {
+            title: '成功購買',
+            text: ''
+          })
           this.$store.commit('ui/STOP_LOADING')
         })
         .catch(err => {

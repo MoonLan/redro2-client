@@ -27,7 +27,7 @@ export default {
   marketreceiver: marketreceiver
 }
 
-export const SERVER_BASE = 'http://140.114.208.6' // 'http://localhost'
+export const SERVER_BASE = 'https://redro2.2018ieemcamp.me' // 'http://localhost'
 export const ERR_MSG = {
   20: {
     title: 'entry.UserInfoNotCorrectTitle',
