@@ -443,13 +443,32 @@ export const PERMISSIONS = [
             name: 'Scoreboard',
             describe: 'Scoreboard',
             objectTypes: [
-              { type: 'ComponentsFactory-1' },
-              { type: 'ComponentsFactory-2' },
-              { type: 'AssemblyFactory-1' },
-              { type: 'AssemblyFactory-2' },
-              { type: 'Retailer-1' },
-              { type: 'Retailer-2' },
-              { type: 'Engine' }
+              {
+                type: 'ComponentsFactory-1',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'ComponentsFactory-2',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-1',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-2',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-1',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-2',
+                listening: ['ACCOUNT_ADD']
+              },
+              { type: 'Engine' },
+              { type: 'Server' }
             ]
           },
           {

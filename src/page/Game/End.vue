@@ -49,9 +49,4 @@ export default {
 </script>
 
 <style lang="scss">
-.game {
-  .bg-wrapper {
-    height: 20vh;
-  }
-}
 </style>

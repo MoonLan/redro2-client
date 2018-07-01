@@ -12,6 +12,7 @@ import assemblydepartment from './modules/assemblydepartment'
 import market from './modules/market'
 import marketreceiver from './modules/marketreceiver'
 import inventoryregister from './modules/inventoryregister'
+import scoreboard from './modules/scoreboard'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     assemblydepartment,
     market,
     marketreceiver,
-    inventoryregister
+    inventoryregister,
+    scoreboard
   }
 })

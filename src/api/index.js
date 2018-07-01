@@ -12,6 +12,7 @@ import * as assemblydepartment from './assemblydepartment'
 import * as inventoryregister from './inventoryregister'
 import * as market from './market'
 import * as marketreceiver from './marketreceiver'
+import * as scoreboard from './scoreboard'
 
 export default {
   server: server,
@@ -24,7 +25,8 @@ export default {
   assemblydepartment: assemblydepartment,
   inventoryregister: inventoryregister,
   market: market,
-  marketreceiver: marketreceiver
+  marketreceiver: marketreceiver,
+  scoreboard: scoreboard
 }
 
 export const SERVER_BASE = 'http://localhost' // 'https://redro2.2018ieemcamp.me'

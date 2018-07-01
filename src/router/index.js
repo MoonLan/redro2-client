@@ -84,6 +84,10 @@ export default new Router({
     {
       path: '/game/end/:id',
       component: () => import('@/page/Game/End')
+    },
+    {
+      path: '/game/scoreboard/:id',
+      component: () => import('@/page/Game/Scoreboard')
     }
 
     /*

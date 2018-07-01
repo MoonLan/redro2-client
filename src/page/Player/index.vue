@@ -94,7 +94,7 @@
                                flat
                                outline>成為{{item.name}}</v-btn>
                         <v-btn v-else
-                               :to="item.to"
+                               :to="`${item.to}/${engineId}`"
                                flat
                                outline>成為{{item.name}}</v-btn>
                       </v-card-actions>
@@ -233,7 +233,7 @@ export default {
         role: 'scoreboard',
         name: '記分板',
         description: '誰會想成為記分板呢？別選了。',
-        to: '/scoreboard'
+        to: `/game/scoreboard`
       }
     ],
     engine: null

@@ -1,5 +1,11 @@
 import { legalRequest } from '@/api'
 
+export function getInfo() {
+  return legalRequest('/api/server/getInfo').then(data => {
+    return Promise.resolve(data.server)
+  })
+}
+
 export function getEnginesList() {
   return legalRequest('/api/server/getEnginesList').then(data => {
     return Promise.resolve(data.list)
