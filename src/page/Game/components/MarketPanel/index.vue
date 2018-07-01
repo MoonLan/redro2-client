@@ -88,12 +88,40 @@ export default {
   },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
-    ...mapGetters('market', [
-      'currentMarketCarPrice',
-      'currentMarketCarNeeds',
-      'currentMarketCarLeftDemand'
-    ]),
-    ...mapState('market', ['news', 'upstreams', 'needs'])
+    ...mapState('engine', ['gameTime']),
+    ...mapGetters('market', ['currentMarketCarLeftDemand']),
+    ...mapState('market', ['news', 'upstreams', 'needs']),
+    currentAvailableNews() {
+      if (!this.news || this.news.length === 0 || !this.gameTime) {
+        return
+      }
+      let gt = this.gameTime
+
+      return this.news.filter(news => {
+        let rgt = news.releasedGameTime
+        return rgt.day < gt.day || (rgt.day === gt.day && rgt.time <= gt.time)
+      })
+    },
+    currentMarketCarPrice() {
+      if (
+        !this.currentAvailableNews ||
+        this.currentAvailableNews.length === 0
+      ) {
+        return 0
+      }
+      return this.currentAvailableNews[this.currentAvailableNews.length - 1]
+        .marketNeeds[0].unitPrice
+    },
+    currentMarketCarNeeds() {
+      if (
+        !this.currentAvailableNews ||
+        this.currentAvailableNews.length === 0
+      ) {
+        return 0
+      }
+      return this.currentAvailableNews[this.currentAvailableNews.length - 1]
+        .marketNeeds[0].unit
+    }
   },
   methods: {
     load() {

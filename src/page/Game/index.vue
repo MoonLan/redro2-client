@@ -29,7 +29,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
-import { ROOM_EVENTS, USER_LEVEL } from '@/lib/schema'
+import { ROOM_EVENTS, USER_LEVEL, ENGINE_STAGE } from '@/lib/schema'
 import { reconnect } from '@/lib/socket'
 import NodeControlPanel from './NodeControlPanel'
 
@@ -61,8 +61,9 @@ export default {
   },
   watch: {
     stage(newVal) {
-      if (newVal === 'END') {
+      if (newVal === ENGINE_STAGE.END) {
         console.log('go to end page!')
+        this.$router.replace(`/game/end/${this.engineId}`)
       }
     },
     isWorking(newVal) {
@@ -90,6 +91,12 @@ export default {
           role: this.role
         })
         console.log('socket:ROOM_JOIN')
+
+        if (this.stage === ENGINE_STAGE.END) {
+          console.log('go to end page!')
+          this.$router.replace(`/game/end/${this.engineId}`)
+        }
+
         this.$store.commit('ui/SET_DARK', { dark: !this.isWorking })
       })
     }
@@ -113,6 +120,10 @@ export default {
     this.$store.commit('ui/SET_DARK', { dark: false })
   },
   beforeRouteLeave(to, from, next) {
+    if (this.stage === ENGINE_STAGE.END) {
+      next()
+      return
+    }
     this.$store
       .dispatch('ui/openRequestDialog', {
         title: '你確定要離開這場遊戲嗎？',

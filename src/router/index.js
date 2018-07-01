@@ -69,10 +69,6 @@ export default new Router({
       component: () => import('@/page/Player/Login')
     },
     {
-      path: '/player/oldlogin',
-      component: () => import('@/page/Player/OldLogin')
-    },
-    {
       path: '/player/confirm/:id?/:teamIndex?/:role?',
       component: () => import('@/page/Player/Confirm')
     },
@@ -84,7 +80,12 @@ export default new Router({
     {
       path: '/game/:id/:teamIndex/:role',
       component: () => import('@/page/Game')
+    },
+    {
+      path: '/game/end/:id',
+      component: () => import('@/page/Game/End')
     }
+
     /*
     {
       path: '/boardcast/scoreboard',

@@ -116,7 +116,7 @@
                     <v-layout wrap>
                       <v-flex xs12>
                         <v-btn @click="$store.dispatch('engine/nextStage')"
-                               :disabled="$store.state.engine.gameTime.day !== $store.state.engine.dayLength && $store.state.engine.gameTime.isWorking === true"
+                               :disabled="$store.state.engine.stage === 'START' || $store.state.engine.gameTime.day !== $store.state.engine.dayLength && $store.state.engine.gameTime.isWorking === true"
                                outline>下一階段</v-btn>
                         <v-btn @click="$store.dispatch('engine/nextDay')"
                                :disabled="$store.state.engine.stage !== 'START' || $store.state.engine.gameTime.isWorking === true"
@@ -129,24 +129,20 @@
               <v-tab key="control"
                      ripple>控制</v-tab>
               <v-tab-item key="control">
-                <v-card flat>
-                  <v-card-text>
-                    <v-layout>
-                      <v-flex xs4>
-                        <v-list>
-                          <v-list-tile v-for="node in $store.state.engine.nodes"
-                                       :key="node.name"
-                                       :to="`/console/game/${id}/${0}/${node.name}`">
-                            {{node.name}}
-                          </v-list-tile>
-                        </v-list>
-                      </v-flex>
-                      <v-flex xs8>
-                        <router-view />
-                      </v-flex>
-                    </v-layout>
-                  </v-card-text>
-                </v-card>
+                <v-layout>
+                  <v-flex xs4>
+                    <v-list>
+                      <v-list-tile v-for="node in $store.state.engine.nodes"
+                                   :key="node.name"
+                                   :to="`/console/game/${id}/${0}/${node.name}`">
+                        {{node.name}}
+                      </v-list-tile>
+                    </v-list>
+                  </v-flex>
+                  <v-flex xs8>
+                    <router-view />
+                  </v-flex>
+                </v-layout>
               </v-tab-item>
             </v-tabs>
             <v-card-actions>

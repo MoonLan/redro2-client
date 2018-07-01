@@ -24,12 +24,12 @@
                 </v-flex>
                 <v-flex xs6
                         md3>
-                  <span class="label">解約罰金比例</span>
+                  <span class="label">違約金比率</span>
                   {{$store.state.biddingmarketreceiver[chain].breakoffPaneltyRatio}}倍訂單價格
                 </v-flex>
                 <v-flex xs6
                         md3>
-                  <span class="label">解約賠償比例</span>
+                  <span class="label">被解約者可以收到的賠償比例</span>
                   {{$store.state.biddingmarketreceiver[chain].breakoffCompensationRatio}}倍訂單價格
                 </v-flex>
               </v-layout>

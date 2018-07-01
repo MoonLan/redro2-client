@@ -1,7 +1,6 @@
 <template>
   <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly"
             persistent
-            scrollable
             max-width="500px"
             :value="value"
             @input="(val) => {$emit('input', val)}">

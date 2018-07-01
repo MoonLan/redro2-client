@@ -57,7 +57,7 @@ export default {
           `/game/${this.engineId}/${this.teamIndex}/${this.role}`
         )
       } else if (newVal === 'END') {
-        console.log('go to end page!')
+        this.$router.replace(`/game/end/${this.engineId}`)
       }
     }
   },
@@ -95,6 +95,7 @@ export default {
         )
       } else if (this.stage === 'END') {
         console.log('go to end page!')
+        this.$router.replace(`/game/end/${this.engineId}`)
       }
     }
 
