@@ -27,13 +27,7 @@ export default {
   marketreceiver: marketreceiver
 }
 
-export const SERVER_BASE = 'https://redro2.2018ieemcamp.me' // 'http://localhost'
-export const ERR_MSG = {
-  20: {
-    title: 'entry.UserInfoNotCorrectTitle',
-    text: 'entry.UserInfoNotCorrectText'
-  }
-}
+export const SERVER_BASE = 'http://localhost' // 'https://redro2.2018ieemcamp.me'
 
 export function legalRequest(apiPath, data) {
   return new Promise((resolve, reject) => {
