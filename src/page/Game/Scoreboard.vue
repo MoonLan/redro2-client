@@ -203,6 +203,12 @@ export default {
       }
       for (let user of this.belongingUsers) {
         let per = user.permissions.find(p => p.engineId === this.engineId)
+        if (
+          !list[parseInt(per.teamIndex) - 1] ||
+          !list[parseInt(per.teamIndex) - 1][per.role.split('-')[0]]
+        ) {
+          return
+        }
         list[parseInt(per.teamIndex) - 1][per.role.split('-')[0]].push(user)
       }
       return list
