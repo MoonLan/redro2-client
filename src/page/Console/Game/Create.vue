@@ -14,6 +14,7 @@
                 </v-btn>
                 <h3 class="headline mb-0">創建新遊戲</h3>
               </v-card-title>
+              <v-subheader>引擎</v-subheader>
               <v-card-text>
                 <v-text-field v-model="name"
                               label="Name"
@@ -24,24 +25,63 @@
                 <v-text-field v-model="gameDays"
                               label="GameDays"
                               type="number"
+                              suffix="天"
                               required
                               :rules="requiredRule"></v-text-field>
                 <v-text-field v-model="dayLength"
                               label="DayLength"
+                              suffix="秒"
                               type="number"
                               required
                               :rules="requiredRule"></v-text-field>
+              </v-card-text>
+
+              <v-subheader>節點</v-subheader>
+              <v-card-text>
+                <v-text-field v-model="teamIndex"
+                              label="組別數"
+                              suffix="組"
+                              required
+                              :rules="requiredRule"></v-text-field>
+
                 <v-text-field v-model="nodes"
                               label="Nodes"
                               required
                               :rules="requiredRule"
                               multi-line></v-text-field>
+
+              </v-card-text>
+
+              <v-subheader>零件廠</v-subheader>
+              <v-card-text>
+                <v-text-field v-model="teamIndex"
+                              label="初始金額"
+                              suffix="元"
+                              required
+                              :rules="requiredRule"></v-text-field>
+                <v-text-field v-model="teamIndex"
+                              label="初始金額"
+                              suffix="元"
+                              required
+                              :rules="requiredRule"></v-text-field>
+
+                <v-text-field v-model="nodes"
+                              label="Nodes"
+                              required
+                              :rules="requiredRule"
+                              multi-line></v-text-field>
+
+              </v-card-text>
+
+              <v-subheader>權限</v-subheader>
+              <v-card-text>
                 <v-text-field v-model="permissions"
                               label="Permissions"
                               required
                               :rules="requiredRule"
                               multi-line></v-text-field>
               </v-card-text>
+
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn @click="clear"
@@ -70,6 +110,135 @@ export default {
     gameDays: 3,
     dayLength: 300,
     nodes: '',
+    teamIndex: '',
+
+    componentsFactory: {
+      Account: {
+        enable: true,
+        initialCash: 150000
+      },
+      Inventory: {
+        enable: true,
+        hasStorageCost: true,
+        storageCost: [
+          {
+            good: 'Engine',
+            costPerBatch: 5
+          },
+          {
+            good: 'Body',
+            costPerBatch: 10
+          },
+          {
+            good: 'Wheel',
+            costPerBatch: 6
+          }
+        ],
+        batchSize: 10,
+        mode: 'PERIODIC'
+      },
+      IO: {
+        enable: true,
+        transportationTime: 5,
+        transportationCost: 100,
+        batchSize: 4,
+        availableImportGoods: [
+          { good: 'Wheel' },
+          { good: 'Body' },
+          { good: 'Engine' }
+        ],
+        availableExportGoods: [
+          { good: 'Wheel' },
+          { good: 'Body' },
+          { good: 'Engine' }
+        ]
+      },
+      BiddingMarketReceiver: {
+        enable: true,
+        downstreamProvider: 'ComponentsBiddingMarket'
+      }
+    },
+
+    assemblyFactory: {
+      Account: {
+        enable: true,
+        initialCash: 100000
+      },
+      Inventory: {
+        enable: true,
+        hasStorageCost: true,
+        storageCost: [
+          {
+            good: 'Engine',
+            costPerBatch: 5
+          },
+          {
+            good: 'Body',
+            costPerBatch: 10
+          },
+          {
+            good: 'Wheel',
+            costPerBatch: 6
+          },
+          {
+            good: 'Car',
+            costPerBatch: 6
+          }
+        ],
+        batchSize: 10
+      },
+      IO: {
+        enable: true,
+        transportationTime: 5,
+        transportationCost: 100,
+        batchSize: 4,
+        availableImportGoods: [
+          { good: 'Wheel' },
+          { good: 'Body' },
+          { good: 'Engine' }
+        ],
+        availableExportGoods: [{ good: 'Car' }]
+      },
+      BiddingMarketReceiver: {
+        enable: true,
+        upstreamProvider: 'ComponentsBiddingMarket',
+        downstreamProvider: 'CarsBiddingMarket'
+      }
+    },
+    retailer: {
+      Account: {
+        enable: true,
+        initialCash: 50000
+      },
+      Inventory: {
+        enable: true,
+        hasStorageCost: true,
+        storageCost: [
+          {
+            good: 'Car',
+            costPerBatch: 6
+          }
+        ],
+        batchSize: 10
+      },
+      IO: {
+        enable: true,
+        transportationTime: 5,
+        transportationCost: 100,
+        batchSize: 4,
+        availableImportGoods: [{ good: 'Car' }],
+        availableExportGoods: [{ good: 'Car' }]
+      },
+      BiddingMarketReceiver: {
+        enable: true,
+        upstreamProvider: 'CarsBiddingMarket'
+      },
+      MarketReceiver: {
+        enable: true,
+        provider: 'Market'
+      }
+    },
+
     permissions: '',
     requiredRule: [v => !!v || '必需項']
   }),

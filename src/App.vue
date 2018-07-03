@@ -67,7 +67,7 @@ export default {}
 <style lang="scss">
 .application {
   :not(i) {
-    font-family: 'Roboto', '微軟正黑體', 'Arial MS Unicode', 'Helvetica Neue',
+    font-family: 'Roboto', 微軟正黑體, 'Arial MS Unicode', 'Helvetica Neue',
       sans-serif, Arial, Helvetica, sans-serif;
   }
   input:-webkit-autofill {

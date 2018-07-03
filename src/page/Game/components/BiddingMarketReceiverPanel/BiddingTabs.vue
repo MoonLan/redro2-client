@@ -30,7 +30,8 @@ export default {
         { header: '可供選購', key: 'released', description: '' },
         { header: '你釋出', key: 'selfReleased', newComing: 1 },
         { header: '已締約', key: 'selfSigned' },
-        { header: '已完成', key: 'selfCompleted' }
+        { header: '已完成', key: 'selfCompleted' },
+        { header: '解約訂單', key: 'selfBreakoff' }
       ]
     }
   }

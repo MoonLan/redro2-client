@@ -104,10 +104,12 @@ export default {
       'upstreamSelfReleased',
       'upstreamSelfSigned',
       'upstreamSelfCompleted',
+      'upstreamSelfBreakoff',
       'downstreamReleased',
       'downstreamSelfReleased',
       'downstreamSelfSigned',
-      'downstreamSelfCompleted'
+      'downstreamSelfCompleted',
+      'downstreamSelfBreakoff'
     ]),
     ...mapState('biddingmarketreceiver', [
       'nodeName',

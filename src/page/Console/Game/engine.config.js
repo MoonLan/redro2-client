@@ -3,7 +3,7 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 10000
+      initialCash: 100000
     }
   },
   {
@@ -14,15 +14,15 @@ const COMPONENTS_FACTORY_COMPONENTS = [
       storageCost: [
         {
           good: 'Engine',
-          costPerBatch: 5
+          costPerBatch: 1400
         },
         {
           good: 'Body',
-          costPerBatch: 10
+          costPerBatch: 2800
         },
         {
           good: 'Wheel',
-          costPerBatch: 6
+          costPerBatch: 700
         }
       ],
       batchSize: 10,
@@ -33,8 +33,8 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     type: 'IO',
     enable: true,
     options: {
-      transportationTime: 5,
-      transportationCost: 100,
+      transportationTime: 120,
+      transportationCost: 1400,
       batchSize: 4,
       availableImportGoods: [
         { good: 'Wheel' },
@@ -62,7 +62,7 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 10000
+      initialCash: 150000
     }
   },
   {
@@ -73,19 +73,19 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
       storageCost: [
         {
           good: 'Engine',
-          costPerBatch: 5
+          costPerBatch: 1867
         },
         {
           good: 'Body',
-          costPerBatch: 10
+          costPerBatch: 3733
         },
         {
           good: 'Wheel',
-          costPerBatch: 6
+          costPerBatch: 944
         },
         {
           good: 'Car',
-          costPerBatch: 20
+          costPerBatch: 5600
         }
       ],
       batchSize: 10
@@ -95,8 +95,8 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'IO',
     enable: true,
     options: {
-      transportationTime: 5,
-      transportationCost: 150,
+      transportationTime: 120,
+      transportationCost: 1400,
       batchSize: 4,
       availableImportGoods: [
         { good: 'Wheel' },
@@ -121,7 +121,7 @@ const RETAILER_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 10000
+      initialCash: 50000
     }
   },
   {
@@ -132,7 +132,7 @@ const RETAILER_COMPONENTS = [
       storageCost: [
         {
           good: 'Car',
-          costPerBatch: 40
+          costPerBatch: 8400
         }
       ],
       batchSize: 10
@@ -142,8 +142,6 @@ const RETAILER_COMPONENTS = [
     type: 'IO',
     enable: true,
     options: {
-      transportationTime: 5,
-      transportationCost: 200,
       batchSize: 4,
       availableImportGoods: [{ good: 'Car' }],
       availableExportGoods: [{ good: 'Car' }]
@@ -169,14 +167,20 @@ export const NODES = [
   {
     name: 'ComponentsFactory-1',
     components: COMPONENTS_FACTORY_COMPONENTS,
-    wage: 100,
-    workers: 8
+    wage: 875,
+    workers: 6
   },
   {
     name: 'ComponentsFactory-2',
     components: COMPONENTS_FACTORY_COMPONENTS,
-    wage: 100,
-    workers: 8
+    wage: 875,
+    workers: 6
+  },
+  {
+    name: 'ComponentsFactory-3',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
   },
   {
     name: 'ComponentsBiddingMarket',
@@ -185,11 +189,19 @@ export const NODES = [
         type: 'BiddingMarket',
         enable: true,
         options: {
-          upstreams: ['ComponentsFactory-1', 'ComponentsFactory-2'],
-          downstreams: ['AssemblyFactory-1', 'AssemblyFactory-2'],
+          upstreams: [
+            'ComponentsFactory-1',
+            'ComponentsFactory-2',
+            'ComponentsFactory-3'
+          ],
+          downstreams: [
+            'AssemblyFactory-1',
+            'AssemblyFactory-2',
+            'AssemblyFactory-3'
+          ],
           breakoffPaneltyRatio: 1.2,
-          breakoffCompensationRatio: 0.5,
-          transportationTime: 5,
+          breakoffCompensationRatio: 1.2,
+          transportationTime: 120,
           transportationStatus: 'DELIVERING'
         }
       },
@@ -206,7 +218,11 @@ export const NODES = [
         type: 'InventoryRegister',
         enable: true,
         options: {
-          receivers: ['ComponentsFactory-1', 'ComponentsFactory-2']
+          receivers: [
+            'ComponentsFactory-1',
+            'ComponentsFactory-2',
+            'ComponentsFactory-3'
+          ]
         }
       }
     ]
@@ -214,13 +230,19 @@ export const NODES = [
   {
     name: 'AssemblyFactory-1',
     components: ASSEMBLY_FACTORY_COMPONENTS,
-    wage: 150,
+    wage: 875,
     workers: 2
   },
   {
     name: 'AssemblyFactory-2',
     components: ASSEMBLY_FACTORY_COMPONENTS,
-    wage: 150,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'AssemblyFactory-3',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
     workers: 2
   },
   {
@@ -230,7 +252,11 @@ export const NODES = [
         type: 'AssemblyDepartment',
         enable: true,
         options: {
-          receivers: ['AssemblyFactory-1', 'AssemblyFactory-2'],
+          receivers: [
+            'AssemblyFactory-1',
+            'AssemblyFactory-2',
+            'AssemblyFactory-3'
+          ],
           bom: [
             {
               good: 'Car',
@@ -270,11 +296,15 @@ export const NODES = [
         type: 'BiddingMarket',
         enable: true,
         options: {
-          upstreams: ['AssemblyFactory-1', 'AssemblyFactory-2'],
-          downstreams: ['Retailer-1', 'Retailer-2'],
+          upstreams: [
+            'AssemblyFactory-1',
+            'AssemblyFactory-2',
+            'AssemblyFactory-3'
+          ],
+          downstreams: ['Retailer-1', 'Retailer-2', 'Retailer-3'],
           breakoffPaneltyRatio: 1.2,
-          breakoffCompensationRatio: 0.5,
-          transportationTime: 5,
+          breakoffCompensationRatio: 1.2,
+          transportationTime: 120,
           transportationStatus: 'DELIVERING'
         }
       },
@@ -292,13 +322,19 @@ export const NODES = [
   {
     name: 'Retailer-1',
     components: RETAILER_COMPONENTS,
-    wage: 200,
+    wage: 875,
     workers: 2
   },
   {
     name: 'Retailer-2',
     components: RETAILER_COMPONENTS,
-    wage: 200,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'Retailer-3',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
     workers: 2
   },
   {
@@ -308,7 +344,7 @@ export const NODES = [
         type: 'Market',
         enable: true,
         options: {
-          upstreams: ['Retailer-1', 'Retailer-2'],
+          upstreams: ['Retailer-1', 'Retailer-2', 'Retailer-3'],
           news: [
             {
               title: 'Sample News Day1',
@@ -321,8 +357,8 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 30,
-                  unitPrice: 100
+                  unit: 20,
+                  unitPrice: 17000
                 }
               ]
             },
@@ -338,7 +374,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 40,
-                  unitPrice: 110
+                  unitPrice: 17000
                 }
               ]
             },
@@ -354,7 +390,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 50,
-                  unitPrice: 120
+                  unitPrice: 17000
                 }
               ]
             },
@@ -369,8 +405,8 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 60,
-                  unitPrice: 130
+                  unit: 95,
+                  unitPrice: 17000
                 }
               ]
             },
@@ -385,8 +421,24 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 100,
-                  unitPrice: 140
+                  unit: 45,
+                  unitPrice: 15000
+                }
+              ]
+            },
+            {
+              title: 'Sample News Day6',
+              content: 'Haha... Day 6 is coming',
+              releasedGameTime: {
+                day: 6,
+                time: 0,
+                isWorking: true
+              },
+              marketNeeds: [
+                {
+                  good: 'Car',
+                  unit: 40,
+                  unitPrice: 15000
                 }
               ]
             }
@@ -427,13 +479,16 @@ export const PERMISSIONS = [
             objectTypes: [
               { type: 'ComponentsFactory-1' },
               { type: 'ComponentsFactory-2' },
+              { type: 'ComponentsFactory-3' },
               { type: 'ComponentsBiddingMarket' },
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
+              { type: 'AssemblyFactory-3' },
               { type: 'AssemblyDepartment' },
               { type: 'CarsBiddingMarket' },
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
+              { type: 'Retailer-3' },
               { type: 'Market' },
               { type: 'Engine' }
             ]
@@ -452,6 +507,10 @@ export const PERMISSIONS = [
                 listening: ['ACCOUNT_ADD']
               },
               {
+                type: 'ComponentsFactory-3',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
                 type: 'AssemblyFactory-1',
                 listening: ['ACCOUNT_ADD']
               },
@@ -460,11 +519,19 @@ export const PERMISSIONS = [
                 listening: ['ACCOUNT_ADD']
               },
               {
+                type: 'AssemblyFactory-3',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
                 type: 'Retailer-1',
                 listening: ['ACCOUNT_ADD']
               },
               {
                 type: 'Retailer-2',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-3',
                 listening: ['ACCOUNT_ADD']
               },
               { type: 'Engine' },
@@ -478,9 +545,11 @@ export const PERMISSIONS = [
             objectTypes: [
               { type: 'ComponentsFactory-1' },
               { type: 'ComponentsFactory-2' },
+              { type: 'ComponentsFactory-3' },
               { type: 'ComponentsBiddingMarket' },
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
+              { type: 'AssemblyFactory-3' },
               { type: 'Engine' }
             ]
           },
@@ -491,6 +560,7 @@ export const PERMISSIONS = [
             objectTypes: [
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
+              { type: 'AssemblyFactory-3' },
               { type: 'AssemblyDepartment' },
               { type: 'Engine' }
             ]
@@ -502,10 +572,12 @@ export const PERMISSIONS = [
             objectTypes: [
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
+              { type: 'AssemblyFactory-3' },
               { type: 'AssemblyDepartment' },
               { type: 'CarsBiddingMarket' },
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
+              { type: 'Retailer-3' },
               { type: 'Engine' }
             ]
           },
@@ -516,6 +588,7 @@ export const PERMISSIONS = [
             objectTypes: [
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
+              { type: 'Retailer-3' },
               { type: 'Market' },
               { type: 'Engine' }
             ]
@@ -572,6 +645,30 @@ export const PERMISSIONS = [
             name: 'Retailer',
             describe: 'Retailer',
             objectTypes: [{ type: 'Retailer-2' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 3,
+        name: 'Team 3',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-3' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-3' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-3' }, { type: 'Engine' }]
           }
         ]
       }

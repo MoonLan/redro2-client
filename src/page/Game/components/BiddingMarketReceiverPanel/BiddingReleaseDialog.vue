@@ -32,6 +32,9 @@
                       :key="index + '-good'">
                 <v-select :items="goods"
                           v-model="item.good"
+                          @change="(good) => {if (good) item.unitPrice = goods.find(g => g.good === good).unitPrice}"
+                          item-text="good"
+                          item-value="good"
                           label="種類"
                           autocomplete
                           required
@@ -54,8 +57,7 @@
                 <v-text-field v-model="item.unitPrice"
                               label="單價"
                               type="number"
-                              required
-                              :rules="requiredRule"
+                              readonly
                               hide-details></v-text-field>
               </v-flex>
               <v-flex xs2
@@ -118,14 +120,13 @@ export default {
     return {
       valid: null,
       loading: false,
-      goods: ['Car', 'Engine', 'Body', 'Wheel'],
       hasTransportationDelay: true,
       transportationTime: 10,
       transportationCost: 100,
       publisher: '',
       market: '',
       memo: '',
-      timeLimit: 300,
+      timeLimit: 5,
       list: [],
       requiredRule: [v => !!v || '必需項']
     }
@@ -160,7 +161,22 @@ export default {
       'downstream',
       'nodeName',
       'engineId'
-    ])
+    ]),
+    goods() {
+      if (!this.nodeName) {
+        return []
+      }
+      switch (this.nodeName.split('-')[0]) {
+        case 'AssemblyFactory':
+          return [
+            { good: 'Body', unitPrice: 1012 },
+            { good: 'Engine', unitPrice: 270 },
+            { good: 'Wheel', unitPrice: 67 }
+          ]
+        case 'Retailer':
+          return [{ good: 'Car', unitPrice: 2500 }]
+      }
+    }
   },
   methods: {
     submit() {

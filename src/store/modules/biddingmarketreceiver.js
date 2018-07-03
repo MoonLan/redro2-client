@@ -94,6 +94,13 @@ export default {
           (b.publisher === state.nodeName || b.signer === state.nodeName)
       )
     },
+    upstreamSelfBreakoff(state) {
+      return state.upstream.biddings.filter(
+        b =>
+          b.stage === 'BREAKOFF' &&
+          (b.publisher === state.nodeName || b.signer === state.nodeName)
+      )
+    },
     downstreamReleased(state) {
       return state.downstream.biddings.filter(b => b.stage === 'BIDDING')
     },
@@ -115,6 +122,13 @@ export default {
       return state.downstream.biddings.filter(
         b =>
           b.stage === 'COMPLETED' &&
+          (b.publisher === state.nodeName || b.signer === state.nodeName)
+      )
+    },
+    downstreamSelfBreakoff(state) {
+      return state.downstream.biddings.filter(
+        b =>
+          b.stage === 'BREAKOFF' &&
           (b.publisher === state.nodeName || b.signer === state.nodeName)
       )
     }
