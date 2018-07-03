@@ -32,7 +32,8 @@
           <v-card-text class="text-xs-center pt-5">
             <div>
               <qrcode-reader @decode="onDecode"
-                             @init="onInit"></qrcode-reader>
+                             @init="onInit"
+                             :paused="biddingId"></qrcode-reader>
             </div>
             <div v-if="error">
               {{error.name}} {{error.message}}
@@ -151,7 +152,6 @@ export default {
       if (this.biddingId || biddingId.length !== 24) {
         return
       }
-      console.log(biddingId)
       this.getBidding(biddingId)
     },
     getBidding(id) {
