@@ -25,7 +25,9 @@ export default {
     gameTime: { day: 0, time: 0, isWorking: false },
     gameDays: 3,
     dayLength: 3,
-    permissions: []
+    permissions: [],
+
+    latency: null
   },
   getters: {
     readableGameTime(state, getters) {
@@ -99,6 +101,9 @@ export default {
     },
     SET_PERMISSIONS(state, payload) {
       state.permissions = payload.permissions
+    },
+    SET_LATENCY(state, payload) {
+      state.latency = payload.latency
     },
     SOCKET_GAME_STAGE_CHANGE(state, engineEvent) {
       if (engineEvent.id !== state.id) {

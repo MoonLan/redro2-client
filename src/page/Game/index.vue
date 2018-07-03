@@ -19,7 +19,7 @@
     <v-content class="fill-height">
       <v-container fluid
                    class="bg-wrapper">
-        Some Beautiful Background Image Here!!
+        Ping {{latency || '-'}}ms
       </v-container>
       <node-control-panel />
     </v-content>
@@ -48,7 +48,8 @@ export default {
       'describe',
       'gameDays',
       'dayLength',
-      'stage'
+      'stage',
+      'latency'
     ]),
     ...mapGetters('engine', [
       'gameTimeAdd',

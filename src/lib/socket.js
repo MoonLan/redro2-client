@@ -7,6 +7,11 @@ import { SERVER_BASE } from '@/api'
 let socket = io(SERVER_BASE, { multiplex: false })
 Vue.use(VueSocketio, socket, store)
 
+socket.on('pong', latency => {
+  console.log(latency)
+  store.commit('engine/SET_LATENCY', { latency: latency })
+})
+
 export function reconnect() {
   socket.close()
   socket.connect()
