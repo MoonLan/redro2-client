@@ -26,57 +26,36 @@
         <v-card-text>
           <h3>項目</h3>
           <v-layout wrap>
-            <template v-for="(good, index) in goods">
+            <template v-for="(item, index) in list">
               <v-flex xs4
-                      sm5
+                      sm4
                       :key="index + '-good'">
-                <v-select :items="goods"
-                          v-model="list[index].good"
-                          @change="(good) => {item.unitPrice = basicPrice[good]}"
-                          item-text="good"
-                          item-value="good"
-                          label="種類"
-                          autocomplete
-                          required
-                          :rules="[requiredRule]"
-                          hide-details></v-select>
+                <v-text-field v-model="item.good"
+                              readonly
+                              label="產品"></v-text-field>
               </v-flex>
-              <v-flex xs3
-                      sm3
+              <v-flex xs4
+                      sm4
                       :key="index + '-unit'">
                 <v-text-field v-model="item.unit"
                               label="數量"
                               type="number"
-                              suffix="個"
-                              hide-details></v-text-field>
+                              required
+                              :rules="[v => (v >= 0) || `最少為0個`]"></v-text-field>
               </v-flex>
-              <v-flex xs3
-                      sm3
+              <v-flex xs4
+                      sm4
                       :key="index + '-unitPirce'">
                 <v-text-field v-model="item.unitPrice"
                               label="單價"
                               :hint="`底價為${basicPrice[item.good] || 0}`"
                               persistent-hint
-                              suffix="元"
                               type="number"
                               :rules="[requiredRule, v => (v >= basicPrice[item.good]) || `底價為${basicPrice[item.good]}`]"
                               required></v-text-field>
               </v-flex>
-              <v-flex xs2
-                      sm1
-                      :key="index + '-close'">
-                <v-btn class="my-3"
-                       icon
-                       flat
-                       @click="removeItem(index)">
-                  <v-icon>close</v-icon>
-                </v-btn>
-              </v-flex>
             </template>
           </v-layout>
-          <v-btn @click="addItem()"
-                 block
-                 outline>增加項目</v-btn>
         </v-card-text>
         <v-card-text>
           <v-layout class="labeled-list">
@@ -98,7 +77,7 @@
                  @click="clear">清除</v-btn>
           <v-btn flat
                  outline
-                 :disabled="!valid || loading"
+                 :disabled="!valid || loading || price <= 0"
                  type="submit">登記</v-btn>
         </v-card-actions>
 
@@ -129,12 +108,20 @@ export default {
       market: '',
       memo: '',
       timeLimit: 5,
-      list: [
-        { good: null, unit: null, unitPrice: null },
-        { good: null, unit: null, unitPrice: null },
-        { good: null, unit: null, unitPrice: null }
-      ],
+      list: [],
       requiredRule: v => !!v || '必需項'
+    }
+  },
+  watch: {
+    goods(nv) {
+      this.list = []
+      for (let good of nv) {
+        this.list.push({
+          good: good.good,
+          unit: 0,
+          unitPrice: good.unitPrice
+        })
+      }
     }
   },
   computed: {
@@ -148,6 +135,9 @@ export default {
     price() {
       let sum = 0
       for (let item of this.list) {
+        if (!item.good) {
+          continue
+        }
         sum +=
           parseInt(item.unit ? item.unit : 0) *
           parseFloat(item.unitPrice ? item.unitPrice : 0)
@@ -201,7 +191,7 @@ export default {
         return
       }
       let biddingMarketItem = {
-        goods: this.list,
+        goods: this.list.filter(item => item.unit && item.unit > 0),
         stage: 'BIDDING',
         publishedFromChain:
           this.chain === 'upstream' ? 'downstream' : 'upstream',

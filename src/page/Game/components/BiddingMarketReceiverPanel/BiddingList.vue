@@ -141,17 +141,27 @@ export default {
   },
   methods: {
     sign(biddingItem) {
-      this.$store.commit('ui/START_LOADING')
       this.$store
-        .dispatch(
-          `biddingmarketreceiver/signTo${
-            this.chain === 'upstream' ? 'Upstream' : 'Downstream'
-          }`,
-          {
-            id: biddingItem._id,
-            operator: this.nodeName
+        .dispatch('ui/openRequestDialog', {
+          title: '您確定要簽約嗎？',
+          text: '簽約後請在時限內運送出您的貨物'
+        })
+        .then(result => {
+          if (!result) {
+            this.$store.commit('ui/STOP_LOADING')
+            return Promise.reject(result)
           }
-        )
+          this.$store.commit('ui/START_LOADING')
+          return this.$store.dispatch(
+            `biddingmarketreceiver/signTo${
+              this.chain === 'upstream' ? 'Upstream' : 'Downstream'
+            }`,
+            {
+              id: biddingItem._id,
+              operator: this.nodeName
+            }
+          )
+        })
         .then(data => {
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功簽約',
@@ -165,17 +175,27 @@ export default {
         })
     },
     cancel(biddingItem) {
-      this.$store.commit('ui/START_LOADING')
       this.$store
-        .dispatch(
-          `biddingmarketreceiver/cancelTo${
-            this.chain === 'upstream' ? 'Upstream' : 'Downstream'
-          }`,
-          {
-            id: biddingItem._id,
-            operator: this.nodeName
+        .dispatch('ui/openRequestDialog', {
+          title: '您確定要取消嗎？',
+          text: '取消上架不需要手續費'
+        })
+        .then(result => {
+          if (!result) {
+            this.$store.commit('ui/STOP_LOADING')
+            return Promise.reject(result)
           }
-        )
+          this.$store.commit('ui/START_LOADING')
+          return this.$store.dispatch(
+            `biddingmarketreceiver/cancelTo${
+              this.chain === 'upstream' ? 'Upstream' : 'Downstream'
+            }`,
+            {
+              id: biddingItem._id,
+              operator: this.nodeName
+            }
+          )
+        })
         .then(data => {
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功取消上架',
@@ -189,21 +209,31 @@ export default {
         })
     },
     breakoff(biddingItem) {
-      this.$store.commit('ui/START_LOADING')
       this.$store
-        .dispatch(
-          `biddingmarketreceiver/breakoffTo${
-            this.chain === 'upstream' ? 'Upstream' : 'Downstream'
-          }`,
-          {
-            id: biddingItem._id,
-            operator: this.nodeName
+        .dispatch('ui/openRequestDialog', {
+          title: '您確定要解約嗎？',
+          text: '你將會要付出一些解約罰金。'
+        })
+        .then(result => {
+          if (!result) {
+            this.$store.commit('ui/STOP_LOADING')
+            return Promise.reject(result)
           }
-        )
+          this.$store.commit('ui/START_LOADING')
+          return this.$store.dispatch(
+            `biddingmarketreceiver/breakoffTo${
+              this.chain === 'upstream' ? 'Upstream' : 'Downstream'
+            }`,
+            {
+              id: biddingItem._id,
+              operator: this.nodeName
+            }
+          )
+        })
         .then(data => {
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功解約',
-            text: '你將會要付出到一些解約罰金。'
+            text: '你將會要付出一些解約罰金。'
           })
           this.$store.commit('ui/STOP_LOADING')
         })
