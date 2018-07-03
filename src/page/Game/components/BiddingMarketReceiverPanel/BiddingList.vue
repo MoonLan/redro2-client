@@ -122,13 +122,15 @@ export default {
           released: this.upstreamReleased,
           selfReleased: this.upstreamSelfReleased,
           selfSigned: this.upstreamSelfSigned,
-          selfCompleted: this.upstreamSelfCompleted
+          selfCompleted: this.upstreamSelfCompleted,
+          selfBreakoff: this.upstreamSelfBreakoff
         },
         downstream: {
           released: this.downstreamReleased,
           selfReleased: this.downstreamSelfReleased,
           selfSigned: this.downstreamSelfSigned,
-          selfCompleted: this.downstreamSelfCompleted
+          selfCompleted: this.downstreamSelfCompleted,
+          selfBreakoff: this.downstreamSelfBreakoff
         }
       }
       return map[this.chain][this.filter]

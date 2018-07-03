@@ -38,7 +38,7 @@
         </v-card>
       </v-tab-item>
 
-      <template v-for="chain in ['upstream', 'downstream']"
+      <template v-for="chain in ['downstream', 'upstream']"
                 v-if="$store.state.biddingmarketreceiver[chain].enable">
         <v-tab :key="chain"
                :href="`#tab-${chain}`"

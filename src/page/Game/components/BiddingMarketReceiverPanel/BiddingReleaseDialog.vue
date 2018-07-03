@@ -26,19 +26,19 @@
         <v-card-text>
           <h3>項目</h3>
           <v-layout wrap>
-            <template v-for="(item, index) in list">
+            <template v-for="(good, index) in goods">
               <v-flex xs4
                       sm5
                       :key="index + '-good'">
                 <v-select :items="goods"
-                          v-model="item.good"
-                          @change="(good) => {if (good) item.unitPrice = goods.find(g => g.good === good).unitPrice}"
+                          v-model="list[index].good"
+                          @change="(good) => {item.unitPrice = basicPrice[good]}"
                           item-text="good"
                           item-value="good"
                           label="種類"
                           autocomplete
                           required
-                          :rules="requiredRule"
+                          :rules="[requiredRule]"
                           hide-details></v-select>
               </v-flex>
               <v-flex xs3
@@ -47,8 +47,7 @@
                 <v-text-field v-model="item.unit"
                               label="數量"
                               type="number"
-                              required
-                              :rules="requiredRule"
+                              suffix="個"
                               hide-details></v-text-field>
               </v-flex>
               <v-flex xs3
@@ -56,9 +55,12 @@
                       :key="index + '-unitPirce'">
                 <v-text-field v-model="item.unitPrice"
                               label="單價"
+                              :hint="`底價為${basicPrice[item.good] || 0}`"
+                              persistent-hint
+                              suffix="元"
                               type="number"
-                              readonly
-                              hide-details></v-text-field>
+                              :rules="[requiredRule, v => (v >= basicPrice[item.good]) || `底價為${basicPrice[item.good]}`]"
+                              required></v-text-field>
               </v-flex>
               <v-flex xs2
                       sm1
@@ -79,12 +81,12 @@
         <v-card-text>
           <v-layout class="labeled-list">
             <v-flex xs6>
-              <span class="label">總金額</span>
-              {{price}}
-            </v-flex>
-            <v-flex xs6>
               <span class="label">締約後時限</span>
               {{timeLimit}}秒
+            </v-flex>
+            <v-flex xs6>
+              <span class="label">總金額</span>
+              {{price}}
             </v-flex>
           </v-layout>
         </v-card-text>
@@ -127,8 +129,12 @@ export default {
       market: '',
       memo: '',
       timeLimit: 5,
-      list: [],
-      requiredRule: [v => !!v || '必需項']
+      list: [
+        { good: null, unit: null, unitPrice: null },
+        { good: null, unit: null, unitPrice: null },
+        { good: null, unit: null, unitPrice: null }
+      ],
+      requiredRule: v => !!v || '必需項'
     }
   },
   computed: {
@@ -176,6 +182,17 @@ export default {
         case 'Retailer':
           return [{ good: 'Car', unitPrice: 2500 }]
       }
+    },
+    basicPrice() {
+      if (!this.goods) {
+        return {}
+      }
+
+      let set = {}
+      for (let good of this.goods) {
+        set[good.good] = good.unitPrice
+      }
+      return set
     }
   },
   methods: {
