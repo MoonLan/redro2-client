@@ -53,7 +53,7 @@ import IOPanel from './components/IOPanel'
 
 export default {
   components: {
-    AccountPanel,
+    AccountPanel: () => import('./components/AccountPanel'),
     InventoryPanel,
     IOPanel,
     BiddingMarketReceiverPanel: () =>
@@ -75,6 +75,7 @@ export default {
       'toReadableGameTime',
       'readableGameTime'
     ]),
+    ...mapGetters('user', ['isAdmin']),
     node() {
       if (!this.nodes) {
         return
@@ -94,7 +95,15 @@ export default {
       if (!this.node) {
         return
       }
-      return this.node.components.filter(component => component.enable === true)
+      return this.node.components.filter(component => {
+        if (component.enable === false) {
+          return false
+        }
+        if (component.type === 'Account' && !this.isAdmin) {
+          return false
+        }
+        return true
+      })
     }
   },
   methods: {},

@@ -6,9 +6,11 @@
     <v-tabs v-model="active"
             centered
             show-arrows>
-      <v-tab href="#tab-overview"
+      <v-tab v-if="isAdmin"
+             href="#tab-overview"
              ripple>概覽</v-tab>
-      <v-tab-item id="tab-overview">
+      <v-tab-item v-if="isAdmin"
+                  id="tab-overview">
         <v-card flat>
           <template v-for="chain in ['upstream', 'downstream']"
                     v-if="$store.state.biddingmarketreceiver[chain].enable">
@@ -114,7 +116,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime'])
+    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
+    ...mapGetters('user', ['isAdmin'])
   },
   methods: {
     load() {

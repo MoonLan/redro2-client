@@ -23,6 +23,9 @@ export default {
     isStaffOrAdmin(state) {
       return [USER_LEVEL.STAFF, USER_LEVEL.ADMIN].includes(state.level)
     },
+    isAdmin(state) {
+      return state.level === USER_LEVEL.ADMIN
+    },
     hasLogin(state) {
       return !!state.name
     }

@@ -114,6 +114,9 @@ export default {
   },
   watch: {
     goods(nv) {
+      if (!nv) {
+        return
+      }
       this.list = []
       for (let good of nv) {
         this.list.push({

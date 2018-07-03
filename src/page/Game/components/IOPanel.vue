@@ -5,9 +5,11 @@
                class="game-iopanel">
     <v-tabs v-model="active"
             centered>
-      <v-tab key="overview"
+      <v-tab v-if="isAdmin"
+             key="overview"
              ripple>概覽</v-tab>
-      <v-tab-item key="overview">
+      <v-tab-item v-if="isAdmin"
+                  key="overview">
         <v-card flat>
           <v-card-text>
             <v-layout wrap
@@ -351,7 +353,8 @@ export default {
       }
       return list
     },
-    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime'])
+    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
+    ...mapGetters('user', ['isAdmin'])
   },
   methods: {
     submit() {
