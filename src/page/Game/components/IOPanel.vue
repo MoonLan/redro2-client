@@ -25,7 +25,7 @@
               <v-flex xs6
                       md3>
                 <span class="label">運輸成本</span>
-                {{$store.getters['account/getBalance']('CostOfTranportation')}}
+                {{$store.getters['account/getBalance']('CostOfTransportation')}}
               </v-flex>
               <v-flex xs6
                       md3>

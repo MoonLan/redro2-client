@@ -47,7 +47,7 @@
               <v-flex xs6
                       sm3>
                 <span class="label">銷貨收入</span>
-                {{$store.getters['account/getBalance']('Sales')}}
+                {{-$store.getters['account/getBalance']('Sales')}}
               </v-flex>
               <v-flex xs6
                       sm3>
@@ -67,7 +67,7 @@
               <v-flex xs6
                       sm3>
                 <span class="label">運輸成本</span>
-                {{$store.getters['account/getBalance']('CostOfTranportation')}}
+                {{$store.getters['account/getBalance']('CostOfTransportation')}}
               </v-flex>
             </v-layout>
           </v-card-text>
