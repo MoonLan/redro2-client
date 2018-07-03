@@ -12,6 +12,8 @@
                outline>進入遊戲</v-btn>
         <v-btn @click="$router.push('/player/login')"
                outline>登入</v-btn>
+        <v-btn @click="$store.dispatch('user/userLogout')"
+               outline>登出</v-btn>
       </v-card-text>
     </v-card>
   </v-container>

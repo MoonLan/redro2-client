@@ -57,6 +57,10 @@ export default {
     },
     addUserRole(context, payload) {
       return new Promise((resolve, reject) => {
+        if (context.getters.isStaffOrAdmin) {
+          resolve()
+          return
+        }
         api.server
           .addUserRole(
             context.state.id,

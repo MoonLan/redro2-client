@@ -78,25 +78,35 @@ export default {
         return
       }
 
-      reconnect()
-      this.$store.dispatch('engine/load', { id: this.engineId }).then(() => {
-        this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+      this.$store
+        .dispatch('user/addUserRole', {
           engineId: this.engineId,
           teamIndex: this.teamIndex,
           role: this.role
         })
-        console.log('socket:ROOM_JOIN')
-      })
+        .then(() => {
+          reconnect()
+          this.$store
+            .dispatch('engine/load', { id: this.engineId })
+            .then(() => {
+              this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+                engineId: this.engineId,
+                teamIndex: this.teamIndex,
+                role: this.role
+              })
+              console.log('socket:ROOM_JOIN')
+            })
 
-      if (this.stage === 'START' || this.stage === 'FINAL') {
-        console.log('go to game page!')
-        this.$router.replace(
-          `/game/${this.engineId}/${this.teamIndex}/${this.role}`
-        )
-      } else if (this.stage === 'END') {
-        console.log('go to end page!')
-        this.$router.replace(`/game/end/${this.engineId}`)
-      }
+          if (this.stage === 'START' || this.stage === 'FINAL') {
+            console.log('go to game page!')
+            this.$router.replace(
+              `/game/${this.engineId}/${this.teamIndex}/${this.role}`
+            )
+          } else if (this.stage === 'END') {
+            console.log('go to end page!')
+            this.$router.replace(`/game/end/${this.engineId}`)
+          }
+        })
     }
 
     if (!this.hasLogin) {

@@ -38,6 +38,8 @@ export default {
     gameTime: { day: 0, time: 0, isWorking: false },
     gameDays: 3,
     dayLength: 3,
+    playerTeams: null,
+    staffTeams: null,
 
     accounts: null,
     biddingMarkets: null
@@ -108,6 +110,12 @@ export default {
     SET_GAME_TIME(state, payload) {
       state.gameTime = payload.gameTime
     },
+    SET_PLAYER_TEAMS(state, payload) {
+      state.playerTeams = payload.playerTeams
+    },
+    SET_STAFF_TEAMS(state, payload) {
+      state.staffTeams = payload.staffTeams
+    },
 
     SOCKET_GAME_STAGE_CHANGE(state, engineEvent) {
       if (engineEvent.id !== state.engineId) {
@@ -154,6 +162,16 @@ export default {
           }
         }
       }
+    },
+
+    SOCKET_SERVER_USER_PERMISSION_CHANGE(state, serverEvent) {
+      let user = state.users.find(user => user._id === serverEvent.user._id)
+      if (!user) {
+        state.users.push(serverEvent.user)
+        return
+      }
+      user.permissions = serverEvent.permissions
+      user.level = serverEvent.level
     }
   },
   actions: {
@@ -169,6 +187,8 @@ export default {
           context.commit('SET_DAY_LENGTH', scoreboard)
           context.commit('SET_GAME_STAGE', scoreboard)
           context.commit('SET_GAME_TIME', scoreboard)
+          context.commit('SET_PLAYER_TEAMS', scoreboard)
+          context.commit('SET_STAFF_TEAMS', scoreboard)
           context.commit('SET_ACCOUNTS', scoreboard)
           context.commit('SET_BIDDING_MARKETS', scoreboard)
           resolve(scoreboard)

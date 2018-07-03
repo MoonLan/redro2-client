@@ -6,41 +6,75 @@
     <v-layout>
       <v-flex v-if="['CONSTRUCTED', 'PREPARE', 'READY'].includes(stage)"
               xs12>
-        <v-layout>
-          <v-flex xs5>
-            <v-layout row>
-              <v-flex>
-
-              </v-flex>
-              <v-flex>
-
+        <v-layout class="text-xs-center">
+          <v-flex xs4>
+            <v-layout wrap>
+              <v-flex v-for="(team, index) in usersForEachTeam.slice(0, 4)"
+                      :key="index"
+                      style="border: 1px solid #ccc; font-size: 20px; height: 50vh;"
+                      xs6>
+                <v-container>
+                  <v-subheader style="display: block;  font-size: 30px;">第 {{index + 1}} 組</v-subheader>
+                  <div v-for="(user) in team.ComponentsFactory"
+                       xs12
+                       class="lime--text text--darken-3"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                  <div v-for="(user) in team.AssemblyFactory"
+                       xs12
+                       class="teal--text text--darken-2"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                  <div v-for="(user) in team.Retailer"
+                       xs12
+                       class="purple--text text--darken-2"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                </v-container>
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex xs2></v-flex>
-          <v-flex xs5>
-            <v-layout>
-              <v-flex>
-                <v-layout row>
-                  <v-flex>
-
-                  </v-flex>
-                  <v-flex>
-
-                  </v-flex>
-                </v-layout>
-
-              </v-flex>
-              <v-flex>
-                <v-layout row>
-                  <v-flex>
-
-                  </v-flex>
-                  <v-flex>
-
-                  </v-flex>
-                </v-layout>
-
+          <v-flex xs4>
+            <v-container style="margin-top: 20vh; max-height: 60vh; overflow: hidden; ">
+              <v-subheader style="display: block; font-size: 20px;">新登入玩家</v-subheader>
+              <div v-for="(user, index) in newComingUsers"
+                   xs12
+                   :key="user._id"
+                   :class="index === 0 ? `red--text` : ''"
+                   :style="`height: ${toFontSize(index + 1) * 1.5}px; font-size: ${toFontSize(index + 1)}px;`">
+                {{user.name}}</div>
+            </v-container>
+          </v-flex>
+          <v-flex xs4>
+            <v-layout wrap>
+              <v-flex v-for="(team, index) in usersForEachTeam.slice(5, 8)"
+                      :key="index"
+                      style="border: 1px solid #ccc; font-size: 20px; height: 50vh;"
+                      xs6>
+                <v-container>
+                  <v-subheader style="display: block;  font-size: 30px;">第 {{index + 1}} 組</v-subheader>
+                  <div v-for="(user) in team.ComponentsFactory"
+                       xs12
+                       class="lime--text text--darken-3"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                  <div v-for="(user) in team.AssemblyFactory"
+                       xs12
+                       class="teal--text text--darken-2"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                  <div v-for="(user) in team.Retailer"
+                       xs12
+                       class="purple--text text--darken-2"
+                       :key="user._id">
+                    {{user.name}}
+                  </div>
+                </v-container>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -56,9 +90,23 @@
               <v-flex xs5
                       fill-height
                       justify-center>
-                <v-container text-xs-center>
-                  <v-card>
-                    <v-card-text>{{readableGameTime}}</v-card-text>
+                <v-container text-xs-center
+                             fill-height
+                             justify-center>
+                  <v-card class="transparent elevation-0">
+                    <v-card-text>
+                      <v-layout column>
+                        <v-flex class="mb-3">
+                          <v-progress-circular :value="(1 - gameTime.time / dayLength) * 100"
+                                               :rotate="270"
+                                               :size="168"
+                                               :width="16"></v-progress-circular>
+                        </v-flex>
+                        <v-flex style="font-size: 24px;">
+                          {{readableGameTime}}
+                        </v-flex>
+                      </v-layout>
+                    </v-card-text>
                   </v-card>
                 </v-container>
               </v-flex>
@@ -70,9 +118,28 @@
           </v-flex>
           <v-flex fill-height>
             <v-layout>
-              <v-flex justify-center>1</v-flex>
-              <v-flex justify-center>2</v-flex>
-              <v-flex justify-center>3</v-flex>
+              <v-flex v-for="role in ['ComponentsFactory', 'AssemblyFactory', 'Retailer']"
+                      :key="role"
+                      justify-center
+                      fill-height
+                      xs4>
+                <v-container text-xs-center
+                             fill-height
+                             justify-center>
+                  <v-card class="transparent elevation-0">
+                    <v-card-title class="d-block headline">{{$t(`role.${role}`)}}</v-card-title>
+                    <v-card-text>
+                      <div v-for="(rank, index) in cashBalanceRankingSet[role].slice(0, 3)"
+                           :key="rank.name"
+                           :style="index === 0 ? `font-size: 30px !important; line-height: 45px !important;` : ''"
+                           class="d-block headline">
+                        <span class="grey--text">#{{index + 1}}</span>
+                        第 {{rank.name.split('-')[1]}} 組 ${{rank.cashBalance}}
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-container>
+              </v-flex>
             </v-layout>
           </v-flex>
         </v-layout>
@@ -95,10 +162,79 @@ export default {
     engine: null
   }),
   computed: {
-    ...mapState('scoreboard', ['gameTime', 'stage']),
-    ...mapGetters('scoreboard', ['readableGameTime'])
+    ...mapState('scoreboard', [
+      'users',
+      'gameTime',
+      'stage',
+      'playerTeams',
+      'dayLength',
+      'accounts'
+    ]),
+    ...mapGetters('scoreboard', ['readableGameTime']),
+    belongingUsers() {
+      if (!this.engineId || !this.users) {
+        return
+      }
+
+      return this.users.filter(
+        user =>
+          user.permissions.find(per => per.engineId === this.engineId) !==
+          undefined
+      )
+    },
+    newComingUsers() {
+      if (!this.belongingUsers) {
+        return
+      }
+
+      return this.belongingUsers.slice().reverse()
+    },
+    usersForEachTeam() {
+      if (!this.playerTeams || !this.belongingUsers) {
+        return
+      }
+      let list = []
+      for (let i = 0; i < this.playerTeams.length; i++) {
+        list.push({
+          ComponentsFactory: [],
+          AssemblyFactory: [],
+          Retailer: []
+        })
+      }
+      for (let user of this.belongingUsers) {
+        let per = user.permissions.find(p => p.engineId === this.engineId)
+        list[parseInt(per.teamIndex) - 1][per.role.split('-')[0]].push(user)
+      }
+      return list
+    },
+    cashBalanceRankingSet() {
+      if (!this.playerTeams || !this.accounts) {
+        return
+      }
+      let set = {
+        ComponentsFactory: [],
+        AssemblyFactory: [],
+        Retailer: []
+      }
+      for (let account of this.accounts) {
+        let role = account.name.split('-')[0]
+        set[role].push(account)
+      }
+      let sorting = (a, b) => b.cashBalance - a.cashBalance
+      set.ComponentsFactory.sort(sorting)
+      set.AssemblyFactory.sort(sorting)
+      set.Retailer.sort(sorting)
+      return set
+    }
   },
-  methods: {},
+  methods: {
+    toFontSize(index) {
+      if (index > 5) {
+        return 20
+      }
+      return 70 / Math.pow(index, 0.7)
+    }
+  },
   mounted() {
     this.engineId = this.$route.params.id
 
