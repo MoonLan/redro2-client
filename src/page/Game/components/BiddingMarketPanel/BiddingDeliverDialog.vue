@@ -148,7 +148,7 @@ export default {
         })
     },
     onDecode(biddingId) {
-      if (this.biddingId) {
+      if (this.biddingId || biddingId.length !== 24) {
         return
       }
       console.log(biddingId)
