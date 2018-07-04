@@ -185,11 +185,10 @@
 
 <script>
 import api from '@/api'
-import AccountAddDialog from './AccountAddDialog'
 
 export default {
   components: {
-    AccountAddDialog
+    AccountAddDialog: () => import('./AccountAddDialog')
   },
   props: {
     engineId: String,
