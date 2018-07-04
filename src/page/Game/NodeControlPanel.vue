@@ -66,7 +66,9 @@ export default {
     InventoryRegisterPanel: () => import('./components/InventoryRegisterPanel')
   },
   data: () => ({
-    active: '0'
+    active: '0',
+    _id: null,
+    _name: null
   }),
   computed: {
     ...mapState('engine', ['stage', 'nodes']),
@@ -92,13 +94,36 @@ export default {
       return this.$route.params.role
     },
     components() {
-      if (!this.node) {
+      if (!this.node || !this.id || !this.name) {
         return
       }
       return this.node.components.filter(component => {
         if (component.enable === false) {
           return false
         }
+
+        if (this.id !== this._id && this.name !== this._name) {
+          let storeSet = {
+            Account: 'account',
+            AssemblyDepartment: 'assemblydepartment',
+            BiddingMarket: 'biddingmarket',
+            BiddingMarketReceiver: 'biddingmarketreceiver',
+            Inventory: 'inventory',
+            InventoryRegister: 'inventoryregister',
+            IO: 'io',
+            Market: 'market',
+            MarketReceiver: 'marketreceiver'
+          }
+          if (component.type in storeSet) {
+            this.$store.dispatch(storeSet[component.type] + '/load', {
+              engineId: this.id,
+              nodeName: this.name
+            })
+          }
+          this._id = this.id
+          this._name = this.name
+        }
+
         if (component.type === 'Account' && !this.isAdmin) {
           return false
         }
