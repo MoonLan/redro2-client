@@ -197,6 +197,7 @@ export default {
         identity === 'upstream'
           ? state.upstream.biddings
           : state.downstream.biddings
+      this.$notification.notify(`訂單上架了！`)
       if (biddings.find(item => item._id === biddingMarketEvent.item._id)) {
         return
       }
@@ -214,6 +215,7 @@ export default {
       let id = biddingMarketEvent.item._id
       let iji = biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.CANCELED
+      this.$notification.notify(`訂單取消了！`)
     },
     SOCKET_BIDDING_SIGNED(state, biddingMarketEvent) {
       let identity = checkIdentity(state, biddingMarketEvent)
@@ -226,11 +228,17 @@ export default {
           : state.downstream.biddings
       let id = biddingMarketEvent.item._id
       let signer = biddingMarketEvent.item.signer
+      let signedGameTime = biddingMarketEvent.item.signedGameTime
       let iji = biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.SIGNED
       iji.signer = signer
+      iji.signedGameTime = signedGameTime
+      if (biddingMarketEvent.item.publisher === state.nodeName) {
+        this.$notification.notify(`您發出的訂單與別人簽約了！`)
+      }
     },
     SOCKET_BIDDING_BREAKOFF(state, biddingMarketEvent) {
+      console.log(biddingMarketEvent.item, state.nodeName)
       let identity = checkIdentity(state, biddingMarketEvent)
       if (identity === false) {
         return
@@ -242,6 +250,12 @@ export default {
       let id = biddingMarketEvent.item._id
       let iji = biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.BREAKOFF
+      if (
+        biddingMarketEvent.item.publisher === state.nodeName ||
+        biddingMarketEvent.item.signer === state.nodeName
+      ) {
+        this.$notification.notify(`您有訂單解約了！`)
+      }
     },
     SOCKET_BIDDING_COMPLETED(state, biddingMarketEvent) {
       let identity = checkIdentity(state, biddingMarketEvent)
@@ -253,8 +267,13 @@ export default {
           ? state.upstream.biddings
           : state.downstream.biddings
       let id = biddingMarketEvent.item._id
+      let deliveredGameTime = biddingMarketEvent.item.deliveredGameTime
       let iji = biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.COMPLETED
+      iji.deliveredGameTime = deliveredGameTime
+      if (biddingMarketEvent.item.publisher === state.nodeName) {
+        this.$notification.notify(`您有訂單訂單完成，並開始運送了！`)
+      }
     }
   },
   actions: {

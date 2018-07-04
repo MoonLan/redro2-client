@@ -81,11 +81,6 @@ export default {
   data: () => ({
     dialog: null
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapState('engine', ['gameTime']),
@@ -122,17 +117,6 @@ export default {
       return this.currentAvailableNews[this.currentAvailableNews.length - 1]
         .marketNeeds[0].unit
     }
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('market/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

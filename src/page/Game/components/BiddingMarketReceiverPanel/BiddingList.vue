@@ -57,7 +57,10 @@
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <span class="mx-0 grey--text">{{toReadableGameTime(item.gameTime)}} 上架</span>
+            <span v-if="item.stage === 'BIDDING'"
+                  class="mx-0 grey--text">{{toReadableGameTime(item.gameTime)}} 上架</span>
+            <span v-if="item.stage === 'SIGNED' && item.signedGameTime"
+                  class="mx-0 grey--text">{{toReadableGameTime(gameTimeAdd(item.signedGameTime, item.timeLimit))}} 到期</span>
             <v-spacer />
             <v-btn v-if="item.stage === 'BIDDING' && item.publisher !== nodeName && item.publishedFromChain === chain.toUpperCase()"
                    @click="sign(item)"
@@ -70,6 +73,7 @@
             <span v-else-if="item.publisher === nodeName && item.stage === 'BIDDING'">你上架的</span>
             <span v-else-if="item.publisher === nodeName && item.stage === 'SIGNED'">製造中</span>
             <span v-else-if="item.stage === 'COMPLETED'">已送出</span>
+            <span v-else-if="item.stage === 'BREAKOFF'">解約</span>
           </v-card-actions>
         </v-card>
       </v-flex>

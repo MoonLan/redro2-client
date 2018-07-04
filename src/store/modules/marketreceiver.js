@@ -66,6 +66,7 @@ export default {
       if (!checkIdentity(state, marketEvent)) {
         return
       }
+      this.$notification.notify(`新的新聞發布了！`)
       state.news = marketEvent.news
     }
   },

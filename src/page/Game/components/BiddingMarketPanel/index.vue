@@ -113,11 +113,6 @@ export default {
     ],
     dialog: false
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapState('biddingmarket', [
@@ -129,17 +124,6 @@ export default {
       'transportationTime',
       'transportationStatus'
     ])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('biddingmarket/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

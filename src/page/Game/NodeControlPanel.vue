@@ -97,12 +97,13 @@ export default {
       if (!this.node || !this.id || !this.name) {
         return
       }
-      return this.node.components.filter(component => {
+      let loaded = false
+      let filteredList = this.node.components.filter(component => {
         if (component.enable === false) {
           return false
         }
 
-        if (this.id !== this._id && this.name !== this._name) {
+        if (this.id !== this._id || this.name !== this._name) {
           let storeSet = {
             Account: 'account',
             AssemblyDepartment: 'assemblydepartment',
@@ -119,9 +120,8 @@ export default {
               engineId: this.id,
               nodeName: this.name
             })
+            loaded = true
           }
-          this._id = this.id
-          this._name = this.name
         }
 
         if (component.type === 'Account' && !this.isAdmin) {
@@ -129,6 +129,13 @@ export default {
         }
         return true
       })
+
+      if (loaded) {
+        this._id = this.id
+        this._name = this.name
+      }
+
+      return filteredList
     }
   },
   methods: {},

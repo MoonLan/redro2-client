@@ -110,25 +110,9 @@ export default {
       downstream: null
     }
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapGetters('user', ['isAdmin'])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('biddingmarketreceiver/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

@@ -51,6 +51,7 @@ export default {
             context.commit('SET_ID', user)
             context.commit('SET_NAME', user)
             context.commit('SET_LEVEL', user)
+            this.$notification.notify(`歡迎您登入，${user.name}`)
             resolve(user)
           })
           .catch(err => {

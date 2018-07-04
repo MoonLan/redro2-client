@@ -119,6 +119,16 @@ export default {
         return
       }
 
+      if (engineEvent.gameTime.isWorking !== state.gameTime.isWorking) {
+        switch (engineEvent.gameTime.isWorking) {
+          case true:
+            this.$notification.notify(`上班了！`)
+            break
+          case false:
+            this.$notification.notify(`下班了！`)
+            break
+        }
+      }
       state.gameTime = engineEvent.gameTime
     }
   },

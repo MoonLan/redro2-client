@@ -65,11 +65,6 @@ export default {
     nodeName: String
   },
   data: () => ({}),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapGetters('marketreceiver', [
@@ -77,17 +72,6 @@ export default {
       'currentMarketCarNeeds'
     ]),
     ...mapState('marketreceiver', ['news', 'provider'])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('marketreceiver/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

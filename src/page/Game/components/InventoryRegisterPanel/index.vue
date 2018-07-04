@@ -65,25 +65,9 @@ export default {
     active: null,
     dialog: false
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapState('inventoryregister', ['receivers'])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('inventoryregister/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

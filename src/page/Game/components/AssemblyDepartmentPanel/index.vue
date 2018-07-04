@@ -58,25 +58,9 @@ export default {
     active: null,
     dialog: false
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapState('assemblydepartment', ['receivers', 'bom'])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('assemblydepartment/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

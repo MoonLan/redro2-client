@@ -211,9 +211,6 @@ export default {
     requiredRule: [v => !!v || '必需項']
   }),
   watch: {
-    nodeName(newVal) {
-      this.load()
-    },
     way(newVal) {
       switch (newVal) {
         case '0':
@@ -296,29 +293,7 @@ export default {
     },
     removeItem(index) {
       this.list.splice(index, 1)
-    },
-    load() {
-      this.$store
-        .dispatch('inventory/load', {
-          engineId: this.engineId,
-          nodeName: this.nodeName
-        })
-        .then(() => {
-          switch (this.way) {
-            case '0':
-              this.to = this.nodeName
-              break
-
-            default:
-            case '1':
-              this.from = this.nodeName
-              break
-          }
-        })
     }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

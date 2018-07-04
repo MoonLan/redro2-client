@@ -114,17 +114,7 @@ export default {
   },
   watch: {
     goods(nv) {
-      if (!nv) {
-        return
-      }
-      this.list = []
-      for (let good of nv) {
-        this.list.push({
-          good: good.good,
-          unit: 0,
-          unitPrice: good.unitPrice
-        })
-      }
+      this.loadList()
     }
   },
   computed: {
@@ -189,6 +179,19 @@ export default {
     }
   },
   methods: {
+    loadList() {
+      if (!this.goods) {
+        return
+      }
+      this.list = []
+      for (let good of this.goods) {
+        this.list.push({
+          good: good.good,
+          unit: 0,
+          unitPrice: good.unitPrice
+        })
+      }
+    },
     submit() {
       if (!this.valid) {
         return
@@ -243,7 +246,9 @@ export default {
       this.list.splice(index, 1)
     }
   },
-  mounted() {}
+  mounted() {
+    this.loadList()
+  }
 }
 </script>
 

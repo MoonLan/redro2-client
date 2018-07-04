@@ -213,11 +213,6 @@ export default {
     ],
     dialog: null
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     node() {
       return (
@@ -226,17 +221,6 @@ export default {
         ) || {}
       )
     }
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('account/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

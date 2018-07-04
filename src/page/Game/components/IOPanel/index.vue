@@ -148,11 +148,6 @@ export default {
       { text: '狀態', value: 'transportationStatus', sortable: false }
     ]
   }),
-  watch: {
-    nodeName(newVal) {
-      this.load()
-    }
-  },
   computed: {
     node() {
       return (
@@ -163,17 +158,6 @@ export default {
     },
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapGetters('user', ['isAdmin'])
-  },
-  methods: {
-    load() {
-      this.$store.dispatch('io/load', {
-        engineId: this.engineId,
-        nodeName: this.nodeName
-      })
-    }
-  },
-  mounted() {
-    this.load()
   }
 }
 </script>

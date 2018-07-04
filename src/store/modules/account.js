@@ -2,7 +2,10 @@ import api from '@/api'
 import { ACCOUNT_LEDGER_SIDE } from '@/lib/schema'
 
 function checkIdentity(state, accountEvent) {
-  if (accountEvent.engineId !== state.engineId || accountEvent.nodeName !== state.nodeName) {
+  if (
+    accountEvent.engineId !== state.engineId ||
+    accountEvent.nodeName !== state.nodeName
+  ) {
     console.warn(
       '[Store:Account] Different Engine id or node name, current store is',
       state.engineId,
@@ -36,7 +39,9 @@ export default {
     },
     getBalance(state) {
       return classification => {
-        let ledger = state.ledger.find(ledger => ledger.classification === classification)
+        let ledger = state.ledger.find(
+          ledger => ledger.classification === classification
+        )
         if (ledger === undefined) {
           return 0
         }
@@ -67,7 +72,10 @@ export default {
       let transaction = accountEvent.transaction
       state.journal.push(transaction)
 
-      for (let side of [ACCOUNT_LEDGER_SIDE.DEBIT, ACCOUNT_LEDGER_SIDE.CREDIT]) {
+      for (let side of [
+        ACCOUNT_LEDGER_SIDE.DEBIT,
+        ACCOUNT_LEDGER_SIDE.CREDIT
+      ]) {
         for (let item of transaction[side] || []) {
           let ledgerItem = {
             amount: item.amount,
@@ -104,6 +112,9 @@ export default {
         return
       }
       state.isBankrupt = accountEvent.isBankrupt
+      if (state.isBankrupt) {
+        this.$notification.notify(`您破產了！所有競標訂單都會被解約。`)
+      }
     }
   },
   actions: {
@@ -127,7 +138,11 @@ export default {
     add(context, accountTransaction) {
       return new Promise((resolve, reject) => {
         api.account
-          .add(context.state.engineId, context.state.nodeName, accountTransaction)
+          .add(
+            context.state.engineId,
+            context.state.nodeName,
+            accountTransaction
+          )
           .then(account => {
             resolve(account)
           })

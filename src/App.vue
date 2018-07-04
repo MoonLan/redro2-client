@@ -51,11 +51,12 @@
 
     <v-snackbar :timeout="6000"
                 bottom
-                :value="$store.state.ui.snackbar">
+                :value="$store.state.ui.snackbar"
+                @input="(val) => {$store.commit('ui/CLOSE_SNACKBAR')}">
       {{ $store.state.ui.snackbarText }}
       <v-btn flat
              dark
-             @click.native="$store.commit('ui/CLOSE_SNACKBAR')">Close</v-btn>
+             @click.native="$store.commit('ui/CLOSE_SNACKBAR')">關閉</v-btn>
     </v-snackbar>
   </v-app>
 </template>

@@ -15,8 +15,8 @@
         </v-btn>
       </v-card-title>
       <v-card-text class="text-xs-center">
-        <div v-if="biddingItem !== 'SIGNED'"
-             class="red--text pb-3">此單目前不可運輸，可能還沒締約，或已經解約了，或過期了。</div>
+        <div v-if="biddingItem.stage !== 'SIGNED'"
+             class="red--text pb-3 text-xs-center">此單目前不可運輸，可能還沒締約，或已經解約了，或過期了。</div>
         <div>
           <qrcode class="qrcode"
                   :text="biddingItem._id"></qrcode>
@@ -39,6 +39,25 @@
           <v-flex xs4>
             <span class="label">締約後時限</span>
             {{biddingItem.timeLimit}}秒
+          </v-flex>
+          <v-flex xs4>
+            <span class="label">上架時間</span>
+            {{toReadableGameTime(biddingItem.gameTime)}}
+          </v-flex>
+          <v-flex v-if="biddingItem.signedGameTime"
+                  xs4>
+            <span class="label">成交時間</span>
+            {{toReadableGameTime(biddingItem.signedGameTime)}}
+          </v-flex>
+          <v-flex v-if="biddingItem.signedGameTime"
+                  xs4>
+            <span class="label">完成期限</span>
+            {{toReadableGameTime(gameTimeAdd(biddingItem.signedGameTime, biddingItem.timeLimit))}}
+          </v-flex>
+          <v-flex v-if="biddingItem.deliveredGameTime"
+                  xs4>
+            <span class="label">開始物流時間</span>
+            {{toReadableGameTime(biddingItem.deliveredGameTime)}}
           </v-flex>
           <v-flex xs12>
             <span class="label">訂單ID</span>
@@ -66,7 +85,12 @@ export default {
     return {}
   },
   computed: {
-    ...mapState('biddingmarketreceiver', ['nodeName', 'upstream', 'downstream'])
+    ...mapState('biddingmarketreceiver', [
+      'nodeName',
+      'upstream',
+      'downstream'
+    ]),
+    ...mapGetters('engine', ['toReadableGameTime', 'gameTimeAdd'])
   },
   methods: {}
 }
