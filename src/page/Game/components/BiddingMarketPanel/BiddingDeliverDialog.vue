@@ -33,7 +33,7 @@
             <div>
               <qrcode-reader @decode="onDecode"
                              @init="onInit"
-                             :paused="biddingId"></qrcode-reader>
+                             :paused="!!biddingId"></qrcode-reader>
             </div>
             <div v-if="error">
               {{error.name}} {{error.message}}
@@ -106,7 +106,8 @@ Vue.use(VueQrcodeReader)
 
 export default {
   props: {
-    value: Boolean
+    value: Boolean,
+    defaultBiddingId: String
   },
   data() {
     return {
@@ -114,6 +115,11 @@ export default {
       error: null,
       biddingId: null,
       bidding: null
+    }
+  },
+  watch: {
+    defaultBiddingId(newVal) {
+      this.getBidding(newVal)
     }
   },
   computed: {

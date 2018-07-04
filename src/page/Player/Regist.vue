@@ -31,7 +31,7 @@
                     </v-card-text>
                   </v-card>
                   <v-card-text>
-                    <router-link :to="'/player/login'"
+                    <router-link :to="this.engineId ? `/player/login/${this.engineId}/${this.teamIndex}/${this.role}` : '/player/login'"
                                  replace>
                       <a>我是工作人員，或我已經有 MagicCode 了。</a>
                     </router-link>

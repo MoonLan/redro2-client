@@ -21,7 +21,9 @@
                     <v-icon style="font-size: 128px;">face</v-icon>
                   </v-flex>
                   <v-flex xs12>
-                    <span style="font-size: 18px;">{{name}}</span>
+                    <div style="font-size: 18px;">{{name}}</div>
+                    <div class="grey--text"
+                         style="font-size: 14px;">{{level}}</div>
                   </v-flex>
                 </v-layout>
 
@@ -63,7 +65,11 @@ export default {
       this.$store.commit('user/SET_NAME', {})
       this.$store.commit('user/SET_LEVEL', {})
 
-      this.$router.replace('/player/login')
+      this.$router.replace(
+        this.engineId
+          ? `/player/login/${this.engineId}/${this.teamIndex}/${this.role}`
+          : '/player/login'
+      )
     },
     isMe() {
       if (this.level === USER_LEVEL.ADMIN) {

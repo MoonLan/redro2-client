@@ -90,7 +90,7 @@ export default {}
 
     .label {
       display: block;
-      font-size: 10px;
+      font-size: 12px;
       color: #888;
     }
   }

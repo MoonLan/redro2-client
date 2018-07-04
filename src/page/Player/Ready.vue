@@ -51,6 +51,9 @@ export default {
   },
   watch: {
     stage(newVal) {
+      if (!this.hasLogin) {
+        return
+      }
       if (newVal === 'START' || newVal === 'FINAL') {
         console.log('go to game page!')
         this.$router.replace(
@@ -71,7 +74,12 @@ export default {
     }
 
     let after = () => {
-      if (!this.hasLogin || (this.teamIndex === 0 && !this.isStaffOrAdmin)) {
+      console.log(this.hasLogin, this.teamIndex, this.isStaffOrAdmin)
+      if (
+        !this.hasLogin ||
+        (parseInt(this.teamIndex) === 0 && !this.isStaffOrAdmin)
+      ) {
+        console.log('runrunrun')
         this.$router.push(
           `/player/regist/${this.engineId}/${this.teamIndex}/${this.role}`
         )

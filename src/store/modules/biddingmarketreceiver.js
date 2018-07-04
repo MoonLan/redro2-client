@@ -238,7 +238,6 @@ export default {
       }
     },
     SOCKET_BIDDING_BREAKOFF(state, biddingMarketEvent) {
-      console.log(biddingMarketEvent.item, state.nodeName)
       let identity = checkIdentity(state, biddingMarketEvent)
       if (identity === false) {
         return

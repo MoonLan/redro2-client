@@ -12,7 +12,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="mr-3">
-        <span v-if="!$store.getters['user/isStaffOrAdmin']">${{$store.getters['account/getBalance']('Cash')}}</span>
+        <span v-if="!$store.getters['user/isStaffOrAdmin']">{{cashBalance}}</span>
         {{readableGameTime}}
       </div>
     </v-toolbar>
@@ -58,7 +58,11 @@ export default {
       'isWorking'
     ]),
     ...mapGetters('user', ['hasLogin', 'isStaffOrAdmin']),
-    ...mapState('user', ['level'])
+    ...mapState('user', ['level']),
+    cashBalance() {
+      let cash = this.$store.getters['account/getBalance']('Cash')
+      return cash > 0 ? `$${cash}` : '破產'
+    }
   },
   watch: {
     stage(newVal) {
