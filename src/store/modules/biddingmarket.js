@@ -129,9 +129,11 @@ export default {
       }
       let id = biddingMarketEvent.item._id
       let signer = biddingMarketEvent.item.signer
+      let signedGameTime = biddingMarketEvent.item.signedGameTime
       let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.SIGNED
       iji.signer = signer
+      iji.signedGameTime = signedGameTime
     },
     SOCKET_BIDDING_BREAKOFF(state, biddingMarketEvent) {
       if (!checkIdentity(state, biddingMarketEvent)) {
@@ -146,8 +148,10 @@ export default {
         return
       }
       let id = biddingMarketEvent.item._id
+      let deliveredGameTime = biddingMarketEvent.item.deliveredGameTime
       let iji = state.biddings.find(item => item._id === id)
       iji.stage = BIDDING_ITEM_STAGE.COMPLETED
+      iji.deliveredGameTime = deliveredGameTime
     }
   },
   actions: {

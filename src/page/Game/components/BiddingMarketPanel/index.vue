@@ -88,7 +88,7 @@
                     </div>
                   </div>
                   <v-card-title>
-                    <span class="headline">{{item.publisher}}</span>
+                    <span class="headline">#{{item.publisher.split('-')[1]}} {{$t(`role.${item.publisher.split('-')[0]}`)}}</span>
                   </v-card-title>
                   <v-card-text class="px-3 py-2">
                     <v-layout v-for="good in item.goods"
@@ -105,12 +105,15 @@
                           class="mx-0 grey--text">{{toReadableGameTime(item.gameTime)}} 上架</span>
                     <span v-if="item.stage === 'SIGNED' && item.signedGameTime"
                           class="mx-0 grey--text">{{toReadableGameTime(gameTimeAdd(item.signedGameTime, item.timeLimit))}} 到期</span>
+                    <span v-if="item.stage === 'COMPLETED'"
+                          class="mx-0 grey--text">{{toReadableGameTime(gameTimeAdd(item.deliveredGameTime, transportationTime))}} 送達</span>
                     <v-spacer />
                     <v-btn v-if="item.stage === 'SIGNED'"
                            @click="dialog = true; defaultBiddingId = item._id"
                            outline>運輸</v-btn>
                     <span v-else-if="item.stage === 'BIDDING'">已上架</span>
-                    <span v-else-if="item.stage === 'COMPLETED'">已送出</span>
+                    <span v-else-if="item.stage === 'COMPLETED' && gameTimeSmallerThan(gameTime, gameTimeAdd(item.deliveredGameTime,  transportationTime))">運送中</span>
+                    <span v-else-if="item.stage === 'COMPLETED' && !gameTimeSmallerThan(gameTime, gameTimeAdd(item.deliveredGameTime, transportationTime))">已送達</span>
                     <span v-else-if="item.stage === 'BREAKOFF'">已解約</span>
                   </v-card-actions>
                 </v-card>
@@ -161,7 +164,12 @@ export default {
     defaultBiddingId: null
   }),
   computed: {
-    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
+    ...mapGetters('engine', [
+      'gameTimeAdd',
+      'toReadableGameTime',
+      'gameTimeSmallerThan'
+    ]),
+    ...mapState('engine', ['gameTime']),
     ...mapState('biddingmarket', [
       'upstreams',
       'downstreams',
