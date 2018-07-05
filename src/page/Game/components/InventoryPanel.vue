@@ -192,12 +192,12 @@ export default {
     goods: ['Car', 'Engine', 'Body', 'Wheel'],
     headers: [
       {
-        text: 'Good',
+        text: '商品',
         align: 'left',
         sortable: true,
         value: 'good'
       },
-      { text: 'Unit', value: 'unit' }
+      { text: '數量', value: 'unit' }
     ],
 
     dialog: false,

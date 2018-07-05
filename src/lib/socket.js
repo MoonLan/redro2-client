@@ -15,6 +15,7 @@ socket.on('disconnect', reason => {
   console.error(reason)
   switch (reason) {
     case 'io client disconnect':
+    case 'forced close':
       break
 
     default:

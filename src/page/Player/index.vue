@@ -27,7 +27,7 @@
                                    ripple>
                         <v-list-tile-content>
                           <v-list-tile-title>
-                            <span class="blue--text">{{item.stage}}</span>
+                            <span class="blue--text">{{$t(`stage.${item.stage}`)}}</span>
                             {{item.name}}
                           </v-list-tile-title>
                           <v-list-tile-sub-title>{{item.describe}}</v-list-tile-sub-title>
@@ -227,7 +227,7 @@ export default {
         role: 'staff',
         name: '工作人員',
         description:
-          '成為工作人員，你會需要輸入帳號及密碼，還不知道帳密的請洽見者有分。'
+          '成為工作人員，你會需要輸入 MagicCode ，還不知道 MagicCode 的請洽見者有分。'
       },
       {
         role: 'scoreboard',
@@ -270,6 +270,29 @@ export default {
     api.server.getEnginesList().then(list => {
       this.list = list
     })
+  },
+  beforeRouteLeave(to, from, next) {
+    if (to !== '/') {
+      next()
+      return
+    }
+    switch (this.active) {
+      default:
+      case 'selectgame':
+        next()
+        return
+
+      case 'selectrole':
+        this.active = 'selectgame'
+        return
+      case 'selectteam':
+        this.active = 'selectrole'
+        return
+
+      case 'selectjob':
+        this.active = 'selectteam'
+        return
+    }
   }
 }
 </script>

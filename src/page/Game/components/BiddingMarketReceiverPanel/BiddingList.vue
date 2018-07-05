@@ -1,5 +1,6 @@
 <template>
-  <v-container grid-list-md>
+  <v-container grid-list-md
+               style="padding-bottom: 60px;">
     <v-layout row
               wrap>
       <v-flex v-if="list && list.length === 0"

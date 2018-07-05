@@ -21,6 +21,7 @@
                 <v-card-text>
                   <v-text-field v-model="magiccode"
                                 label="MagicCode"
+                                type="number"
                                 required
                                 :rules="[requiredRule]"></v-text-field>
                   <div>請輸入你剛剛得到的 MagicCode。</div>

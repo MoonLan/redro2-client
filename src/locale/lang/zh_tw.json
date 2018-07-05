@@ -17,6 +17,14 @@
     "directLogin": "你還保持登入，直接進入",
     "logout": "登出"
   },
+  "stage": {
+    "CONSTRUCTED": "已建立",
+    "PREPARE": "準備中",
+    "READY": "準備開始",
+    "START": "正在進行",
+    "FINAL": "準備結束",
+    "END": "已結束"
+  },
   "error": {},
   "role": {
     "ComponentsFactory": "零件廠",
