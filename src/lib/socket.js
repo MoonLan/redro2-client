@@ -20,7 +20,7 @@ socket.on('disconnect', reason => {
     default:
       store.commit('ui/OPEN_DIALOG', {
         title: '您斷線了',
-        text: '請試著重新連線。'
+        text: '請重新整理。'
       })
       break
   }

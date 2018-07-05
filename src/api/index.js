@@ -29,7 +29,10 @@ export default {
   scoreboard: scoreboard
 }
 
-export const SERVER_BASE = 'http://localhost' // 'https://redro2.2018ieemcamp.me'
+export const DEVELOPMENT_ENV = false
+export const SERVER_BASE = DEVELOPMENT_ENV
+  ? 'http://localhost'
+  : 'https://redro2.2018ieemcamp.me'
 
 export function legalRequest(apiPath, data) {
   return new Promise((resolve, reject) => {
