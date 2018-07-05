@@ -6,12 +6,6 @@
             @input="(val) => {$emit('input', val)}">
     <v-card v-if="receivers && bom">
       <v-card-title>
-        <v-btn icon
-               flat
-               v-if="active === '1'"
-               @click="active = '0'">
-          <v-icon>arrow_back</v-icon>
-        </v-btn>
         <span class="headline">組裝</span>
         <v-spacer></v-spacer>
         <v-btn icon
@@ -75,7 +69,6 @@ export default {
   },
   data() {
     return {
-      active: '0',
       receiver: null,
       selectedBom: null,
       unit: null

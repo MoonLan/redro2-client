@@ -85,9 +85,10 @@
               xs12>
         <v-layout column
                   class="text-xs-center">
-          <v-flex fill-height>
+          <v-flex fill-height
+                  style="height: 40vh;">
             <v-layout>
-              <v-flex xs5
+              <v-flex xs12
                       fill-height
                       justify-center>
                 <v-container text-xs-center
@@ -110,13 +111,15 @@
                   </v-card>
                 </v-container>
               </v-flex>
+              <!--
               <v-flex xs7
                       justify-center>
                 Some Gragh
-              </v-flex>
+              </v-flex> -->
             </v-layout>
           </v-flex>
-          <v-flex fill-height>
+          <v-flex fill-height
+                  style="height: 60vh;">
             <v-layout>
               <v-flex v-for="role in ['ComponentsFactory', 'AssemblyFactory', 'Retailer']"
                       :key="role"
@@ -145,13 +148,19 @@
         </v-layout>
       </v-flex>
     </v-layout>
+    <audio src="/static/sound/begin.mp3"
+           id="sound-begin"
+           class="audio d-none"></audio>
+    <audio src="/static/sound/break.mp3"
+           id="sound-break"
+           class="audio d-none"></audio>
   </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
 import api from '@/api'
-import { ROOM_EVENTS, USER_LEVEL } from '@/lib/schema'
+import { ROOM_EVENTS, USER_LEVEL, ENGINE_STAGE } from '@/lib/schema'
 
 export default {
   data: () => ({
@@ -159,7 +168,9 @@ export default {
     teamIndex: null,
     role: null,
 
-    engine: null
+    engine: null,
+    _stage: null,
+    _isWorking: null
   }),
   computed: {
     ...mapState('scoreboard', [
@@ -170,7 +181,7 @@ export default {
       'dayLength',
       'accounts'
     ]),
-    ...mapGetters('scoreboard', ['readableGameTime']),
+    ...mapGetters('scoreboard', ['readableGameTime', 'isWorking']),
     belongingUsers() {
       if (!this.engineId || !this.users) {
         return
@@ -233,12 +244,33 @@ export default {
       return set
     }
   },
+  watch: {
+    isWorking(newVal) {
+      if (newVal === this._isWorking) {
+        return
+      }
+      this._isWorking = newVal
+      if (newVal === true) {
+        this.playBeginSound()
+      } else {
+        this.playBreakSound()
+      }
+    }
+  },
   methods: {
     toFontSize(index) {
       if (index > 5) {
         return 20
       }
       return 70 / Math.pow(index, 0.7)
+    },
+    playBeginSound() {
+      let audio = document.getElementById('sound-begin')
+      audio.play()
+    },
+    playBreakSound() {
+      let audio = document.getElementById('sound-break')
+      audio.play()
     }
   },
   mounted() {
@@ -258,7 +290,7 @@ export default {
       })
   },
   beforeDestroy() {
-    this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+    this.$socket.emit(ROOM_EVENTS.ROOM_LEAVE, {
       engineId: this.engineId,
       teamIndex: 0,
       role: 'Scoreboard'

@@ -2,6 +2,10 @@
   <v-container grid-list-md>
     <v-layout row
               wrap>
+      <v-flex v-if="list && list.length === 0"
+              class="text-xs-center">
+        目前尚無訂單。
+      </v-flex>
       <v-flex xs12
               sm6
               xl4

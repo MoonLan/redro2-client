@@ -108,7 +108,9 @@ export default {
       state.stage = payload.stage
     },
     SET_GAME_TIME(state, payload) {
-      state.gameTime = payload.gameTime
+      state.gameTime.day = payload.gameTime.day
+      state.gameTime.time = payload.gameTime.time
+      state.gameTime.isWorking = payload.gameTime.isWorking
     },
     SET_PLAYER_TEAMS(state, payload) {
       state.playerTeams = payload.playerTeams
@@ -131,7 +133,9 @@ export default {
         return
       }
 
-      state.gameTime = engineEvent.gameTime
+      state.gameTime.day = engineEvent.gameTime.day
+      state.gameTime.time = engineEvent.gameTime.time
+      state.gameTime.isWorking = engineEvent.gameTime.isWorking
     },
 
     SOCKET_ACCOUNT_ADD(state, accountEvent) {
