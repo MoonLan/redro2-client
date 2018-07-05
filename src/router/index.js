@@ -2,6 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/page/Home'
+import Game from '@/page/Game'
+import Player from '@/page/Player'
+import PlayerRegist from '@/page/Player/Regist'
+import PlayerLogin from '@/page/Player/Login'
+import PlayerConfirm from '@/page/Player/Confirm'
+import PlayerReady from '@/page/Player/Ready'
 
 Vue.use(Router)
 
@@ -58,28 +64,28 @@ export default new Router({
 
     {
       path: '/player',
-      component: () => import('@/page/Player/')
+      component: Player
     },
     {
       path: '/player/regist/:id?/:teamIndex?/:role?',
-      component: () => import('@/page/Player/Regist')
+      component: PlayerRegist
     },
     {
       path: '/player/login/:id?/:teamIndex?/:role?',
-      component: () => import('@/page/Player/Login')
+      component: PlayerLogin
     },
     {
       path: '/player/confirm/:id?/:teamIndex?/:role?',
-      component: () => import('@/page/Player/Confirm')
+      component: PlayerConfirm
     },
     {
       path: '/player/ready/:id/:teamIndex/:role',
-      component: () => import('@/page/Player/Ready')
+      component: PlayerReady
     },
 
     {
       path: '/game/:id/:teamIndex/:role',
-      component: () => import('@/page/Game')
+      component: Game
     },
     {
       path: '/game/end/:id',
