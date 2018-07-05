@@ -50,6 +50,9 @@
           </v-flex>
         </v-layout>
       </v-card-text>
+      <v-card-text>
+        <span>請確認隊員有足夠的庫存後再按組裝！</span>
+      </v-card-text>
       <v-card-actions>
         <v-btn @click="$emit('input', false)"
                flat>取消</v-btn>
@@ -76,6 +79,11 @@ export default {
       receiver: null,
       selectedBom: null,
       unit: null
+    }
+  },
+  watch: {
+    bom(newVal) {
+      this.selectedBom = newVal[0]
     }
   },
   computed: {
