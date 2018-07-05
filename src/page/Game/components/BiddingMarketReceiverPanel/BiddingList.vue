@@ -66,10 +66,12 @@
             <v-spacer />
             <v-btn v-if="item.stage === 'BIDDING' && item.publisher !== nodeName && item.publishedFromChain === chain.toUpperCase()"
                    @click="sign(item)"
+                   :disabled="isBankrupt"
                    flat
                    color="primary">${{item.price}} 成交</v-btn>
             <v-btn v-else-if="item.stage === 'SIGNED' && item.signer === nodeName && chain === 'downstream'"
                    @click="biddingItemDialogBiddingItem = item; biddingItemDialog = true"
+                   :disabled="isBankrupt"
                    flat
                    color="primary">準備運輸</v-btn>
             <span v-else-if="item.publisher === nodeName && item.stage === 'BIDDING'">你上架的</span>
@@ -128,6 +130,7 @@ export default {
       'downstream'
     ]),
     ...mapState('engine', ['gameTime']),
+    ...mapState('account', ['isBankrupt']),
     list() {
       const map = {
         upstream: {

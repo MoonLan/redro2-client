@@ -53,6 +53,7 @@
     </v-tabs>
     <v-fab-transition>
       <v-btn v-if="$store.state.biddingmarketreceiver.upstream.enable"
+             :disabled="isBankrupt"
              v-show="active === 'tab-upstream'"
              @click="dialog.upstream = true"
              fixed
@@ -63,7 +64,7 @@
         <v-icon>launch</v-icon>
       </v-btn>
     </v-fab-transition>
-    <bidding-release-dialog v-if="$store.state.biddingmarketreceiver.upstream.enable"
+    <bidding-release-dialog v-if="$store.state.biddingmarketreceiver.upstream.enable && !isBankrupt"
                             v-model="dialog.upstream"
                             :chain="'upstream'"
                             :key="'upstream-dialog'" />
@@ -88,7 +89,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import api from '@/api'
 import { TRANSPORTATION_STATUS } from '@/lib/schema'
 import BiddingTabs from './BiddingTabs'
@@ -112,7 +113,8 @@ export default {
   }),
   computed: {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
-    ...mapGetters('user', ['isAdmin'])
+    ...mapGetters('user', ['isAdmin']),
+    ...mapState('account', ['isBankrupt'])
   }
 }
 </script>

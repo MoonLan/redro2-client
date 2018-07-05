@@ -11,6 +11,21 @@ socket.on('pong', latency => {
   store.commit('engine/SET_LATENCY', { latency: latency })
 })
 
+socket.on('disconnect', reason => {
+  console.error(reason)
+  switch (reason) {
+    case 'io client disconnect':
+      break
+
+    default:
+      store.commit('ui/OPEN_DIALOG', {
+        title: '您斷線了',
+        text: '請試著重新連線。'
+      })
+      break
+  }
+})
+
 export function reconnect() {
   socket.close()
   socket.connect()

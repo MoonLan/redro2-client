@@ -208,7 +208,7 @@ export default {
         teamIndex: 0,
         role: 'Console'
       })
-      console.log('socket:ROOM_JOIN')
+      console.log('[Socket] ROOM_JOIN')
     })
   },
   beforeDestroy() {
@@ -217,7 +217,7 @@ export default {
       teamIndex: 0,
       role: 'Console'
     })
-    console.log('socket:ROOM_LEAVE')
+    console.log('[Socket] ROOM_JOIN')
   }
 }
 </script>

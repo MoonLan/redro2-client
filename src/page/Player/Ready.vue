@@ -102,7 +102,7 @@ export default {
                 teamIndex: this.teamIndex,
                 role: this.role
               })
-              console.log('socket:ROOM_JOIN')
+              console.log('[Socket] ROOM_JOIN')
             })
 
           if (this.stage === 'START' || this.stage === 'FINAL') {
@@ -131,7 +131,7 @@ export default {
       teamIndex: this.teamIndex,
       role: this.role
     })
-    console.log('socket:ROOM_LEAVE')
+    console.log('[Socket] ROOM_JOIN')
   }
 }
 </script>
