@@ -1,8 +1,15 @@
 import api from '@/api'
-import { ACCOUNT_LEDGER_SIDE, INVENTORY_MODE, TRANSPORTATION_STATUS } from '@/lib/schema'
+import {
+  ACCOUNT_LEDGER_SIDE,
+  INVENTORY_MODE,
+  TRANSPORTATION_STATUS
+} from '@/lib/schema'
 
 function checkIdentity(state, ioEvent) {
-  if (ioEvent.engineId !== state.engineId || ioEvent.nodeName !== state.nodeName) {
+  if (
+    ioEvent.engineId !== state.engineId ||
+    ioEvent.nodeName !== state.nodeName
+  ) {
     console.warn(
       '[Store:IO] Different Engine id or node name, current store is',
       state.engineId,
@@ -59,7 +66,8 @@ export default {
       state.hasImportLimit = payload.hasImportLimit
     },
     SET_REJECT_NOT_AVAILABLE_IMPORT_GOODS(state, payload) {
-      state.rejectNotAvailableImportGoods = payload.rejectNotAvailableImportGoods
+      state.rejectNotAvailableImportGoods =
+        payload.rejectNotAvailableImportGoods
     },
 
     SET_ENABLE_EXPORT(state, payload) {
@@ -75,7 +83,8 @@ export default {
       state.hasExportLimit = payload.hasExportLimit
     },
     SET_REJECT_NOT_AVAILABLE_EXPORT_GOODS(state, payload) {
-      state.rejectNotAvailableExportGoods = payload.rejectNotAvailableExportGoods
+      state.rejectNotAvailableExportGoods =
+        payload.rejectNotAvailableExportGoods
     },
 
     SET_TRANSPORTATION_COST(state, payload) {
@@ -106,6 +115,7 @@ export default {
       let id = ioEvent.ioJournalItem._id
       let iji = state.importJournal.find(iji => iji._id === id)
       iji.transportationStatus = TRANSPORTATION_STATUS.COMPLETED
+      this.$notification.notify(`訂單已送達給您！`)
     },
     SOCKET_IO_EXPORT_COMPLETE(state, ioEvent) {
       if (!checkIdentity(state, ioEvent)) {
@@ -114,6 +124,7 @@ export default {
       let id = ioEvent.ioJournalItem._id
       let iji = state.exportJournal.find(iji => iji._id === id)
       iji.transportationStatus = TRANSPORTATION_STATUS.COMPLETED
+      this.$notification.notify(`訂單已送到締約者了！`)
     }
   },
   actions: {
@@ -146,7 +157,11 @@ export default {
     import(context, ioJournalItem) {
       return new Promise((resolve, reject) => {
         api.io
-          .importIO(context.state.engineId, context.state.nodeName, ioJournalItem)
+          .importIO(
+            context.state.engineId,
+            context.state.nodeName,
+            ioJournalItem
+          )
           .then(io => {
             resolve(io)
           })
@@ -158,7 +173,11 @@ export default {
     export(context, ioJournalItem) {
       return new Promise((resolve, reject) => {
         api.io
-          .exportIO(context.state.engineId, context.state.nodeName, ioJournalItem)
+          .exportIO(
+            context.state.engineId,
+            context.state.nodeName,
+            ioJournalItem
+          )
           .then(io => {
             resolve(io)
           })

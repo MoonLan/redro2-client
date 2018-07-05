@@ -40,21 +40,34 @@ export default {
   },
   getters: {
     released(state) {
-      return state.biddings.filter(b => b.stage === BIDDING_ITEM_STAGE.BIDDING)
+      return state.biddings
+        .filter(b => b.stage === BIDDING_ITEM_STAGE.BIDDING)
+        .slice()
+        .reverse()
     },
     signed(state) {
-      return state.biddings.filter(b => b.stage === BIDDING_ITEM_STAGE.SIGNED)
+      return state.biddings
+        .filter(b => b.stage === BIDDING_ITEM_STAGE.SIGNED)
+        .slice()
+        .reverse()
     },
     completed(state) {
-      return state.biddings.filter(
-        b => b.stage === BIDDING_ITEM_STAGE.COMPLETED
-      )
+      return state.biddings
+        .filter(b => b.stage === BIDDING_ITEM_STAGE.COMPLETED)
+        .slice()
+        .reverse()
     },
     canceled(state) {
-      return state.biddings.filter(b => b.stage === BIDDING_ITEM_STAGE.CANCELED)
+      return state.biddings
+        .filter(b => b.stage === BIDDING_ITEM_STAGE.CANCELED)
+        .slice()
+        .reverse()
     },
     breakoff(state) {
-      return state.biddings.filter(b => b.stage === BIDDING_ITEM_STAGE.BREAKOFF)
+      return state.biddings
+        .filter(b => b.stage === BIDDING_ITEM_STAGE.BREAKOFF)
+        .slice()
+        .reverse()
     }
   },
   mutations: {

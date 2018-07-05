@@ -78,6 +78,20 @@ export default {
     },
     isWorking(state) {
       return state.gameTime.isWorking
+    },
+    gameTimeSmallerThan() {
+      return (gameTimeA, gameTimeB) => {
+        if (gameTimeA.day < gameTimeB.day) {
+          return true
+        } else if (
+          gameTimeA.day === gameTimeB.day &&
+          gameTimeA.time < gameTimeB.time
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
   },
   mutations: {

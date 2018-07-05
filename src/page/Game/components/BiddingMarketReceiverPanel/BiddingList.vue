@@ -61,6 +61,8 @@
                   class="mx-0 grey--text">{{toReadableGameTime(item.gameTime)}} 上架</span>
             <span v-if="item.stage === 'SIGNED' && item.signedGameTime"
                   class="mx-0 grey--text">{{toReadableGameTime(gameTimeAdd(item.signedGameTime, item.timeLimit))}} 到期</span>
+            <span v-if="item.stage === 'COMPLETED'"
+                  class="mx-0 grey--text">{{toReadableGameTime(gameTimeAdd(item.deliveredGameTime, chain === 'upstream' ?upstream.transportationTime : downstream.transportationTime))}} 送達</span>
             <v-spacer />
             <v-btn v-if="item.stage === 'BIDDING' && item.publisher !== nodeName && item.publishedFromChain === chain.toUpperCase()"
                    @click="sign(item)"
@@ -72,7 +74,8 @@
                    color="primary">準備運輸</v-btn>
             <span v-else-if="item.publisher === nodeName && item.stage === 'BIDDING'">你上架的</span>
             <span v-else-if="item.publisher === nodeName && item.stage === 'SIGNED'">製造中</span>
-            <span v-else-if="item.stage === 'COMPLETED'">已送出</span>
+            <span v-else-if="item.stage === 'COMPLETED' && gameTimeSmallerThan(gameTime, gameTimeAdd(item.deliveredGameTime, chain === 'upstream' ?upstream.transportationTime : downstream.transportationTime))">運送中</span>
+            <span v-else-if="item.stage === 'COMPLETED' && !gameTimeSmallerThan(gameTime, gameTimeAdd(item.deliveredGameTime, chain === 'upstream' ?upstream.transportationTime : downstream.transportationTime))">已送達</span>
             <span v-else-if="item.stage === 'BREAKOFF'">解約</span>
           </v-card-actions>
         </v-card>
@@ -102,7 +105,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
+    ...mapGetters('engine', [
+      'gameTimeAdd',
+      'toReadableGameTime',
+      'gameTimeSmallerThan'
+    ]),
     ...mapGetters('biddingmarketreceiver', [
       'upstreamReleased',
       'upstreamSelfReleased',
@@ -120,6 +127,7 @@ export default {
       'upstream',
       'downstream'
     ]),
+    ...mapState('engine', ['gameTime']),
     list() {
       const map = {
         upstream: {

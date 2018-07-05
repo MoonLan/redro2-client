@@ -61,7 +61,7 @@
           <v-layout class="labeled-list">
             <v-flex xs6>
               <span class="label">締約後時限</span>
-              {{timeLimit}}秒
+              {{this.upstream.defaultTimeLimit }}秒
             </v-flex>
             <v-flex xs6>
               <span class="label">總金額</span>
@@ -102,12 +102,9 @@ export default {
       valid: null,
       loading: false,
       hasTransportationDelay: true,
-      transportationTime: 10,
-      transportationCost: 100,
       publisher: '',
       market: '',
       memo: '',
-      timeLimit: 5,
       list: [],
       requiredRule: v => !!v || '必需項'
     }
@@ -203,7 +200,10 @@ export default {
           this.chain === 'upstream' ? 'downstream' : 'upstream',
         publisher: this.nodeName,
         price: this.price,
-        timeLimit: this.timeLimit,
+        timeLimit:
+          this.chain === 'upstream'
+            ? this.upstream.defaultTimeLimit
+            : this.downstream.defaultTimeLimit,
         memo: this.memo,
         gameTime: this.$store.state.engine.gameTime
       }

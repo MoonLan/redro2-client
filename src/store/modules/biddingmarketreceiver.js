@@ -54,6 +54,7 @@ export default {
       biddings: [],
       breakoffPaneltyRatio: 1.2,
       breakoffCompensationRatio: 0.5,
+      defaultTimeLimit: 600,
       transportationTime: 300,
       transportationStatus: TRANSPORTATION_STATUS.DELIVERING
     },
@@ -65,72 +66,103 @@ export default {
       biddings: [],
       breakoffPaneltyRatio: 1.2,
       breakoffCompensationRatio: 0.5,
+      defaultTimeLimit: 600,
       transportationTime: 300,
       transportationStatus: TRANSPORTATION_STATUS.DELIVERING
     }
   },
   getters: {
     upstreamReleased(state) {
-      return state.upstream.biddings.filter(b => b.stage === 'BIDDING')
+      return state.upstream.biddings
+        .filter(b => b.stage === 'BIDDING')
+        .slice()
+        .reverse()
     },
     upstreamSelfReleased(state) {
-      return state.upstream.biddings.filter(
-        b =>
-          b.stage === 'BIDDING' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.upstream.biddings
+        .filter(
+          b =>
+            b.stage === 'BIDDING' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     upstreamSelfSigned(state) {
-      return state.upstream.biddings.filter(
-        b =>
-          b.stage === 'SIGNED' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.upstream.biddings
+        .filter(
+          b =>
+            b.stage === 'SIGNED' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     upstreamSelfCompleted(state) {
-      return state.upstream.biddings.filter(
-        b =>
-          b.stage === 'COMPLETED' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.upstream.biddings
+        .filter(
+          b =>
+            b.stage === 'COMPLETED' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     upstreamSelfBreakoff(state) {
-      return state.upstream.biddings.filter(
-        b =>
-          b.stage === 'BREAKOFF' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.upstream.biddings
+        .filter(
+          b =>
+            b.stage === 'BREAKOFF' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     downstreamReleased(state) {
-      return state.downstream.biddings.filter(b => b.stage === 'BIDDING')
+      return state.downstream.biddings
+        .filter(b => b.stage === 'BIDDING')
+        .slice()
+        .reverse()
     },
     downstreamSelfReleased(state) {
-      return state.downstream.biddings.filter(
-        b =>
-          b.stage === 'BIDDING' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.downstream.biddings
+        .filter(
+          b =>
+            b.stage === 'BIDDING' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     downstreamSelfSigned(state) {
-      return state.downstream.biddings.filter(
-        b =>
-          b.stage === 'SIGNED' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.downstream.biddings
+        .filter(
+          b =>
+            b.stage === 'SIGNED' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     downstreamSelfCompleted(state) {
-      return state.downstream.biddings.filter(
-        b =>
-          b.stage === 'COMPLETED' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.downstream.biddings
+        .filter(
+          b =>
+            b.stage === 'COMPLETED' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     },
     downstreamSelfBreakoff(state) {
-      return state.downstream.biddings.filter(
-        b =>
-          b.stage === 'BREAKOFF' &&
-          (b.publisher === state.nodeName || b.signer === state.nodeName)
-      )
+      return state.downstream.biddings
+        .filter(
+          b =>
+            b.stage === 'BREAKOFF' &&
+            (b.publisher === state.nodeName || b.signer === state.nodeName)
+        )
+        .slice()
+        .reverse()
     }
   },
   mutations: {
@@ -154,6 +186,7 @@ export default {
       state.upstream.enable = payload.upstream.enable
       state.upstream.provider = payload.upstream.provider
       state.upstream.name = payload.upstream.name
+      state.upstream.defaultTimeLimit = payload.upstream.defaultTimeLimit
       state.upstream.biddings = payload.upstream.biddings
       state.upstream.breakoffPaneltyRatio =
         payload.upstream.breakoffPaneltyRatio
@@ -177,6 +210,7 @@ export default {
       state.downstream.enable = payload.downstream.enable
       state.downstream.provider = payload.downstream.provider
       state.downstream.name = payload.downstream.name
+      state.downstream.defaultTimeLimit = payload.downstream.defaultTimeLimit
       state.downstream.biddings = payload.downstream.biddings
       state.downstream.breakoffPaneltyRatio =
         payload.downstream.breakoffPaneltyRatio
