@@ -27,7 +27,7 @@
                                     :counter="10"
                                     :rules="[requiredRule, lessThanTenWordRule]"></v-text-field>
                       <div>你也可以輸入你的暱稱、藝名等。</div>
-                      <div class="red--text">工人不要打名字，直接按下方連結！</div>
+                      <div class="red--text">工作人員不要打名字，直接按下方連結！</div>
                     </v-card-text>
                   </v-card>
                   <v-card-text>
