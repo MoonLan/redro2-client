@@ -33,7 +33,7 @@
                   :key="item._id">
             <v-container>
               <v-card>
-                <v-card-media src="https://vuetifyjs.com/static/doc-images/cards/desert.jpg"
+                <v-card-media :src="item.banner || 'https://vuetifyjs.com/static/doc-images/cards/desert.jpg'"
                               height="100px">
                   <v-container fill-height
                                fluid>
@@ -41,7 +41,8 @@
                       <v-flex xs12
                               align-end
                               flexbox>
-                        <span class="headline white--text">{{item.title}}</span>
+                        <span class="headline white--text"
+                              style="text-shadow: 0 0 5px #000;">{{item.title}}</span>
                       </v-flex>
                     </v-layout>
                   </v-container>
