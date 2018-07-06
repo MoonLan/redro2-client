@@ -150,10 +150,12 @@
     </v-layout>
     <audio src="/static/sound/begin.mp3"
            id="sound-begin"
-           class="audio d-none"></audio>
+           class="audio"
+           hidden></audio>
     <audio src="/static/sound/break.mp3"
            id="sound-break"
-           class="audio d-none"></audio>
+           class="audio"
+           hidden></audio>
   </v-container>
 </template>
 
