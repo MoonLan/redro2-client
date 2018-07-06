@@ -268,7 +268,7 @@ export default {
   },
   mounted() {
     api.server.getEnginesList().then(list => {
-      this.list = list
+      this.list = list.filter(engine => engine.hidden !== true)
     })
   },
   beforeRouteLeave(to, from, next) {

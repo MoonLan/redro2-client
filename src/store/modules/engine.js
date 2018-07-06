@@ -186,6 +186,30 @@ export default {
             reject(err)
           })
       })
+    },
+    hidden(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.engine
+          .hidden(context.state.id)
+          .then(data => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    unhidden(context, payload) {
+      return new Promise((resolve, reject) => {
+        api.engine
+          .unhidden(context.state.id)
+          .then(data => {
+            resolve(data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
     }
   }
 }
