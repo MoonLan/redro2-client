@@ -27,13 +27,12 @@
                       sm5
                       pr-3
                       :key="index + '-classification'">
-                <v-select :items="classifications"
+                <v-autocomplete :items="classifications"
                           v-model="item.classification"
                           label="科目"
-                          autocomplete
                           required
                           :rules="requiredRule"
-                          hide-details></v-select>
+                          hide-details></v-autocomplete>
               </v-flex>
               <v-flex xs12
                       sm3
@@ -79,13 +78,12 @@
                       sm5
                       pr-3
                       :key="index + '-classification'">
-                <v-select :items="classifications"
+                <v-autocomplete :items="classifications"
                           v-model="item.classification"
                           label="科目"
-                          autocomplete
                           required
                           :rules="requiredRule"
-                          hide-details></v-select>
+                          hide-details></v-autocomplete>
               </v-flex>
               <v-flex xs12
                       sm3

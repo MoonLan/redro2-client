@@ -29,7 +29,7 @@ export default {
   scoreboard: scoreboard
 }
 
-export const DEVELOPMENT_ENV = false
+export const DEVELOPMENT_ENV = true
 export const SERVER_BASE = DEVELOPMENT_ENV
   ? 'http://localhost'
   : 'https://redro2.2018ieemcamp.me'

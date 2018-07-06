@@ -78,26 +78,24 @@
               <v-flex xs12
                       sm6
                       :pr-2="!$vuetify.breakpoint.xsOnly">
-                <v-select :items="nodesNameList"
+                <v-autocomplete :items="nodesNameList"
                           v-model="from"
                           label="輸出方"
                           :disabled="way === '1'"
-                          autocomplete
                           required
                           :rules="requiredRule"
-                          hide-details></v-select>
+                          hide-details></v-autocomplete>
               </v-flex>
               <v-flex xs12
                       sm6
                       :pl-2="!$vuetify.breakpoint.xsOnly">
-                <v-select :items="nodesNameList"
+                <v-autocomplete :items="nodesNameList"
                           v-model="to"
                           label="輸入方"
                           :disabled="way === '0'"
-                          autocomplete
                           required
                           :rules="requiredRule"
-                          hide-details></v-select>
+                          hide-details></v-autocomplete>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -110,13 +108,12 @@
                         sm5
                         pr-3
                         :key="index + '-good'">
-                  <v-select :items="goods"
+                  <v-autocomplete :items="goods"
                             v-model="item.good"
                             label="種類"
-                            autocomplete
                             required
                             :rules="requiredRule"
-                            hide-details></v-select>
+                            hide-details></v-autocomplete>
                 </v-flex>
                 <v-flex xs12
                         sm3

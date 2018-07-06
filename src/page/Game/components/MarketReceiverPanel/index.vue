@@ -9,12 +9,12 @@
                   class="labeled-list">
           <v-flex xs6
                   md3>
-            <span class="label">目前市場需求量</span>
+            <span class="label">本日市場需求量</span>
             {{currentMarketCarNeeds}}台
           </v-flex>
           <v-flex xs6
                   md3>
-            <span class="label">目前市場價格</span>
+            <span class="label">本日市場單價</span>
             {{currentMarketCarPrice}}元
           </v-flex>
         </v-layout>

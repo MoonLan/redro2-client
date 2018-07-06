@@ -74,12 +74,10 @@ export default {
     }
 
     let after = () => {
-      console.log(this.hasLogin, this.teamIndex, this.isStaffOrAdmin)
       if (
         !this.hasLogin ||
         (parseInt(this.teamIndex) === 0 && !this.isStaffOrAdmin)
       ) {
-        console.log('runrunrun')
         this.$router.push(
           `/player/regist/${this.engineId}/${this.teamIndex}/${this.role}`
         )
@@ -106,12 +104,10 @@ export default {
             })
 
           if (this.stage === 'START' || this.stage === 'FINAL') {
-            console.log('go to game page!')
             this.$router.replace(
               `/game/${this.engineId}/${this.teamIndex}/${this.role}`
             )
           } else if (this.stage === 'END') {
-            console.log('go to end page!')
             this.$router.replace(`/game/end/${this.engineId}`)
           }
         })
@@ -126,12 +122,12 @@ export default {
     }
   },
   beforeDestroy() {
-    this.$socket.emit(ROOM_EVENTS.ROOM_JOIN, {
+    this.$socket.emit(ROOM_EVENTS.ROOM_LEAVE, {
       engineId: this.engineId,
       teamIndex: this.teamIndex,
       role: this.role
     })
-    console.log('[Socket] ROOM_JOIN')
+    console.log('[Socket] ROOM_LEAVE')
   }
 }
 </script>

@@ -44,11 +44,10 @@
                               required
                               :rules="requiredRule"></v-text-field>
 
-                <v-text-field v-model="nodes"
-                              label="Nodes"
-                              required
-                              :rules="requiredRule"
-                              multi-line></v-text-field>
+                <v-textarea v-model="nodes"
+                            label="Nodes"
+                            required
+                            :rules="requiredRule"></v-textarea>
 
               </v-card-text>
 
@@ -65,21 +64,19 @@
                               required
                               :rules="requiredRule"></v-text-field>
 
-                <v-text-field v-model="nodes"
-                              label="Nodes"
-                              required
-                              :rules="requiredRule"
-                              multi-line></v-text-field>
+                <v-textarea v-model="nodes"
+                            label="Nodes"
+                            required
+                            :rules="requiredRule"></v-textarea>
 
               </v-card-text>
 
               <v-subheader>權限</v-subheader>
               <v-card-text>
-                <v-text-field v-model="permissions"
-                              label="Permissions"
-                              required
-                              :rules="requiredRule"
-                              multi-line></v-text-field>
+                <v-textarea v-model="permissions"
+                            label="Permissions"
+                            required
+                            :rules="requiredRule"></v-textarea>
               </v-card-text>
 
               <v-card-actions>

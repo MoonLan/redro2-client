@@ -180,7 +180,7 @@ export default {
           this.clear()
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功運輸',
-            text: ''
+            text: '請將回收的零件籌碼歸還工廠關主，或是將汽車籌碼歸還組裝部門。'
           })
           this.$store.commit('ui/STOP_LOADING')
         })

@@ -7,6 +7,13 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     }
   },
   {
+    type: 'BiddingMarketReceiver',
+    enable: true,
+    options: {
+      downstreamProvider: 'ComponentsBiddingMarket'
+    }
+  },
+  {
     type: 'Inventory',
     enable: true,
     options: {
@@ -47,13 +54,6 @@ const COMPONENTS_FACTORY_COMPONENTS = [
         { good: 'Engine' }
       ]
     }
-  },
-  {
-    type: 'BiddingMarketReceiver',
-    enable: true,
-    options: {
-      downstreamProvider: 'ComponentsBiddingMarket'
-    }
   }
 ]
 
@@ -63,6 +63,14 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     enable: true,
     options: {
       initialCash: 150000
+    }
+  },
+  {
+    type: 'BiddingMarketReceiver',
+    enable: true,
+    options: {
+      upstreamProvider: 'ComponentsBiddingMarket',
+      downstreamProvider: 'CarsBiddingMarket'
     }
   },
   {
@@ -105,14 +113,6 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
       ],
       availableExportGoods: [{ good: 'Car' }]
     }
-  },
-  {
-    type: 'BiddingMarketReceiver',
-    enable: true,
-    options: {
-      upstreamProvider: 'ComponentsBiddingMarket',
-      downstreamProvider: 'CarsBiddingMarket'
-    }
   }
 ]
 
@@ -122,6 +122,20 @@ const RETAILER_COMPONENTS = [
     enable: true,
     options: {
       initialCash: 50000
+    }
+  },
+  {
+    type: 'MarketReceiver',
+    enable: true,
+    options: {
+      provider: 'Market'
+    }
+  },
+  {
+    type: 'BiddingMarketReceiver',
+    enable: true,
+    options: {
+      upstreamProvider: 'CarsBiddingMarket'
     }
   },
   {
@@ -145,20 +159,6 @@ const RETAILER_COMPONENTS = [
       batchSize: 4,
       availableImportGoods: [{ good: 'Car' }],
       availableExportGoods: [{ good: 'Car' }]
-    }
-  },
-  {
-    type: 'BiddingMarketReceiver',
-    enable: true,
-    options: {
-      upstreamProvider: 'CarsBiddingMarket'
-    }
-  },
-  {
-    type: 'MarketReceiver',
-    enable: true,
-    options: {
-      provider: 'Market'
     }
   }
 ]

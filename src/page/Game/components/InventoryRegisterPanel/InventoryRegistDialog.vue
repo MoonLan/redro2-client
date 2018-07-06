@@ -32,15 +32,14 @@
               <v-flex xs4
                       sm5
                       :key="index + '-good'">
-                <v-select :items="goods"
+                <v-autocomplete :items="goods"
                           v-model="item.good"
                           label="種類"
                           item-value="good"
                           item-text="good"
-                          autocomplete
                           required
                           :rules="[requiredRule]"
-                          hide-details></v-select>
+                          hide-details></v-autocomplete>
               </v-flex>
               <v-flex xs6
                       sm6
@@ -121,7 +120,7 @@ export default {
           this.$emit('input', false)
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功登記',
-            text: ''
+            text: '登記後請讓隊員確認倉儲是不是有被登記，倉儲數量將會是你剛剛登記的數量。'
           })
           this.$store.commit('ui/STOP_LOADING')
         })

@@ -265,12 +265,14 @@ export default {
       return 70 / Math.pow(index, 0.7)
     },
     playBeginSound() {
-      let audio = document.getElementById('sound-begin')
-      audio.play()
+      document.getElementById('sound-begin').play()
+      document.getElementById('sound-break').pause()
+      document.getElementById('sound-break').currentTime = 0
     },
     playBreakSound() {
-      let audio = document.getElementById('sound-break')
-      audio.play()
+      document.getElementById('sound-break').play()
+      document.getElementById('sound-begin').pause()
+      document.getElementById('sound-begin').currentTime = 0
     }
   },
   mounted() {

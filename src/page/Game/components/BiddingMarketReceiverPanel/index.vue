@@ -115,6 +115,9 @@ export default {
     ...mapGetters('engine', ['gameTimeAdd', 'toReadableGameTime']),
     ...mapGetters('user', ['isAdmin']),
     ...mapState('account', ['isBankrupt'])
+  },
+  mounted () {
+    this.active = this.nodeName.split('-')[0] === 'ComponentsFactory' ? 'tab-downstream' : 'tab-upstream'
   }
 }
 </script>
