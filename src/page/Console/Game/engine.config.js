@@ -3,7 +3,7 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 100000
+      initialCash: 1000000
     }
   },
   {
@@ -40,7 +40,7 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     type: 'IO',
     enable: true,
     options: {
-      transportationTime: 120,
+      transportationTime: 60,
       transportationCost: 1400,
       batchSize: 4,
       availableImportGoods: [
@@ -62,7 +62,7 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 100000
+      initialCash: 1000000
     }
   },
   {
@@ -103,7 +103,7 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'IO',
     enable: true,
     options: {
-      transportationTime: 120,
+      transportationTime: 60,
       transportationCost: 1400,
       batchSize: 4,
       availableImportGoods: [
@@ -121,7 +121,7 @@ const RETAILER_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 100000
+      initialCash: 1000000
     }
   },
   {
@@ -149,7 +149,13 @@ const RETAILER_COMPONENTS = [
           costPerBatch: 18000
         }
       ],
-      batchSize: 10
+      batchSize: 10,
+      storage: [
+        {
+          good: 'Car',
+          unit: 7
+        }
+      ]
     }
   },
   {
@@ -201,7 +207,7 @@ export const NODES = [
           ],
           breakoffPaneltyRatio: 1.2,
           breakoffCompensationRatio: 1.2,
-          transportationTime: 120,
+          transportationTime: 60,
           transportationStatus: 'DELIVERING',
           defaultTimeLimit: 600
         }
@@ -305,7 +311,7 @@ export const NODES = [
           downstreams: ['Retailer-1', 'Retailer-2', 'Retailer-3'],
           breakoffPaneltyRatio: 1.2,
           breakoffCompensationRatio: 1.2,
-          transportationTime: 120,
+          transportationTime: 60,
           transportationStatus: 'DELIVERING',
           defaultTimeLimit: 600
         }
@@ -362,7 +368,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 15,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -380,7 +386,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 28,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -398,7 +404,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 32,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -416,7 +422,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 60,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -434,7 +440,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 30,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -452,7 +458,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 20,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -470,7 +476,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 40,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -488,7 +494,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 35,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -506,7 +512,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 32,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             },
@@ -524,7 +530,7 @@ export const NODES = [
                 {
                   good: 'Car',
                   unit: 30,
-                  unitPrice: 22000
+                  unitPrice: 25000
                 }
               ]
             }

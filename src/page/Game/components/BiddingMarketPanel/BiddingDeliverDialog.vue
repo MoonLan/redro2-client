@@ -8,8 +8,8 @@
       <v-card-title>
         <v-btn icon
                flat
-               v-if="active === '1'"
-               @click="active = '0'">
+               v-if="active === 1"
+               @click="active = 0">
           <v-icon>arrow_back</v-icon>
         </v-btn>
         <span class="headline">掃描QR CODE</span>
@@ -111,7 +111,7 @@ export default {
   },
   data() {
     return {
-      active: '0',
+      active: 0,
       error: null,
       biddingId: null,
       bidding: null
@@ -161,12 +161,12 @@ export default {
       this.getBidding(biddingId)
     },
     getBidding(id) {
-      this.active = '1'
+      this.active = 1
       this.biddingId = id
       this.bidding = this.biddings.find(item => item._id === id)
     },
     clear() {
-      this.active = '0'
+      this.active = 0
       this.biddingId = null
     },
     deliver(id) {

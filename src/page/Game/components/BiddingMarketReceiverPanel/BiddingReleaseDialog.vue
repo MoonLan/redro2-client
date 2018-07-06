@@ -155,12 +155,12 @@ export default {
       switch (this.nodeName.split('-')[0]) {
         case 'AssemblyFactory':
           return [
-            { good: 'Body', unitPrice: 1012 },
-            { good: 'Engine', unitPrice: 270 },
-            { good: 'Wheel', unitPrice: 67 }
+            { good: 'Body', unitPrice: 1800 },
+            { good: 'Engine', unitPrice: 6750 },
+            { good: 'Wheel', unitPrice: 450 }
           ]
         case 'Retailer':
-          return [{ good: 'Car', unitPrice: 2500 }]
+          return [{ good: 'Car', unitPrice: 18000 }]
       }
     },
     basicPrice() {

@@ -118,7 +118,7 @@
                         <v-btn @click="$store.dispatch('engine/nextStage')"
                                :disabled="$store.state.engine.stage === 'START' || $store.state.engine.gameTime.day !== $store.state.engine.dayLength && $store.state.engine.gameTime.isWorking === true"
                                outline>下一階段</v-btn>
-                        <!-- <v-btn @click="$store.dispatch('engine/nextDay')" -->
+                        <v-btn @click="$store.dispatch('engine/nextDay')"
                                :disabled="$store.state.engine.stage !== 'START' || $store.state.engine.gameTime.isWorking === true"
                                outline>下一天</v-btn>
                       </v-flex>

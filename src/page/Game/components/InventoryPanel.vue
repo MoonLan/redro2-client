@@ -79,23 +79,21 @@
                       sm6
                       :pr-2="!$vuetify.breakpoint.xsOnly">
                 <v-autocomplete :items="nodesNameList"
-                          v-model="from"
-                          label="輸出方"
-                          :disabled="way === '1'"
-                          required
-                          :rules="requiredRule"
-                          hide-details></v-autocomplete>
+                                v-model="from"
+                                label="輸出方"
+                                required
+                                :rules="requiredRule"
+                                hide-details></v-autocomplete>
               </v-flex>
               <v-flex xs12
                       sm6
                       :pl-2="!$vuetify.breakpoint.xsOnly">
                 <v-autocomplete :items="nodesNameList"
-                          v-model="to"
-                          label="輸入方"
-                          :disabled="way === '0'"
-                          required
-                          :rules="requiredRule"
-                          hide-details></v-autocomplete>
+                                v-model="to"
+                                label="輸入方"
+                                required
+                                :rules="requiredRule"
+                                hide-details></v-autocomplete>
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -109,11 +107,11 @@
                         pr-3
                         :key="index + '-good'">
                   <v-autocomplete :items="goods"
-                            v-model="item.good"
-                            label="種類"
-                            required
-                            :rules="requiredRule"
-                            hide-details></v-autocomplete>
+                                  v-model="item.good"
+                                  label="種類"
+                                  required
+                                  :rules="requiredRule"
+                                  hide-details></v-autocomplete>
                 </v-flex>
                 <v-flex xs12
                         sm3
@@ -210,12 +208,12 @@ export default {
   watch: {
     way(newVal) {
       switch (newVal) {
-        case '0':
+        case 0:
           this.to = this.nodeName
           break
 
         default:
-        case '1':
+        case 1:
           this.from = this.nodeName
           break
       }
@@ -263,7 +261,7 @@ export default {
       this.$store.commit('ui/START_LOADING')
       this.$store
         .dispatch(
-          `inventory/${this.way === '0' ? 'import' : 'export'}`,
+          `inventory/${this.way === 0 ? 'import' : 'export'}`,
           ioJournalItem
         )
         .then(inventory => {
