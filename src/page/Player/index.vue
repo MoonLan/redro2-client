@@ -263,6 +263,10 @@ export default {
       api.engine.getInfo(engineId).then(engine => {
         this.engine = engine
         this.engineId = engineId
+
+        if (this.engine.stage === 'END') {
+          this.$router.push(`/game/end/${this.engineId}`)
+        }
       })
     }
   },

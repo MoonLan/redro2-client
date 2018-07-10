@@ -161,8 +161,8 @@ export default {
             )
             account.cashBalance =
               side === ACCOUNT_LEDGER_SIDE.DEBIT
-                ? account.cashBalance + parseFloat(item.amount)
-                : account.cashBalance - parseFloat(item.amount)
+                ? parseFloat(account.cashBalance) + parseFloat(item.amount)
+                : parseFloat(account.cashBalance) - parseFloat(item.amount)
           }
         }
       }

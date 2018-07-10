@@ -3,9 +3,13 @@
                justify-center>
     <v-card class="transparent elevation-0 text-xs-center">
       <v-card-text>
-        <h1>REDRO2</h1>
+        <img src="/static/img/logo.svg"
+             class="logo"
+             alt="REDRO2">
+      </v-card-text>
+      <v-card-text>
         <h2>2018 清大工程領袖營</h2>
-        <h3>產銷企劃 課程股發行</h3>
+        <h3>REDRO2 課程股發行</h3>
       </v-card-text>
       <v-card-text>
         <v-btn @click="$router.push('/player')"
@@ -26,4 +30,7 @@ export default {}
 </script>
 
 <style>
+.logo {
+  max-width: 180px;
+}
 </style>

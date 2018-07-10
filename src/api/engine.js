@@ -47,3 +47,11 @@ export function unhidden(engineId) {
     }
   )
 }
+
+export function toResultObject(engineId) {
+  return legalRequest('/api/engine/toResultObject', {
+    engineId: engineId
+  }).then(data => {
+    return Promise.resolve(data.result)
+  })
+}

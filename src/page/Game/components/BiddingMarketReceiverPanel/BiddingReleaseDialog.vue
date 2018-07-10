@@ -69,6 +69,9 @@
             </v-flex>
           </v-layout>
         </v-card-text>
+        <v-card-text v-if="$store.getters[`biddingmarketreceiver/${chain}SelfReleased`].length > 0">
+          你目前已上架{{$store.getters[`biddingmarketreceiver/${chain}SelfReleased`].length}}張定單，每組同時只能有3張單在市場上。
+        </v-card-text>
         <v-card-actions>
           <v-btn flat
                  @click="clear(), $emit('input', false)">關閉</v-btn>
@@ -77,11 +80,9 @@
                  @click="clear">清除</v-btn>
           <v-btn flat
                  outline
-                 :disabled="!valid || loading || price <= 0"
+                 :disabled="!valid || loading || price <= 0 || $store.getters[`biddingmarketreceiver/${chain}SelfReleased`].length >= 3"
                  type="submit">登記</v-btn>
         </v-card-actions>
-
-        <div style="flex: 1 1 auto;"></div>
       </v-form>
     </v-card>
   </v-dialog>
@@ -148,6 +149,10 @@ export default {
       'nodeName',
       'engineId'
     ]),
+    ...mapGetters('biddingmarketreceiver', [
+      'upstreamSelfReleased',
+      'downstreamSelfReleased'
+    ]),
     goods() {
       if (!this.nodeName) {
         return []
@@ -180,7 +185,7 @@ export default {
       if (!this.goods) {
         return
       }
-      this.list = []
+      this.list.splice(0, this.list.length)
       for (let good of this.goods) {
         this.list.push({
           good: good.good,
@@ -221,7 +226,7 @@ export default {
           this.$emit('input', false)
           this.$store.commit('ui/OPEN_DIALOG', {
             title: '成功上架',
-            text: ''
+            text: '你可以在「你釋出」中看到你上架的競標單。'
           })
           this.$store.commit('ui/STOP_LOADING')
         })
@@ -233,7 +238,8 @@ export default {
         })
     },
     clear() {
-      this.$refs.form.reset()
+      // this.$refs.form.reset()
+      this.loadList()
     },
     addItem() {
       this.list.push({

@@ -4,6 +4,9 @@
                fill-height
                class="game-scoreboard">
     <v-layout>
+      <div style="position: fixed; top: 0; right: 0;">
+        PING {{latency}}
+      </div>
       <v-flex v-if="['CONSTRUCTED', 'PREPARE', 'READY'].includes(stage)"
               xs12>
         <v-layout class="text-xs-center">
@@ -13,8 +16,8 @@
                       :key="index"
                       style="border: 1px solid #ccc; font-size: 20px; height: 50vh;"
                       xs6>
-                <v-container>
-                  <v-subheader style="display: block;  font-size: 30px;">第 {{index + 1}} 組</v-subheader>
+                <v-container pa-0>
+                  <v-subheader style="display: block;  font-size: 30px;">第{{index + 1}}組</v-subheader>
                   <div v-for="(user) in team.ComponentsFactory"
                        xs12
                        class="lime--text text--darken-3"
@@ -54,8 +57,8 @@
                       :key="index"
                       style="border: 1px solid #ccc; font-size: 20px; height: 50vh;"
                       xs6>
-                <v-container>
-                  <v-subheader style="display: block;  font-size: 30px;">第 {{index + 1}} 組</v-subheader>
+                <v-container pa-0>
+                  <v-subheader style="display: block;  font-size: 30px;">第{{index + 1}}組</v-subheader>
                   <div v-for="(user) in team.ComponentsFactory"
                        xs12
                        class="lime--text text--darken-3"
@@ -128,7 +131,8 @@
                       xs4>
                 <v-container text-xs-center
                              fill-height
-                             justify-center>
+                             justify-center
+                             pa-0>
                   <v-card class="transparent elevation-0">
                     <v-card-title class="d-block headline">{{$t(`role.${role}`)}}</v-card-title>
                     <v-card-text>
@@ -137,7 +141,7 @@
                            :style="index === 0 ? `font-size: 30px !important; line-height: 45px !important;` : ''"
                            class="d-block headline">
                         <span class="grey--text">#{{index + 1}}</span>
-                        第 {{rank.name.split('-')[1]}} 組 ${{rank.cashBalance}}
+                        第{{rank.name.split('-')[1]}}組 ${{rank.cashBalance}}
                       </div>
                     </v-card-text>
                   </v-card>
@@ -175,6 +179,9 @@ export default {
     _isWorking: null
   }),
   computed: {
+    ...mapState('engine', [
+      'latency'
+    ]),
     ...mapState('scoreboard', [
       'users',
       'gameTime',

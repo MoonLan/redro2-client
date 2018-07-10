@@ -8,7 +8,7 @@
                app
                fixed>
       <v-toolbar-title class="ml-0 pl-3">
-        <span>#{{teamIndex}} {{$t('role.' + (role ? role.split('-')[0] : ''))}}</span>
+        <span>第{{teamIndex}}組 {{$t('role.' + (role ? role.split('-')[0] : ''))}}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="mr-3">
@@ -19,7 +19,7 @@
     <v-content class="fill-height">
       <v-container fluid
                    class="bg-wrapper">
-        PING {{latency || '-'}}MS
+        {{name}} PING {{latency || '-'}}
       </v-container>
       <node-control-panel />
     </v-content>
