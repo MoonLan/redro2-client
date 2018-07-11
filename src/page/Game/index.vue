@@ -19,7 +19,7 @@
     <v-content class="fill-height">
       <v-container fluid
                    class="bg-wrapper">
-        {{name}} PING {{latency || '-'}}
+        {{name}} PING {{latency || '0'}}
       </v-container>
       <node-control-panel />
     </v-content>

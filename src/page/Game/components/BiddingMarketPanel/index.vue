@@ -88,7 +88,10 @@
                     </div>
                   </div>
                   <v-card-title>
-                    <span class="headline">#{{item.publisher.split('-')[1]}} {{$t(`role.${item.publisher.split('-')[0]}`)}}</span>
+                    <span v-if="item.signer"
+                          class="headline">#{{item.signer.split('-')[1]}} {{$t(`role.${item.signer.split('-')[0]}`)}}</span>
+                    <span v-else
+                          class="headline">#{{item.publisher.split('-')[1]}} {{$t(`role.${item.publisher.split('-')[0]}`)}}</span>
                   </v-card-title>
                   <v-card-text class="px-3 py-2">
                     <v-layout v-for="good in item.goods"

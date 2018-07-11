@@ -136,9 +136,9 @@
                   <v-card class="transparent elevation-0">
                     <v-card-title class="d-block headline">{{$t(`role.${role}`)}}</v-card-title>
                     <v-card-text>
-                      <div v-for="(rank, index) in cashBalanceRankingSet[role].slice(0, 3)"
+                      <div v-for="(rank, index) in cashBalanceRankingSet[role]"
                            :key="rank.name"
-                           :style="index === 0 ? `font-size: 30px !important; line-height: 45px !important;` : ''"
+                           :style="index < 3 ? `font-size: 30px !important; line-height: 45px !important;` : ''"
                            class="d-block headline">
                         <span class="grey--text">#{{index + 1}}</span>
                         第{{rank.name.split('-')[1]}}組 ${{rank.cashBalance}}
@@ -271,7 +271,7 @@ export default {
       if (index > 5) {
         return 20
       }
-      return 70 / Math.pow(index, 0.7)
+      return 35
     },
     playBeginSound() {
       document.getElementById('sound-begin').play()

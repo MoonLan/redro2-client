@@ -3,7 +3,7 @@ const COMPONENTS_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 1000000
+      initialCash: 500000
     }
   },
   {
@@ -62,7 +62,7 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 1000000
+      initialCash: 500000
     }
   },
   {
@@ -77,6 +77,62 @@ const ASSEMBLY_FACTORY_COMPONENTS = [
     type: 'Inventory',
     enable: true,
     options: {
+      storage: [
+        {
+          good: 'Engine',
+          unit: 5,
+          stocks: [
+            {
+              good: 'Engine',
+              unit: 5,
+              left: 5,
+              unitPrice: 0
+            }
+          ],
+          journal: [
+            {
+              good: 'Engine',
+              unit: 5
+            }
+          ]
+        },
+        {
+          good: 'Body',
+          unit: 5,
+          stocks: [
+            {
+              good: 'Body',
+              unit: 5,
+              left: 5,
+              unitPrice: 0
+            }
+          ],
+          journal: [
+            {
+              good: 'Body',
+              unit: 5
+            }
+          ]
+        },
+        {
+          good: 'Wheel',
+          unit: 20,
+          stocks: [
+            {
+              good: 'Wheel',
+              unit: 20,
+              left: 20,
+              unitPrice: 0
+            }
+          ],
+          journal: [
+            {
+              good: 'Wheel',
+              unit: 20
+            }
+          ]
+        }
+      ],
       hasStorageCost: true,
       storageCost: [
         {
@@ -121,7 +177,7 @@ const RETAILER_COMPONENTS = [
     type: 'Account',
     enable: true,
     options: {
-      initialCash: 1000000
+      initialCash: 500000
     }
   },
   {
@@ -153,7 +209,21 @@ const RETAILER_COMPONENTS = [
       storage: [
         {
           good: 'Car',
-          unit: 7
+          unit: 5,
+          stocks: [
+            {
+              good: 'Car',
+              unit: 5,
+              left: 5,
+              unitPrice: 0
+            }
+          ],
+          journal: [
+            {
+              good: 'Car',
+              unit: 5
+            }
+          ]
         }
       ]
     }
@@ -189,6 +259,36 @@ export const NODES = [
     workers: 6
   },
   {
+    name: 'ComponentsFactory-4',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
+  },
+  {
+    name: 'ComponentsFactory-5',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
+  },
+  {
+    name: 'ComponentsFactory-6',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
+  },
+  {
+    name: 'ComponentsFactory-7',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
+  },
+  {
+    name: 'ComponentsFactory-8',
+    components: COMPONENTS_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 6
+  },
+  {
     name: 'ComponentsBiddingMarket',
     components: [
       {
@@ -198,12 +298,22 @@ export const NODES = [
           upstreams: [
             'ComponentsFactory-1',
             'ComponentsFactory-2',
-            'ComponentsFactory-3'
+            'ComponentsFactory-3',
+            'ComponentsFactory-4',
+            'ComponentsFactory-5',
+            'ComponentsFactory-6',
+            'ComponentsFactory-7',
+            'ComponentsFactory-8'
           ],
           downstreams: [
             'AssemblyFactory-1',
             'AssemblyFactory-2',
-            'AssemblyFactory-3'
+            'AssemblyFactory-3',
+            'AssemblyFactory-4',
+            'AssemblyFactory-5',
+            'AssemblyFactory-6',
+            'AssemblyFactory-7',
+            'AssemblyFactory-8'
           ],
           breakoffPaneltyRatio: 1.2,
           breakoffCompensationRatio: 1.2,
@@ -228,7 +338,12 @@ export const NODES = [
           receivers: [
             'ComponentsFactory-1',
             'ComponentsFactory-2',
-            'ComponentsFactory-3'
+            'ComponentsFactory-3',
+            'ComponentsFactory-4',
+            'ComponentsFactory-5',
+            'ComponentsFactory-6',
+            'ComponentsFactory-7',
+            'ComponentsFactory-8'
           ]
         }
       }
@@ -253,6 +368,36 @@ export const NODES = [
     workers: 2
   },
   {
+    name: 'AssemblyFactory-4',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'AssemblyFactory-5',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'AssemblyFactory-6',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'AssemblyFactory-7',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'AssemblyFactory-8',
+    components: ASSEMBLY_FACTORY_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
     name: 'AssemblyDepartment',
     components: [
       {
@@ -262,7 +407,12 @@ export const NODES = [
           receivers: [
             'AssemblyFactory-1',
             'AssemblyFactory-2',
-            'AssemblyFactory-3'
+            'AssemblyFactory-3',
+            'AssemblyFactory-4',
+            'AssemblyFactory-5',
+            'AssemblyFactory-6',
+            'AssemblyFactory-7',
+            'AssemblyFactory-8'
           ],
           bom: [
             {
@@ -306,9 +456,23 @@ export const NODES = [
           upstreams: [
             'AssemblyFactory-1',
             'AssemblyFactory-2',
-            'AssemblyFactory-3'
+            'AssemblyFactory-3',
+            'AssemblyFactory-4',
+            'AssemblyFactory-5',
+            'AssemblyFactory-6',
+            'AssemblyFactory-7',
+            'AssemblyFactory-8'
           ],
-          downstreams: ['Retailer-1', 'Retailer-2', 'Retailer-3'],
+          downstreams: [
+            'Retailer-1',
+            'Retailer-2',
+            'Retailer-3',
+            'Retailer-4',
+            'Retailer-5',
+            'Retailer-6',
+            'Retailer-7',
+            'Retailer-8'
+          ],
           breakoffPaneltyRatio: 1.2,
           breakoffCompensationRatio: 1.2,
           transportationTime: 60,
@@ -346,18 +510,57 @@ export const NODES = [
     workers: 2
   },
   {
+    name: 'Retailer-4',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'Retailer-5',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'Retailer-6',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'Retailer-7',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
+    name: 'Retailer-8',
+    components: RETAILER_COMPONENTS,
+    wage: 875,
+    workers: 2
+  },
+  {
     name: 'Market',
     components: [
       {
         type: 'Market',
         enable: true,
         options: {
-          upstreams: ['Retailer-1', 'Retailer-2', 'Retailer-3'],
+          upstreams: [
+            'Retailer-1',
+            'Retailer-2',
+            'Retailer-3',
+            'Retailer-4',
+            'Retailer-5',
+            'Retailer-6',
+            'Retailer-7',
+            'Retailer-8'
+          ],
           news: [
             {
               title: '中鋼進化，進軍國際產業鍊',
               content:
-                '中鋼鋼鐵材料科技化再躍進，與23家國際車廠合作，站穩全球汽車用鋼供應鏈，目前裕隆納智捷（Luxgen5）車體高達92.6%由中鋼供料。車身品質在中鋼的努力下大幅提升，消費者對於這次國營企業的突破有信心，內需市場提升不少，30台的目標並非遙不可及。',
+                '中鋼鋼鐵材料科技化再躍進，與23家國際車廠合作，站穩全球汽車用鋼供應鏈，目前裕隆納智捷（Luxgen5）車體高達92.6%由中鋼供料。車身品質在中鋼的努力下大幅提升，消費者對於這次國營企業的突破有信心，內需市場提升不少，40台的目標並非遙不可及。',
               banner: '/static/img/news/day1.jpg',
               releasedGameTime: {
                 day: 1,
@@ -367,8 +570,8 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 15,
-                  unitPrice: 25000
+                  unit: 40,
+                  unitPrice: 23000
                 }
               ]
             },
@@ -385,15 +588,15 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 28,
-                  unitPrice: 25000
+                  unit: 50,
+                  unitPrice: 23000
                 }
               ]
             },
             {
               title: '買車新主張，業者預期買氣將提升',
               content:
-                '但是隨著汽車電子化成為趨勢，消費者日益注重車內影音設備的品質及附加功能，產生了一波換車潮，可望有25%需求量的增長，上看單日需求量50台。',
+                '但是隨著汽車電子化成為趨勢，消費者日益注重車內影音設備的品質及附加功能，產生了一波換車潮，可望有25%需求量的增長，上看單日需求量60台。',
               banner: '/static/img/news/day3.jpg',
               releasedGameTime: {
                 day: 3,
@@ -403,8 +606,8 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 32,
-                  unitPrice: 25000
+                  unit: 60,
+                  unitPrice: 23000
                 }
               ]
             },
@@ -421,15 +624,15 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 60,
-                  unitPrice: 25000
+                  unit: 80,
+                  unitPrice: 23000
                 }
               ]
             },
             {
               title: '為尋求低廉勞力，豐田預告進駐世界工廠',
               content:
-                '豐田汽車公司表示，下一代小型轎車將在中國生產，有效降低車輛的平均生產成本，車價下跌，讓消費者大量購進家用轎車，市場需求成長接近2倍，單日需求量可望達到130台；不過，專家指出：全球兩大汽車巨擘美國福特（Ford）與德國福斯（Volkswagen）宣布，考慮策略結盟，並共同研發一系列商用車款。合作案凸顯全球車廠正積極結盟以搶攻市佔率，因此，豐田公司下修當日需求量為100台。',
+                '豐田汽車公司表示，下一代小型轎車將在中國生產，有效降低車輛的平均生產成本，車價下跌，讓消費者大量購進家用轎車，市場需求成長接近2倍，單日需求量可望達到130台；不過，專家指出：全球兩大汽車巨擘美國福特（Ford）與德國福斯（Volkswagen）宣布，考慮策略結盟，並共同研發一系列商用車款。合作案凸顯全球車廠正積極結盟以搶攻市佔率，因此，豐田公司下修當日需求量為80台。',
               banner: '/static/img/news/day5.jpg',
               releasedGameTime: {
                 day: 5,
@@ -439,15 +642,15 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 30,
-                  unitPrice: 25000
+                  unit: 80,
+                  unitPrice: 23000
                 }
               ]
             },
             {
               title: '新興能源、政策推廣幫助青年購車',
               content:
-                '近年來，美國能源業因為頁岩油技術研發的突破，不僅產能暴增、開採成本也大幅下降，經過商業性的流血競爭，美國頁岩油終於站穩境內的能源市場，導致油價下跌，再加上政府推出30歲以下年輕人的購車補助，使自用車需求量居高不下，可望有6成的新購車族的誕生。不過，專家表示汽車需求量已經達到高峰，供給商應改變經營政策。',
+                '近年來，美國能源業因為頁岩油技術研發的突破，不僅產能暴增、開採成本也大幅下降，經過商業性的流血競爭，美國頁岩油終於站穩境內的能源市場，導致油價下跌，再加上政府推出30歲以下年輕人的購車補助，使自用車需求量居高不下，可望有6成的新購車族的誕生。',
               banner: '/static/img/news/day6.jpg',
               releasedGameTime: {
                 day: 6,
@@ -457,7 +660,7 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 20,
+                  unit: 100,
                   unitPrice: 25000
                 }
               ]
@@ -465,7 +668,7 @@ export const NODES = [
             {
               title: '石油危機再現，油價恐影響車市表現',
               content:
-                '金融與能源之間的關係盤根錯節。石油輸出國組織於維也納召開的特別會議中，決定將原油日產量削減150萬桶，並暗示未來可能進一步減產。此消息流出導致油價大幅上漲，消費者對於日常車輛支出更加謹慎，因此需求量急遽下跌，僅剩25%的需求量。',
+                '金融與能源之間的關係盤根錯節。石油輸出國組織於維也納召開的特別會議中，決定將原油日產量削減150萬桶，並暗示未來可能進一步減產。此消息流出導致油價大幅上漲，消費者對於日常車輛支出更加謹慎，然而市場還是對汽車有著相當的需求，可望再次成長。',
               banner: '/static/img/news/day7.jpg',
               releasedGameTime: {
                 day: 7,
@@ -475,7 +678,7 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 40,
+                  unit: 150,
                   unitPrice: 25000
                 }
               ]
@@ -483,7 +686,7 @@ export const NODES = [
             {
               title: '大眾汽車安檢醜聞影響買氣',
               content:
-                '環境保護署指控大眾汽車所售部分柴油車安裝了專門應對尾氣排放檢測的軟體，可以識別汽車是否處於被檢測狀態，繼而在車檢時秘密啟動，進而通過排氣檢驗，重挫消費者對於車業的信心，需求量繼續下滑至35台左右。',
+                '環境保護署指控大眾汽車所售部分柴油車安裝了專門應對尾氣排放檢測的軟體，可以識別汽車是否處於被檢測狀態，繼而在車檢時秘密啟動，進而通過排氣檢驗，重挫消費者對於車業的信心，需求量繼續下滑至60台左右。',
               banner: '/static/img/news/day8.jpg',
               releasedGameTime: {
                 day: 8,
@@ -493,15 +696,15 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 35,
-                  unitPrice: 25000
+                  unit: 60,
+                  unitPrice: 19000
                 }
               ]
             },
             {
               title: '輕型汽車需求弱！新車銷量恐見萎縮',
               content:
-                '汽車工會公布預測報告指出，因輕型汽車需求疲弱，拖累國內新車銷售量，將陷入萎縮。其中，銷售量受日產、SUBARU爆發品管瑕疵衝擊，預估需求量會減少至32台。',
+                '汽車工會公布預測報告指出，因輕型汽車需求疲弱，拖累國內新車銷售量，將陷入萎縮。其中，銷售量受日產、SUBARU爆發品管瑕疵衝擊，預估需求量會減少至50台。',
               banner: '/static/img/news/day9.jpg',
               releasedGameTime: {
                 day: 9,
@@ -511,15 +714,15 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 32,
-                  unitPrice: 25000
+                  unit: 50,
+                  unitPrice: 19000
                 }
               ]
             },
             {
               title: '車市寒冬！景氣不佳，購車需求探底',
               content:
-                '今年冬天不怎麼冷，不過汽車市場卻提前過寒冬，因為股市不好，油價上漲。不管是Toyota還是Nissan，最近車商都很緊張，因為市場急凍，需求量再次下跌，預估僅有30輛的成交。',
+                '今年冬天不怎麼冷，不過汽車市場卻提前過寒冬，因為股市不好，油價上漲。不管是Toyota還是Nissan，最近車商都很緊張，因為市場急凍，需求量再次下跌，預估僅有40輛的成交。',
               banner: '/static/img/news/day10.jpg',
               releasedGameTime: {
                 day: 10,
@@ -529,8 +732,8 @@ export const NODES = [
               marketNeeds: [
                 {
                   good: 'Car',
-                  unit: 30,
-                  unitPrice: 25000
+                  unit: 40,
+                  unitPrice: 19000
                 }
               ]
             }
@@ -572,15 +775,30 @@ export const PERMISSIONS = [
               { type: 'ComponentsFactory-1' },
               { type: 'ComponentsFactory-2' },
               { type: 'ComponentsFactory-3' },
+              { type: 'ComponentsFactory-4' },
+              { type: 'ComponentsFactory-5' },
+              { type: 'ComponentsFactory-6' },
+              { type: 'ComponentsFactory-7' },
+              { type: 'ComponentsFactory-8' },
               { type: 'ComponentsBiddingMarket' },
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
               { type: 'AssemblyFactory-3' },
+              { type: 'AssemblyFactory-4' },
+              { type: 'AssemblyFactory-5' },
+              { type: 'AssemblyFactory-6' },
+              { type: 'AssemblyFactory-7' },
+              { type: 'AssemblyFactory-8' },
               { type: 'AssemblyDepartment' },
               { type: 'CarsBiddingMarket' },
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
               { type: 'Retailer-3' },
+              { type: 'Retailer-4' },
+              { type: 'Retailer-5' },
+              { type: 'Retailer-6' },
+              { type: 'Retailer-7' },
+              { type: 'Retailer-8' },
               { type: 'Market' },
               { type: 'Engine' }
             ]
@@ -603,6 +821,26 @@ export const PERMISSIONS = [
                 listening: ['ACCOUNT_ADD']
               },
               {
+                type: 'ComponentsFactory-4',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'ComponentsFactory-5',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'ComponentsFactory-6',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'ComponentsFactory-7',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'ComponentsFactory-8',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
                 type: 'AssemblyFactory-1',
                 listening: ['ACCOUNT_ADD']
               },
@@ -612,6 +850,26 @@ export const PERMISSIONS = [
               },
               {
                 type: 'AssemblyFactory-3',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-4',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-5',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-6',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-7',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'AssemblyFactory-8',
                 listening: ['ACCOUNT_ADD']
               },
               {
@@ -626,6 +884,26 @@ export const PERMISSIONS = [
                 type: 'Retailer-3',
                 listening: ['ACCOUNT_ADD']
               },
+              {
+                type: 'Retailer-4',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-5',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-6',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-7',
+                listening: ['ACCOUNT_ADD']
+              },
+              {
+                type: 'Retailer-8',
+                listening: ['ACCOUNT_ADD']
+              },
               { type: 'Engine' },
               { type: 'Server' }
             ]
@@ -638,10 +916,20 @@ export const PERMISSIONS = [
               { type: 'ComponentsFactory-1' },
               { type: 'ComponentsFactory-2' },
               { type: 'ComponentsFactory-3' },
+              { type: 'ComponentsFactory-4' },
+              { type: 'ComponentsFactory-5' },
+              { type: 'ComponentsFactory-6' },
+              { type: 'ComponentsFactory-7' },
+              { type: 'ComponentsFactory-8' },
               { type: 'ComponentsBiddingMarket' },
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
               { type: 'AssemblyFactory-3' },
+              { type: 'AssemblyFactory-4' },
+              { type: 'AssemblyFactory-5' },
+              { type: 'AssemblyFactory-6' },
+              { type: 'AssemblyFactory-7' },
+              { type: 'AssemblyFactory-8' },
               { type: 'Engine' }
             ]
           },
@@ -653,6 +941,11 @@ export const PERMISSIONS = [
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
               { type: 'AssemblyFactory-3' },
+              { type: 'AssemblyFactory-4' },
+              { type: 'AssemblyFactory-5' },
+              { type: 'AssemblyFactory-6' },
+              { type: 'AssemblyFactory-7' },
+              { type: 'AssemblyFactory-8' },
               { type: 'AssemblyDepartment' },
               { type: 'Engine' }
             ]
@@ -665,11 +958,21 @@ export const PERMISSIONS = [
               { type: 'AssemblyFactory-1' },
               { type: 'AssemblyFactory-2' },
               { type: 'AssemblyFactory-3' },
+              { type: 'AssemblyFactory-4' },
+              { type: 'AssemblyFactory-5' },
+              { type: 'AssemblyFactory-6' },
+              { type: 'AssemblyFactory-7' },
+              { type: 'AssemblyFactory-8' },
               { type: 'AssemblyDepartment' },
               { type: 'CarsBiddingMarket' },
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
               { type: 'Retailer-3' },
+              { type: 'Retailer-4' },
+              { type: 'Retailer-5' },
+              { type: 'Retailer-6' },
+              { type: 'Retailer-7' },
+              { type: 'Retailer-8' },
               { type: 'Engine' }
             ]
           },
@@ -681,6 +984,11 @@ export const PERMISSIONS = [
               { type: 'Retailer-1' },
               { type: 'Retailer-2' },
               { type: 'Retailer-3' },
+              { type: 'Retailer-4' },
+              { type: 'Retailer-5' },
+              { type: 'Retailer-6' },
+              { type: 'Retailer-7' },
+              { type: 'Retailer-8' },
               { type: 'Market' },
               { type: 'Engine' }
             ]
@@ -694,7 +1002,7 @@ export const PERMISSIONS = [
     teams: [
       {
         index: 1,
-        name: 'Team 1',
+        name: '第1組',
         roles: [
           {
             role: 'ComponentsFactory',
@@ -718,7 +1026,7 @@ export const PERMISSIONS = [
       },
       {
         index: 2,
-        name: 'Team 2',
+        name: '第2組',
         roles: [
           {
             role: 'ComponentsFactory',
@@ -742,7 +1050,7 @@ export const PERMISSIONS = [
       },
       {
         index: 3,
-        name: 'Team 3',
+        name: '第3組',
         roles: [
           {
             role: 'ComponentsFactory',
@@ -761,6 +1069,126 @@ export const PERMISSIONS = [
             name: 'Retailer',
             describe: 'Retailer',
             objectTypes: [{ type: 'Retailer-3' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 4,
+        name: '第4組',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-4' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-4' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-4' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 5,
+        name: '第5組',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-5' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-5' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-5' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 6,
+        name: '第6組',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-6' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-6' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-6' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 7,
+        name: '第7組',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-7' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-7' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-7' }, { type: 'Engine' }]
+          }
+        ]
+      },
+      {
+        index: 8,
+        name: '第8組',
+        roles: [
+          {
+            role: 'ComponentsFactory',
+            name: 'ComponentsFactory',
+            describe: 'ComponentsFactory',
+            objectTypes: [{ type: 'ComponentsFactory-8' }, { type: 'Engine' }]
+          },
+          {
+            role: 'AssemblyFactory',
+            name: 'AssemblyFactory',
+            describe: 'AssemblyFactory',
+            objectTypes: [{ type: 'AssemblyFactory-8' }, { type: 'Engine' }]
+          },
+          {
+            role: 'Retailer',
+            name: 'Retailer',
+            describe: 'Retailer',
+            objectTypes: [{ type: 'Retailer-8' }, { type: 'Engine' }]
           }
         ]
       }

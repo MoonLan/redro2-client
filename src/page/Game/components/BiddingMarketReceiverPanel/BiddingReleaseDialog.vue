@@ -165,7 +165,7 @@ export default {
             { good: 'Wheel', unitPrice: 450 }
           ]
         case 'Retailer':
-          return [{ good: 'Car', unitPrice: 18000 }]
+          return [{ good: 'Car', unitPrice: 14000 }]
       }
     },
     basicPrice() {

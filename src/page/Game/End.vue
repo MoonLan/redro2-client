@@ -160,7 +160,7 @@ export default {
       }
       let obj = {Retailer: {}, AssemblyFactory: {}, ComponentsFactory:{} }
       for (let role of ['Retailer', 'AssemblyFactory', 'ComponentsFactory']) {
-        let teamRole = this.result[role][this.teamIndex]
+        let teamRole = this.result[role][this.teamIndex - 1]
         let getBalance = cls => {
           if (teamRole.Account.ledger.find(i => i.classification === cls)) {
             return teamRole.Account.ledger.find(i => i.classification === cls).balance
