@@ -27,7 +27,7 @@ export default {
       return state.level === USER_LEVEL.ADMIN
     },
     hasLogin(state) {
-      return !!state.name
+      return !!state.id && !!state.name && !!state.level
     }
   },
   actions: {
